@@ -10,13 +10,13 @@ jobs:
   deploy:
     name: Deploy to Hostinger
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Create tar (exclude output file itself to avoid 'file changed' error)
+    - name: Create tar archive
       run: |
         tar -czf deploy_patch.tar.gz \
           --exclude='.git' \
@@ -31,7 +31,6 @@ jobs:
           --exclude='storage/framework/views' \
           --exclude='public_html/storage' \
           . || true
-        # Verify the archive was actually created
         ls -lh deploy_patch.tar.gz
 
     - name: Upload tar to Hostinger via SCP
@@ -56,23 +55,28 @@ jobs:
         command_timeout: 120s
         script: |
           set -e
+          DOMAIN_DIR="/home/u664715641/domains/airsegarprigen.hvmdigital.id"
+          
           cd /home/u664715641
-
-          # Extract ke folder web (tanpa menimpa .env dan vendor)
-          tar -xzf deploy_patch.tar.gz -C domains/produsenhoistcranelift.com/ 2>&1
+          
+          # Extract ke root domain (bukan ke dalam public_html)
+          tar -xzf deploy_patch.tar.gz -C "$DOMAIN_DIR/" 2>&1
           rm -f deploy_patch.tar.gz
-
-          # Pastikan symlink storage selalu benar (tidak pernah rusak)
-          STORAGE_LINK="/home/u664715641/domains/produsenhoistcranelift.com/public_html/storage"
-          STORAGE_TARGET="/home/u664715641/domains/produsenhoistcranelift.com/storage/app/public"
+          
+          # Buat/perbaiki symlink storage
+          STORAGE_LINK="$DOMAIN_DIR/public_html/storage"
+          STORAGE_TARGET="$DOMAIN_DIR/storage/app/public"
           rm -rf "$STORAGE_LINK"
           ln -s "$STORAGE_TARGET" "$STORAGE_LINK"
           echo "Storage symlink OK: $(ls -la $STORAGE_LINK)"
-
-          # Clear cache & rebuild view cache
-          cd domains/produsenhoistcranelift.com/
+          
+          # Set permissions
+          chmod -R 775 "$DOMAIN_DIR/storage" "$DOMAIN_DIR/bootstrap/cache" 2>/dev/null || true
+          
+          # Clear cache & optimize
+          cd "$DOMAIN_DIR"
           php artisan migrate --force 2>&1
           php artisan optimize:clear 2>&1
           php artisan view:cache 2>&1
-
+          
           echo "Deploy selesai!"
