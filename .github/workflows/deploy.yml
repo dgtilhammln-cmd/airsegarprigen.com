@@ -1,0 +1,78 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Hostinger
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Create tar (exclude output file itself to avoid 'file changed' error)
+      run: |
+        tar -czf deploy_patch.tar.gz \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='./deploy_patch.tar.gz' \
+          --exclude='vendor' \
+          --exclude='node_modules' \
+          --exclude='.env' \
+          --exclude='storage/logs' \
+          --exclude='storage/framework/cache' \
+          --exclude='storage/framework/sessions' \
+          --exclude='storage/framework/views' \
+          --exclude='public_html/storage' \
+          . || true
+        # Verify the archive was actually created
+        ls -lh deploy_patch.tar.gz
+
+    - name: Upload tar to Hostinger via SCP
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        source: "deploy_patch.tar.gz"
+        target: "/home/u664715641/"
+        timeout: 120s
+        strip_components: 0
+
+    - name: Extract & Clear Cache on Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        command_timeout: 120s
+        script: |
+          set -e
+          cd /home/u664715641
+
+          # Extract ke folder web (tanpa menimpa .env dan vendor)
+          tar -xzf deploy_patch.tar.gz -C domains/produsenhoistcranelift.com/ 2>&1
+          rm -f deploy_patch.tar.gz
+
+          # Pastikan symlink storage selalu benar (tidak pernah rusak)
+          STORAGE_LINK="/home/u664715641/domains/produsenhoistcranelift.com/public_html/storage"
+          STORAGE_TARGET="/home/u664715641/domains/produsenhoistcranelift.com/storage/app/public"
+          rm -rf "$STORAGE_LINK"
+          ln -s "$STORAGE_TARGET" "$STORAGE_LINK"
+          echo "Storage symlink OK: $(ls -la $STORAGE_LINK)"
+
+          # Clear cache & rebuild view cache
+          cd domains/produsenhoistcranelift.com/
+          php artisan migrate --force 2>&1
+          php artisan optimize:clear 2>&1
+          php artisan view:cache 2>&1
+
+          echo "Deploy selesai!"

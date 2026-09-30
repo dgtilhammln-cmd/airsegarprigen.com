@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7B1FA2;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)" rx="12"/>
+  <rect x="30" y="30" width="340" height="240" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" rx="8"/>
+  <rect x="145" y="90" width="110" height="85" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5"/>
+  <rect x="145" y="90" width="110" height="18" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <path d="M170 90 Q200 75 230 90" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="200" cy="108" rx="25" ry="8" fill="rgba(255,255,255,0.25)"/>
+  <text x="200" y="205" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle" letter-spacing="2">AGATHA</text>
+  <text x="200" y="225" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle" letter-spacing="1">PAINT &amp; COATING</text>
+</svg>
