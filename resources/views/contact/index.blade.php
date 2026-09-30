@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @php
     $addressFull = $settings['address_full'] ?? ($settings['address_street'] ?? '');
 @endphp
@@ -431,7 +431,7 @@ body { background: var(--c-bg); font-family: var(--font); color: var(--c-text); 
             <iframe src="{{ $settings['maps_embed'] ?? 'https://maps.google.com/maps?q=-7.1583,112.6515&output=embed' }}"
                     allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
-                    title="Lokasi CV. Bintang Energy Surabaya"></iframe>
+                    title="Lokasi {{ \App\Models\Setting::get('company_name', config('app.name')) }}"></iframe>
         </div>
     </div>
 </section>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <style>
@@ -335,9 +335,9 @@
 
         <p class="sv-intro">
             @if(request('category') && ($activeCat = $categories->firstWhere('slug', request('category'))))
-                {{ $activeCat->description ?? 'Temukan berbagai pilihan produk ' . $activeCat->name . ' berkualitas tinggi dari CV. Bintang Energy Surabaya.' }}
+                {{ $activeCat->description ?? 'Temukan berbagai pilihan produk ' . $activeCat->name . ' berkualitas tinggi dari {{ \App\Models\Setting::get('company_name', config('app.name')) }}.' }}
             @else
-                CV. Bintang Energy Surabaya menyediakan berbagai merk cat dan coating premium untuk industri, maritim, dan komersial. Temukan produk yang tepat untuk kebutuhan Anda.
+                {{ \App\Models\Setting::get('company_name', config('app.name')) }} menyediakan berbagai merk cat dan coating premium untuk industri, maritim, dan komersial. Temukan produk yang tepat untuk kebutuhan Anda.
             @endif
         </p>
     </div>
@@ -451,7 +451,7 @@
         <div class="sv-label" style="margin-bottom:1rem;">Butuh Konsultasi?</div>
         <h2 class="sv-cta-h2">Konsultasikan Kebutuhan Cat Anda</h2>
         <p class="sv-cta-sub">
-            Tim teknis CV. Bintang Energy Surabaya siap membantu Anda memilih produk yang paling tepat
+            Tim teknis {{ \App\Models\Setting::get('company_name', config('app.name')) }} siap membantu Anda memilih produk yang paling tepat
             untuk kebutuhan industri, maritim, atau komersial Anda.
         </p>
 

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title', isset($client) ? 'Edit Klien' : 'Tambah Klien')
 @section('page-title', isset($client) ? 'Edit Klien' : 'Tambah Klien Baru')
 @section('content')
@@ -81,7 +81,7 @@
                     <input type="text" name="alt_text" id="alt-text-input"
                            value="{{ old('alt_text', $client->alt_text ?? '') }}"
                            class="form-input"
-                           placeholder="Klien CV. Bintang Energy Surabaya | PT. Nama Perusahaan">
+                           placeholder="Klien {{ \App\Models\Setting::get('company_name', config('app.name')) }} | PT. Nama Perusahaan">
                     <p style="font-size:0.7rem;color:rgba(255,255,255,.25);margin:0.375rem 0 0;">
                         Auto-generate dari nama. Bisa diedit manual jika diperlukan.
                     </p>

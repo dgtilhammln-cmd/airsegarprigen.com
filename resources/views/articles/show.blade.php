@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <style>
@@ -429,14 +429,14 @@ a { text-decoration: none; color: inherit; }
         <div class="ar-author-row">
             <div class="ar-author-avatar" style="background:transparent; width:42px; height:42px; overflow:hidden;">
             @if(!empty($settings['logo']))
-                <img src="{{ asset('storage/'.$settings['logo']) }}" alt="CV. Bintang Energy Surabaya" style="width:100%; height:100%; object-fit:contain;">
+                <img src="{{ asset('storage/'.$settings['logo']) }}" alt="{{ \App\Models\Setting::get('company_name', config('app.name')) }}" style="width:100%; height:100%; object-fit:contain;">
             @else
                 <span style="background:var(--c-accent); width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:1rem; border-radius:50%;">C</span>
             @endif
         </div>
             <div>
-                <div class="ar-author-name">{{ $article->author ?? 'Tim CV. Bintang Energy Surabaya' }}</div>
-                <div class="ar-author-company">CV. Bintang Energy Surabaya — Cat Industri Indonesia</div>
+                <div class="ar-author-name">{{ $article->author ?? 'Tim {{ \App\Models\Setting::get('company_name', config('app.name')) }}' }}</div>
+                <div class="ar-author-company">{{ \App\Models\Setting::get('company_name', config('app.name')) }} — Cat Industri Indonesia</div>
             </div>
         </div>
     </div>
@@ -494,7 +494,7 @@ a { text-decoration: none; color: inherit; }
             <h4 style="margin:0; font-size:1.15rem; color:#0F172A; font-weight:700; letter-spacing:-0.01em;">Butuh Solusi Sirkulasi Udara Pabrik?</h4>
         </div>
         
-        <p style="margin:0; color:#475569; font-size:0.95rem; line-height:1.65; max-width:95%;">Tingkatkan produktivitas kerja dengan CV. Bintang Energy Surabaya Cat Industri. Bergaransi resmi, tahan lama, dan 100% bebas biaya listrik.</p>
+        <p style="margin:0; color:#475569; font-size:0.95rem; line-height:1.65; max-width:95%;">Tingkatkan produktivitas kerja dengan {{ \App\Models\Setting::get('company_name', config('app.name')) }} Cat Industri. Bergaransi resmi, tahan lama, dan 100% bebas biaya listrik.</p>
         
         <a href="{{ url('/products') }}" style="align-self:flex-start; margin-top:0.25rem; display:inline-flex; align-items:center; gap:0.5rem; background:#DC2626; color:#fff; padding:0.75rem 1.75rem; border-radius:50px; font-weight:600; text-decoration:none; font-size:0.925rem; transition:all 0.3s; box-shadow:0 4px 12px rgba(14,165,233,0.2);" onmouseover="this.style.background='#B91C1C'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(14,165,233,0.3)';" onmouseout="this.style.background='#DC2626'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(14,165,233,0.2)';">
             Lihat Spesifikasi Produk
@@ -537,7 +537,7 @@ a { text-decoration: none; color: inherit; }
     @endphp
     <div class="ar-cta-box">
         <h3>Tertarik Pasang Cat Industri?</h3>
-        <p>Tim teknis CV. Bintang Energy Surabaya siap membantu Anda memilih dan memasang solusi ventilasi yang tepat secara gratis.</p>
+        <p>Tim teknis {{ \App\Models\Setting::get('company_name', config('app.name')) }} siap membantu Anda memilih dan memasang solusi ventilasi yang tepat secara gratis.</p>
         <button onclick="openOrderModal('Artikel CTA: {{ addslashes($article->title) }}')" class="ar-cta-btn">
             <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -685,7 +685,7 @@ a { text-decoration: none; color: inherit; }
         <div class="cv-apps-header">
             <div class="cv-adv-section-label">APLIKASI</div>
             <h2 class="cv-adv-section-title" style="margin-top:0.75rem;">Cocok untuk<br>Berbagai Sektor Industri</h2>
-            <p style="margin-top:1rem;font-size:0.875rem;color:#64748B;line-height:1.65;font-family:var(--font);">Produk cat dan pelapis CV. Bintang Energy Surabaya dirancang untuk melindungi berbagai aset industri, maritim, dan komersial.</p>
+            <p style="margin-top:1rem;font-size:0.875rem;color:#64748B;line-height:1.65;font-family:var(--font);">Produk cat dan pelapis {{ \App\Models\Setting::get('company_name', config('app.name')) }} dirancang untuk melindungi berbagai aset industri, maritim, dan komersial.</p>
         </div>
         <div class="cv-apps-grid-v2">
             @foreach([

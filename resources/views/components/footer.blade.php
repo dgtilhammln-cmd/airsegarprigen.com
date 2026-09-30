@@ -1,7 +1,7 @@
 {{-- ═══════════════════════════════════
-FOOTER COMPONENT — CV. Bintang Energy Surabaya (Jangkauan-Style)
-PT. Hiranatha Makmur Sukses
-www.ptbiner.co.id
+FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.name')) }} (Jangkauan-Style)
+{{ \App\Models\Setting::get('company_name', config('app.name')) }}
+{{ \App\Models\Setting::get('company_name', config('app.name')) }}
 ══════════════════════════════════ --}}
 @php
     $s = \App\Models\Setting::getAllAsArray();
@@ -397,18 +397,22 @@ www.ptbiner.co.id
                         </svg>
                     </a>
                 @endif
-                <a href="mailto:info@ptbiner.co.id" class="cv-footer-v2-social-btn" title="Email">
+                @if(!empty($s['email']))
+                <a href="mailto:{{ $s['email'] }}" class="cv-footer-v2-social-btn" title="Email">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                         <polyline points="22,6 12,12 2,6" />
                     </svg>
                 </a>
-                <a href="tel:02122523334" class="cv-footer-v2-social-btn" title="Telepon">
+                @endif
+                @if(!empty($s['phone']))
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $s['phone']) }}" class="cv-footer-v2-social-btn" title="Telepon">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path
                             d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 12.05a19.79 19.79 0 01-3.07-8.67A2 2 0 012.41 1.5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.4a16 16 0 006.69 6.69l1.27-.76a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
                     </svg>
                 </a>
+                @endif
             </div>
         </div>
 

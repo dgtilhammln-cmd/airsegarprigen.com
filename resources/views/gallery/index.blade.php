@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <style>
@@ -387,7 +387,7 @@ body { background-color: var(--c-bg); font-family: var(--font); }
             di Lapangan
         </h1>
         <p class="sv-intro">
-            Dokumentasi proyek pemasangan &amp; instalasi cat industri CV. Bintang Energy Surabaya
+            Dokumentasi proyek pemasangan &amp; instalasi cat industri {{ \App\Models\Setting::get('company_name', config('app.name')) }}
             di berbagai sektor industri dan komersial di seluruh Indonesia.
         </p>
     </div>
@@ -517,7 +517,7 @@ body { background-color: var(--c-bg); font-family: var(--font); }
         <div class="sv-label" style="margin-bottom:1rem;">Butuh Instalasi?</div>
         <h2 class="sv-cta-h2">Wujudkan Proyek<br>Ventilasi Anda Bersama Kami</h2>
         <p class="sv-cta-sub">
-            Tim teknis CV. Bintang Energy Surabaya siap membantu merencanakan dan memasang sistem
+            Tim teknis {{ \App\Models\Setting::get('company_name', config('app.name')) }} siap membantu merencanakan dan memasang sistem
             solusi cat dan pelapis terbaik untuk kebutuhan Anda.
         </p>
         <div class="sv-cta-btns">

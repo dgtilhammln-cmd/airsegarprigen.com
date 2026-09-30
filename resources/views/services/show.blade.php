@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -669,7 +669,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); -web
             <div class="cv-section-label">APLIKASI</div>
             <h2 class="cv-section-title" style="margin-top:.75rem;">Cocok untuk<br>Berbagai Sektor Industri</h2>
             <p style="margin-top:1rem;font-size:0.875rem;color:#64748B;line-height:1.65;font-family:var(--font);">
-                Produk cat dan pelapis CV. Bintang Energy Surabaya dirancang untuk melindungi berbagai aset industri, maritim, dan komersial.
+                Produk cat dan pelapis {{ \App\Models\Setting::get('company_name', config('app.name')) }} dirancang untuk melindungi berbagai aset industri, maritim, dan komersial.
             </p>
         </div>
         <div class="sh-app-grid">

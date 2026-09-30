@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 
@@ -463,7 +463,7 @@
                 Sejak {{ \App\Models\Setting::get('founding_year') ?? '2013' }}
             </h1>
             <p class="sv-intro">
-                PT. Bintang Energy Surabaya (CV. Bintang Energy Surabaya) hadir untuk menjawab
+                {{ \App\Models\Setting::get('company_name', config('app.name')) }} ({{ \App\Models\Setting::get('company_name', config('app.name')) }}) hadir untuk menjawab
                 kebutuhan industrial coating, cat epoxy, polyurethane, thinner, marine coating,
                 dan protective chemical di seluruh wilayah Indonesia dengan kualitas premium.
             </p>
@@ -503,7 +503,7 @@
                 <div class="cv-card cv-card-image" data-aos="fade-up" data-aos-delay="200">
                     @php $aboutImgFallback = !empty($settings['logo']) ? asset('storage/' . $settings['logo']) : asset('images/logo.png'); @endphp
                     <img src="{{ !empty($settings['about_image']) ? asset('storage/' . $settings['about_image']) : $aboutImgFallback }}"
-                        alt="Tim CV. Bintang Energy Surabaya" class="cv-card-img" loading="lazy">
+                        alt="Tim {{ \App\Models\Setting::get('company_name', config('app.name')) }}" class="cv-card-img" loading="lazy">
                     <div class="cv-card-overlay"></div>
                     <div class="cv-card-content" style="justify-content: flex-end;">
                         <div class="cv-card-value">120+</div>
@@ -538,7 +538,7 @@
                         <h3 style="font-size:1.5rem; font-weight:600; color:var(--cv-text); margin-bottom:1rem;">Menjadi
                             Pelopor</h3>
                         <p style="font-size:0.9375rem; color:#475569; line-height:1.7; margin:0;">
-                            {{ str_replace('CV. Bintang Energy Surabaya', 'CV. Bintang Energy Surabaya', $settings['visi'] ?? 'Menjadi perusahaan penyedia cat, coating, dan chemical berskala nasional yang berfokus pada kualitas dan inovasi unggul.') }}
+                            {{ str_replace('\App\Models\Setting::get('company_name', config('app.name'))', '\App\Models\Setting::get('company_name', config('app.name'))', $settings['visi'] ?? 'Menjadi perusahaan penyedia cat, coating, dan chemical berskala nasional yang berfokus pada kualitas dan inovasi unggul.') }}
                         </p>
                     </div>
                 </div>
@@ -548,7 +548,7 @@
                         <h3 style="font-size:1.5rem; font-weight:600; color:var(--cv-text); margin-bottom:1rem;">Solusi
                             Menyeluruh</h3>
                         <p style="font-size:0.9375rem; color:#475569; line-height:1.7; margin:0;">
-                            {{ str_replace('CV. Bintang Energy Surabaya', 'CV. Bintang Energy Surabaya', $settings['misi'] ?? 'Menciptakan produk dan layanan formulasi chemical yang memberikan perlindungan dan ketahanan maksimal pada aset pelanggan.') }}
+                            {{ str_replace('\App\Models\Setting::get('company_name', config('app.name'))', '\App\Models\Setting::get('company_name', config('app.name'))', $settings['misi'] ?? 'Menciptakan produk dan layanan formulasi chemical yang memberikan perlindungan dan ketahanan maksimal pada aset pelanggan.') }}
                         </p>
                     </div>
                 </div>
@@ -1319,7 +1319,7 @@
                 <div style="flex: 1; min-width: 300px; max-width: 500px; display: flex; align-items: center;"
                     data-aos="fade-left">
                     <p style="color: #94A3B8; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                        CV. Bintang Energy Surabaya bermitra dengan ekspedisi terkemuka untuk mendistribusikan solusi
+                        {{ \App\Models\Setting::get('company_name', config('app.name')) }} bermitra dengan ekspedisi terkemuka untuk mendistribusikan solusi
                         perlindungan maritim dan industri kualitas premium ke seluruh pelosok Nusantara secara cepat dan
                         aman.
                     </p>

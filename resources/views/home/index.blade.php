@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     @push('styles')
@@ -9,8 +9,8 @@
         @endif
     @endpush
     {{-- ════════════════════════════════════════════════
-    HOME PAGE — CV. Bintang Energy Surabaya Cat Industri
-    PT. Hiranatha Makmur Sukses | www.ptbiner.co.id
+    HOME PAGE — {{ \App\Models\Setting::get('company_name', config('app.name')) }} Cat Industri
+    {{ \App\Models\Setting::get('company_name', config('app.name')) }} | {{ \App\Models\Setting::get('company_name', config('app.name')) }}
     ════════════════════════════════════════════════ --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -1108,7 +1108,7 @@
                                     @if(!empty($settings['logo']))
                                         <img src="{{ asset('storage/' . $settings['logo']) }}" alt="Logo">
                                     @else
-                                        <span class="cv-text-logo">CV. Bintang Energy Surabaya</span>
+                                        <span class="cv-text-logo">{{ \App\Models\Setting::get('company_name', config('app.name')) }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -1950,7 +1950,7 @@
                 <div class="cv-adv-section-label">APLIKASI</div>
                 <h2 class="cv-adv-section-title" style="margin-top:0.75rem;">Cocok untuk<br>Berbagai Industri</h2>
                 <p style="margin-top:1rem;font-size:0.875rem;color:#94A3B8;line-height:1.65;">
-                    Produk pelapis dan cat CV. Bintang Energy Surabaya dirancang untuk melindungi beragam aset strategis di
+                    Produk pelapis dan cat {{ \App\Models\Setting::get('company_name', config('app.name')) }} dirancang untuk melindungi beragam aset strategis di
                     berbagai sektor.
                 </p>
             </div>
@@ -2541,7 +2541,7 @@
                 <div style="flex: 1; min-width: 300px; max-width: 500px; display: flex; align-items: center;"
                     data-aos="fade-left">
                     <p style="color: #94A3B8; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                        CV. Bintang Energy Surabaya bermitra dengan ekspedisi terkemuka untuk mendistribusikan solusi
+                        {{ \App\Models\Setting::get('company_name', config('app.name')) }} bermitra dengan ekspedisi terkemuka untuk mendistribusikan solusi
                         perlindungan maritim dan industri kualitas premium ke seluruh pelosok Nusantara secara cepat dan
                         aman.
                     </p>
@@ -2956,7 +2956,7 @@
                                             <line x1="16" y1="17" x2="8" y2="17" />
                                             <polyline points="10 9 9 9 8 9" />
                                         </svg>
-                                        <span style="font-size:0.75rem;margin-top:0.5rem;font-weight:600;">Artikel CV. Bintang Energy
+                                        <span style="font-size:0.75rem;margin-top:0.5rem;font-weight:600;">Artikel {{ \App\Models\Setting::get('company_name', config('app.name')) }}
                                             Surabaya</span>
                                     </div>
                                 @endif

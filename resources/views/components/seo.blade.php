@@ -1,5 +1,5 @@
-{{--
-    SEO Component — CV. Bintang Energy Surabaya
+﻿{{--
+    SEO Component — {{ \App\Models\Setting::get('company_name', config('app.name')) }}
     Variables (semua optional): $seo[], $schema, $breadcrumbs[]
 --}}
 @php
@@ -9,7 +9,7 @@
     $appUrl         = rtrim(config('app.url'), '/');
 
     // Dynamic company info from settings
-    $companyName    = \App\Models\Setting::get('company_name', config('app.name', 'PT Bintang Energy Surabaya'));
+    $companyName    = \App\Models\Setting::get('company_name', config('app.name', '\App\Models\Setting::get('company_name', config('app.name'))'));
     $companyTagline = \App\Models\Setting::get('company_tagline', '');
     $addressStreet  = \App\Models\Setting::get('address_street', '');
     $addressCity    = \App\Models\Setting::get('address_city', '');

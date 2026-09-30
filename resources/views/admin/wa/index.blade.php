@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 @section('title','Pengaturan WhatsApp')
 @section('page-title','Pengaturan WhatsApp')
 @section('content')
@@ -75,7 +75,7 @@
             </div>
             <div style="margin-bottom:1rem;">
                 <label class="form-label">Template Pesan Default <span style="color:#F5A623;">*</span></label>
-                <textarea name="template_pesan" class="form-input" rows="3" placeholder="Halo CV. Bintang Energy Surabaya, saya ingin konsultasi mengenai [produk]..." required></textarea>
+                <textarea name="template_pesan" class="form-input" rows="3" placeholder="Halo {{ \App\Models\Setting::get('company_name', config('app.name')) }}, saya ingin konsultasi mengenai [produk]..." required></textarea>
             </div>
             <button type="submit" class="btn-primary">+ Tambah Nomor</button>
         </form>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <style>
@@ -311,7 +311,7 @@ body { background: var(--c-bg); font-family: var(--font); color: var(--c-text); 
         </h1>
         <p class="sv-intro">
             Kumpulan artikel, panduan teknis, dan tips perawatan seputar
-            sistem ventilasi udara untuk industri dan hunian dari tim CV. Bintang Energy Surabaya.
+            sistem ventilasi udara untuk industri dan hunian dari tim {{ \App\Models\Setting::get('company_name', config('app.name')) }}.
         </p>
     </div>
 </section>
@@ -425,7 +425,7 @@ body { background: var(--c-bg); font-family: var(--font); color: var(--c-text); 
     <div class="sv-cta-inner">
         <div class="sv-label" style="margin-bottom:1rem;">Siap Memulai?</div>
         <h2 class="sv-cta-h2">Temukan Produk Cat<br>yang Tepat untuk Proyek Anda</h2>
-        <p class="sv-cta-sub">Tim teknis CV. Bintang Energy Surabaya siap membantu menghitung kebutuhan dan memasang cat industri terbaik untuk proyek Anda.</p>
+        <p class="sv-cta-sub">Tim teknis {{ \App\Models\Setting::get('company_name', config('app.name')) }} siap membantu menghitung kebutuhan dan memasang cat industri terbaik untuk proyek Anda.</p>
         <div class="sv-cta-btns">
             @php $wa = \App\Models\WaSetting::primary(); @endphp
             @if($wa)
