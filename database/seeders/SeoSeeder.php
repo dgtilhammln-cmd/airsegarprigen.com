@@ -11,34 +11,34 @@ class SeoSeeder extends Seeder
     {
         $seo = [
             'home' => [
-                'title' => 'Air Segar Prigen | Depot Air Minum Isi Ulang Premium Pegunungan',
-                'desc' => 'Depot air minum isi ulang premium bersumber dari mata air pegunungan Prigen. Jernih, bebas bakteri, kaya mineral alami. Antar ke rumah se-area Prigen, Pandaan, Tretes.',
-                'keywords' => 'air minum prigen, depot air isi ulang prigen, air galon prigen, air pegunungan prigen pasuruan, air segar prigen, isi ulang galon prigen'
+                'title' => 'Air Segar Prigen | Supplier Air Tangki Mineral & Demineral Prigen Pasuruan',
+                'desc' => 'Supplier air tangki mineral dan demineral di Prigen, Pasuruan. Melayani rumah tangga, industri, hotel, kolam renang, dan konstruksi. Antar langsung ke lokasi Anda.',
+                'keywords' => 'supplier air tangki prigen, air tangki mineral prigen, air demineral pasuruan, jual air tangki prigen, air bersih prigen pandaan, air tangki industri pasuruan'
             ],
             'about' => [
-                'title' => 'Tentang Kami | Air Segar Prigen - Depot Air Minum Pegunungan',
-                'desc' => 'Berdiri sejak 2015, Air Segar Prigen adalah depot air minum isi ulang terpercaya yang bersumber dari mata air pegunungan Prigen, Pasuruan, Jawa Timur.',
-                'keywords' => 'profil air segar prigen, tentang depot air prigen, sejarah air segar prigen, depot air minum pegunungan pasuruan'
+                'title' => 'Tentang Kami | Air Segar Prigen - Supplier Air Tangki Prigen',
+                'desc' => 'Berdiri sejak 2015, Air Segar Prigen adalah supplier air tangki mineral dan demineral terpercaya di kawasan Prigen, Pandaan, dan Pasuruan, Jawa Timur.',
+                'keywords' => 'profil air segar prigen, tentang supplier air prigen, sejarah air segar prigen, perusahaan air tangki pasuruan'
             ],
             'services' => [
-                'title' => 'Produk Air Minum | Air Segar Prigen - Galon & Botol Pegunungan',
-                'desc' => 'Produk air minum Air Segar Prigen: galon 19L, botol 600ml, botol 1500ml. Sumber mata air pegunungan Prigen, proses filtrasi modern, harga terjangkau.',
-                'keywords' => 'air galon prigen, botol air prigen, isi ulang galon murah prigen, produk air minum pegunungan, harga air galon prigen'
+                'title' => 'Produk Air Tangki Mineral & Demineral | Air Segar Prigen',
+                'desc' => 'Air tangki mineral untuk konsumsi dan kebutuhan umum. Air demineral untuk industri, boiler, kolam renang, dan laboratorium. Pesan sekarang, antar ke lokasi.',
+                'keywords' => 'harga air tangki mineral prigen, air demineral industri pasuruan, pesan air tangki pandaan, air untuk boiler pasuruan, jual air bersih prigen tretes'
             ],
             'gallery' => [
-                'title' => 'Galeri & Portofolio Layanan | Air Segar Prigen',
-                'desc' => 'Dokumentasi layanan pengiriman air minum Air Segar Prigen ke berbagai pelanggan di wilayah Prigen, Pandaan, Tretes, dan sekitarnya.',
-                'keywords' => 'galeri air segar prigen, portofolio depot air prigen, pelanggan air segar prigen, pengiriman air galon prigen'
+                'title' => 'Galeri Pengiriman Air Tangki | Air Segar Prigen',
+                'desc' => 'Dokumentasi pengiriman air tangki mineral dan demineral oleh Air Segar Prigen ke berbagai pelanggan di wilayah Prigen, Pandaan, Tretes, dan Pasuruan.',
+                'keywords' => 'galeri air segar prigen, portofolio pengiriman air tangki, pelanggan air segar prigen, dokumentasi armada tangki air'
             ],
             'articles' => [
-                'title' => 'Artikel & Tips Kesehatan Air Minum | Air Segar Prigen',
-                'desc' => 'Baca artikel informatif tentang manfaat air pegunungan, tips merawat galon, dan informasi seputar kesehatan air minum dari Air Segar Prigen.',
-                'keywords' => 'artikel air minum sehat, tips galon air bersih, manfaat air pegunungan, edukasi kesehatan air, blog air segar prigen'
+                'title' => 'Artikel & Info Air Mineral & Demineral | Air Segar Prigen',
+                'desc' => 'Baca artikel informatif tentang perbedaan air mineral dan demineral, kegunaan air demineral untuk industri, dan tips memilih supplier air tangki terpercaya.',
+                'keywords' => 'artikel air demineral, perbedaan air mineral demineral, air untuk boiler industri, tips supplier air tangki, edukasi air bersih prigen'
             ],
             'contact' => [
-                'title' => 'Hubungi Kami | Pesan Air Galon Antar Rumah - Air Segar Prigen',
-                'desc' => 'Pesan air galon antar ke rumah atau hubungi kami untuk info harga dan kerjasama. Air Segar Prigen melayani area Prigen, Pandaan, Tretes, dan sekitarnya.',
-                'keywords' => 'pesan air galon prigen, antar air minum prigen, kontak air segar prigen, nomor wa depot air prigen, order air galon pasuruan'
+                'title' => 'Pesan Air Tangki | Hubungi Air Segar Prigen',
+                'desc' => 'Pesan air tangki mineral atau demineral, antar ke lokasi Anda. Air Segar Prigen melayani area Prigen, Pandaan, Tretes, dan sekitar Pasuruan.',
+                'keywords' => 'pesan air tangki prigen, order air demineral pasuruan, kontak air segar prigen, nomor wa supplier air prigen, antar air tangki pandaan'
             ]
         ];
 

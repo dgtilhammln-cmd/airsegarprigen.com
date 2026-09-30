@@ -12,31 +12,31 @@ class HeroSlideSeeder extends Seeder
         HeroSlide::truncate();
 
         HeroSlide::create([
-            'title'       => "Air Minum Segar\nLangsung dari Pegunungan Prigen",
-            'subtitle'    => 'Premium Mountain Spring Water',
-            'description' => 'Air Segar Prigen menghadirkan kesegaran air pegunungan asli Prigen yang jernih, bebas bakteri, dan kaya mineral alami. Tersedia dalam kemasan galon 19L, botol 600ml & 1500ml, serta layanan isi ulang.',
-            'tags'        => 'Air Galon, Air Isi Ulang, Pegunungan Prigen',
+            'title'       => "Supplier Air Tangki Mineral\n& Demineral Prigen",
+            'subtitle'    => 'Kualitas Terjamin, Antar Langsung ke Lokasi Anda',
+            'description' => 'Air Segar Prigen menyediakan air tangki mineral dan demineral berkualitas tinggi untuk kebutuhan rumah tangga, hotel, industri, kolam renang, dan konstruksi. Armada tangki siap kirim ke seluruh area Prigen, Pandaan, Tretes, dan sekitar Pasuruan.',
+            'tags'        => 'Air Tangki Mineral, Air Demineral, Antar ke Lokasi',
             'button_text' => 'Pesan Sekarang',
             'button_url'  => '/contact',
             'order'       => 1,
             'is_active'   => true,
-            'stat_1_value' => '2.000+', 'stat_1_label' => 'Pelanggan Setia',
-            'stat_2_value' => '10+',    'stat_2_label' => 'Tahun Berdiri',
-            'stat_3_value' => '5',      'stat_3_label' => 'Varian Produk',
+            'stat_1_value' => '500+',  'stat_1_label' => 'Pelanggan Terlayani',
+            'stat_2_value' => '10+',   'stat_2_label' => 'Tahun Pengalaman',
+            'stat_3_value' => '2',     'stat_3_label' => 'Jenis Produk Air',
         ]);
 
         HeroSlide::create([
-            'title'       => "Higienis, Sehat,\ndan Harga Terjangkau",
-            'subtitle'    => 'Proses Filtrasi Modern & Bersertifikat',
-            'description' => 'Setiap tetes air kami melalui proses filtrasi multi-tahap dan sterilisasi UV modern. Bersertifikat layak minum, aman untuk seluruh keluarga — dari bayi hingga lansia.',
-            'tags'        => 'Filtrasi Modern, Sterilisasi UV, Bersertifikat BPOM',
-            'button_text' => 'Lihat Produk',
+            'title'       => "Air Demineral Industri\nTDS Rendah & Bebas Mineral",
+            'subtitle'    => 'Solusi Air untuk Boiler, Lab & Kolam Renang',
+            'description' => 'Air demineral kami diproduksi melalui proses demineralisasi modern dengan TDS mendekati nol. Ideal untuk kebutuhan boiler industri, laboratorium, laundry, kolam renang, dan proses produksi yang membutuhkan air ultra-murni.',
+            'tags'        => 'Air Demineral, Boiler Industri, TDS Rendah',
+            'button_text' => 'Info & Harga',
             'button_url'  => '/products',
             'order'       => 2,
             'is_active'   => true,
-            'stat_1_value' => '2.000+', 'stat_1_label' => 'Pelanggan Setia',
-            'stat_2_value' => '10+',    'stat_2_label' => 'Tahun Berdiri',
-            'stat_3_value' => '5',      'stat_3_label' => 'Varian Produk',
+            'stat_1_value' => '500+',  'stat_1_label' => 'Pelanggan Terlayani',
+            'stat_2_value' => '10+',   'stat_2_label' => 'Tahun Pengalaman',
+            'stat_3_value' => '2',     'stat_3_label' => 'Jenis Produk Air',
         ]);
     }
 }
