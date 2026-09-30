@@ -18,7 +18,7 @@ if exist %ARCHIVE% (
 )
 
 echo [1/4] Push update ke GitHub...
-git add app bootstrap config database public public_html resources routes storage .env artisan composer.json .gitignore deploy.bat deploy.ps1 deploy_full.bat 2>nul
+git add app bootstrap config database public_html resources routes storage .env artisan composer.json .gitignore deploy.bat deploy.ps1 deploy_full.bat 2>nul
 git commit -m "deploy: %DATE% %TIME%" 2>nul
 git push origin main
 echo.
@@ -31,13 +31,12 @@ tar -czf %ARCHIVE% ^
     --exclude="vendor" ^
     --exclude="%ARCHIVE%" ^
     --exclude="bootstrap/cache/*.php" ^
-    --exclude="public/storage" ^
     --exclude="public_html/storage" ^
     --exclude="storage/logs/*" ^
     --exclude="storage/framework/cache/*" ^
     --exclude="storage/framework/sessions/*" ^
     --exclude="storage/framework/views/*" ^
-    app bootstrap config database public public_html resources routes storage artisan composer.json .env
+    app bootstrap config database public_html resources routes storage artisan composer.json .env
 
 if not exist %ARCHIVE% (
     echo ERROR: Gagal membuat tar archive!
@@ -59,7 +58,7 @@ echo Upload berhasil.
 echo.
 
 echo [4/4] Ekstrak, Setup Symlink Storage, Migrate, Seed, & Clear Cache (masukkan password)...
-ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage public/storage && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/app/public storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && ln -sf %REMOTE_DIR%/storage/app/public %REMOTE_DIR%/public_html/storage && ln -sf %REMOTE_DIR%/storage/app/public %REMOTE_DIR%/public/storage && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
+ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public public_html/storage && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/app/public storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && ln -sf %REMOTE_DIR%/storage/app/public %REMOTE_DIR%/public_html/storage && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 echo.
 del /f /q %ARCHIVE% 2>nul
