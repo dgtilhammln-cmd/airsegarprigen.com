@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Server Error — 500 | CV. Bintang Energy Surabaya')
+@section('title', 'Server Error — 500 | ' . \App\Models\Setting::get('company_name', config('app.name')))
 @section('content')
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -15,10 +15,11 @@ class AboutController extends Controller
         $clients      = Client::active()->ordered()->get();
         $wa           = \App\Models\WaSetting::primary();
 
+        $companyName  = $settings['company_name'] ?? 'Perusahaan Kami';
         $seo = [
-            'title'       => $settings['meta_title_about'] ?? 'Tentang Kami | CV. Bintang Energy Surabaya - Spesialis Cat Industri',
-            'description' => $settings['meta_desc_about'] ?? 'Profil CV. Bintang Energy Surabaya, spesialis Cat Industri Non-Electric berdiri sejak 2013. Melayani ribuan pelanggan industri dan rumah tangga di seluruh Indonesia.',
-            'keywords'    => $settings['meta_keywords_about'] ?? 'profil ptbiner, tentang ptbiner, spesialis cat industri, ventilator atap pabrik',
+            'title'       => $settings['meta_title_about'] ?? "Tentang Kami | {$companyName}",
+            'description' => $settings['meta_desc_about'] ?? "Profil {$companyName}, melayani ribuan pelanggan industri dan rumah tangga di seluruh Indonesia.",
+            'keywords'    => $settings['meta_keywords_about'] ?? 'profil perusahaan, tentang kami, distributor terpercaya',
             'og_image'    => !empty($settings['og_image_default']) ? asset('storage/'.$settings['og_image_default']) : (!empty($settings['logo']) ? asset('storage/'.$settings['logo']) : asset('images/og-default.jpg')),
             'canonical'   => route('about'),
         ];

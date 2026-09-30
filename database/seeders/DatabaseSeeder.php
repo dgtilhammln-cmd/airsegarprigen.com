@@ -42,6 +42,16 @@ class DatabaseSeeder extends Seeder
 
         // ── Site Settings ────────────────────────────────────────────
         $settings = [
+            // Identitas Perusahaan
+            ['key'=>'company_name',     'value'=>'UD. Sukses Makmur',                           'type'=>'text','group'=>'general','label'=>'Nama Perusahaan'],
+            ['key'=>'company_tagline',  'value'=>'Distributor Piring Keramik',                  'type'=>'text','group'=>'general','label'=>'Tagline / Slogan'],
+            ['key'=>'address_street',   'value'=>'JL Tanjung Pinang No. 15',                    'type'=>'text','group'=>'general','label'=>'Alamat Jalan'],
+            ['key'=>'address_province', 'value'=>'Jawa Timur',                                  'type'=>'text','group'=>'general','label'=>'Provinsi'],
+            ['key'=>'address_city',     'value'=>'Kota Surabaya',                               'type'=>'text','group'=>'general','label'=>'Kota / Kabupaten'],
+            ['key'=>'address_district', 'value'=>'Pabean Cantian',                              'type'=>'text','group'=>'general','label'=>'Kecamatan'],
+            ['key'=>'address_postal',   'value'=>'60177',                                       'type'=>'text','group'=>'general','label'=>'Kode Pos'],
+            ['key'=>'address_full',     'value'=>'JL Tanjung Pinang No. 15, Pabean Cantian, Kota Surabaya, Jawa Timur, 60177', 'type'=>'text','group'=>'general','label'=>'Alamat Lengkap'],
+
             // Hero
             ['key'=>'hero_headline',    'value'=>'Distribusi Cat & Coating Premium',           'type'=>'text','group'=>'hero','label'=>'Hero Headline'],
             ['key'=>'hero_subheadline', 'value'=>'CV. Bintang Energy Surabaya — distributor resmi cat industri, cat maritim, dan coating pelindung terpercaya sejak 2007. Melayani kebutuhan industri, kontraktor, dan BUMN di seluruh Indonesia.','type'=>'text','group'=>'hero','label'=>'Hero Sub-headline'],

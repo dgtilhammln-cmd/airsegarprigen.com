@@ -357,7 +357,7 @@ www.ptbiner.co.id
                     @if($logo)
                         <img src="{{ asset('storage/' . $logo) }}" alt="Logo">
                     @else
-                        <span style="font-weight:900;color:#DC2626;font-size:1rem;">CV. Bintang Energy Surabaya</span>
+                        <span style="font-weight:900;color:#DC2626;font-size:1rem;">{{ $companyName }}</span>
                     @endif
                 </div>
                 <div>

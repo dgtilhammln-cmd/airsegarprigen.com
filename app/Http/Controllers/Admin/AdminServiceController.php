@@ -57,7 +57,7 @@ class AdminServiceController extends Controller
         $v['is_active'] = $request->boolean('is_active', true);
         $v['order']     = $v['order'] ?? 0;
 
-        if (empty($v['meta_title'])) $v['meta_title'] = $v['name'].' | CV. Bintang Energy Surabaya';
+        if (empty($v['meta_title'])) $v['meta_title'] = $v['name'].' | '.Setting::get('company_name', config('app.name'));
         if (empty($v['meta_desc']))  $v['meta_desc']  = Str::limit(strip_tags($v['short_desc'] ?? ''), 155);
 
         if ($request->hasFile('image')) {

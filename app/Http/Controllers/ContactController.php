@@ -13,16 +13,17 @@ class ContactController extends Controller
         $settings = Setting::getAllAsArray();
         $wa       = WaSetting::primary();
 
+        $companyName = $settings['company_name'] ?? 'Perusahaan Kami';
         $seo = [
-            'title'       => $settings['meta_title_contact'] ?? 'Hubungi Kami | CV. Bintang Energy Surabaya - Spesialis Cat Industri',
-            'description' => $settings['meta_desc_contact'] ?? 'Hubungi CV. Bintang Energy Surabaya untuk konsultasi dan pemasangan Cat Industri & Sistem Ventilasi. Respon cepat, survei gratis, dan garansi resmi pabrik.',
-            'keywords'    => $settings['meta_keywords_contact'] ?? 'kontak ptbiner, hubungi ptbiner, pasang cat industri',
+            'title'       => $settings['meta_title_contact'] ?? "Hubungi Kami | {$companyName}",
+            'description' => $settings['meta_desc_contact'] ?? "Hubungi {$companyName} untuk konsultasi dan pemesanan. Respon cepat, survei gratis, dan garansi resmi.",
+            'keywords'    => $settings['meta_keywords_contact'] ?? 'kontak kami, hubungi kami, layanan pelanggan',
             'og_image'    => !empty($settings['og_image_default']) ? asset('storage/'.$settings['og_image_default']) : (!empty($settings['logo']) ? asset('storage/'.$settings['logo']) : asset('images/og-default.jpg')),
             'canonical'   => route('contact'),
         ];
 
         $faq = [
-            ['q' => 'Di mana lokasi utama CV. Bintang Energy Surabaya?', 'a' => 'Kami berlokasi di Surabaya, namun melayani pengiriman dan pemasangan Cat Industri ke seluruh wilayah Indonesia.'],
+            ['q' => "Di mana lokasi kantor {$companyName}?", 'a' => 'Lokasi kantor dan alamat lengkap kami dapat dilihat pada informasi kontak di halaman ini.'],
             ['q' => 'Apakah konsultasi ventilasi gratis?', 'a' => 'Ya, kami menyediakan konsultasi gratis. Tim ahli kami akan membantu menghitung kebutuhan sirkulasi udara untuk bangunan Anda.'],
             ['q' => 'Apakah ada layanan survei lokasi?', 'a' => 'Ya, kami melayani survei lokasi secara langsung untuk menentukan jumlah dan tipe ventilator yang paling optimal untuk bangunan Anda.'],
             ['q' => 'Berapa lama proses pemasangan ventilator?', 'a' => 'Proses instalasi sangat bergantung pada jumlah unit dan tingkat kesulitan atap. Namun, tim teknisi kami sangat berpengalaman untuk menyelesaikan dengan cepat dan rapi.'],

@@ -209,7 +209,7 @@
         <div class="cv-adv-header">
             <div>
                 <div class="cv-adv-section-label">KEUNGGULAN</div>
-                <h2 class="cv-adv-section-title">Mengapa Pilih<br>CV. Bintang Energy Surabaya?</h2>
+                <h2 class="cv-adv-section-title">Mengapa Pilih<br>{{ \App\Models\Setting::get('company_name', 'Perusahaan Kami') }}?</h2>
             </div>
             <p style="max-width:320px;font-size:0.875rem;color:#64748B;line-height:1.65;text-align:right;">
                 Solusi perlindungan dan pelapisan berkualitas tinggi untuk kebutuhan maritim dan industri skala besar di seluruh Indonesia.

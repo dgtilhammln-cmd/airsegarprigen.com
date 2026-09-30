@@ -170,7 +170,7 @@
             @if($preloaderLogo)
                 <img src="{{ asset('storage/'.$preloaderLogo) }}" alt="Loading..." class="cv-preloader-logo">
             @else
-                <div class="cv-preloader-logo" style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:800; color:#333;">CV. BINTANG ENERGY SURABAYA</div>
+                <div class="cv-preloader-logo" style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:800; color:#333;">{{ strtoupper($layoutSettings['company_name'] ?? 'AIR SEGAR PRIGEN') }}</div>
             @endif
         </div>
     </div>

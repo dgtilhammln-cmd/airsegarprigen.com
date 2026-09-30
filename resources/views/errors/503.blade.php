@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Layanan Tidak Tersedia — 503 | CV. Bintang Energy Surabaya')
+@section('title', 'Layanan Tidak Tersedia — 503 | ' . \App\Models\Setting::get('company_name', config('app.name')))
 @section('content')
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

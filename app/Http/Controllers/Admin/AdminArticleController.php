@@ -62,7 +62,7 @@ class AdminArticleController extends Controller
         $validated['excerpt']      = $validated['excerpt'] ?: Str::limit(strip_tags($validated['content']), 160);
 
         // Auto SEO
-        if (empty($validated['meta_title'])) $validated['meta_title'] = Str::limit($validated['title'], 55) . ' | CV. Bintang Energy Surabaya';
+        if (empty($validated['meta_title'])) $validated['meta_title'] = Str::limit($validated['title'], 55) . ' | ' . Setting::get('company_name', config('app.name'));
         if (empty($validated['meta_desc']))  $validated['meta_desc']  = Str::limit(strip_tags($validated['excerpt']), 155);
 
         // FAQs

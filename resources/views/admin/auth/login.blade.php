@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin | CV. Bintang Energy Surabaya</title>
+    <title>Login Admin | {{ \App\Models\Setting::get('company_name', 'Admin') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     @if(file_exists(public_path('build/assets')) && count(glob(public_path('build/assets/*.css'))) > 0)
@@ -282,7 +282,7 @@
                 <div class="logo-placeholder">CV</div>
             @endif
             
-            <h1 class="hero-title">CV. Bintang Energy Surabaya<br>Control Panel</h1>
+            <h1 class="hero-title">{{ \App\Models\Setting::get('company_name', 'Admin Panel') }}<br>Control Panel</h1>
             <p class="hero-desc">Sistem manajemen konten dan pengaturan website untuk efisiensi bisnis Anda.</p>
             
             <a href="{{ route('home') }}" class="back-link">

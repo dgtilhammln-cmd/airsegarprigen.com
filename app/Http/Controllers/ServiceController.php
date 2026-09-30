@@ -27,10 +27,11 @@ class ServiceController extends Controller
         $services = $query->paginate(12)->withQueryString();
         $settings = Setting::getAllAsArray();
 
+        $companyName = $settings['company_name'] ?? 'Perusahaan Kami';
         $seo = [
-            'title'       => $settings['meta_title_services'] ?? 'Daftar Produk Cat Industri CV. Bintang Energy Surabaya | Anti Karat & Bergaransi',
-            'description' => $settings['meta_desc_services'] ?? 'Temukan berbagai pilihan tipe Cat Industri dari CV. Bintang Energy Surabaya. Cocok untuk pabrik, gudang, restoran, dan rumah. Sirkulasi udara 24 jam tanpa listrik.',
-            'keywords'    => $settings['meta_keywords_services'] ?? 'produk ptbiner, harga cat industri, jual ventilator atap, tipe roof ventilator, spesifikasi cat industri',
+            'title'       => $settings['meta_title_services'] ?? "Daftar Produk & Layanan | {$companyName}",
+            'description' => $settings['meta_desc_services'] ?? "Temukan berbagai pilihan produk & layanan berkualitas tinggi dari {$companyName}.",
+            'keywords'    => $settings['meta_keywords_services'] ?? 'katalog produk, daftar layanan, produk berkualitas',
             'og_image'    => !empty($settings['og_image_default']) ? asset('storage/'.$settings['og_image_default']) : (!empty($settings['logo']) ? asset('storage/'.$settings['logo']) : asset('images/og-default.jpg')),
             'canonical'   => route('products'),
         ];
@@ -38,7 +39,7 @@ class ServiceController extends Controller
         $schema = json_encode([
             '@context' => 'https://schema.org',
             '@type'    => 'ItemList',
-            'name'     => 'Produk & Layanan CV. Bintang Energy Surabaya',
+            'name'     => "Produk & Layanan {$companyName}",
             'url'      => route('products'),
             'itemListElement' => $services->map(function($s, $i) {
                 return [
@@ -65,6 +66,7 @@ class ServiceController extends Controller
 
         $service      = Service::where('slug', $slug)->where('is_active', true)->firstOrFail();
         $settings     = Setting::getAllAsArray();
+        $companyName  = $settings['company_name'] ?? 'Perusahaan Kami';
         $wa           = WaSetting::primary();
         $related      = Service::active()->ordered()->where('id', '!=', $service->id)->limit(4)->get();
         $testimonials = Testimonial::active()->ordered()->get()->unique('name');
@@ -91,11 +93,11 @@ class ServiceController extends Controller
                 '@type'       => 'Product',
                 'name'        => $service->name,
                 'image'       => [$serviceImage],
-                'description' => strip_tags($service->short_desc ?: $service->name . ' - CV. Bintang Energy Surabaya Cat Industri Berkualitas'),
+                'description' => strip_tags($service->short_desc ?: $service->name . " - {$companyName}"),
                 'sku'         => 'CYV-' . str_pad($service->id, 4, '0', STR_PAD_LEFT),
                 'mpn'         => 'CYV-' . strtoupper(substr($service->slug, 0, 8)),
                 'url'         => route('products.show', $slug),
-                'brand'       => ['@type' => 'Brand', 'name' => 'CV. Bintang Energy Surabaya'],
+                'brand'       => ['@type' => 'Brand', 'name' => $companyName],
                 'offers'      => [
                     '@type'         => 'AggregateOffer',
                     'priceCurrency' => 'IDR',

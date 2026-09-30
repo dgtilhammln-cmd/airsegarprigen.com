@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Halaman Tidak Ditemukan — 404 | CV. Bintang Energy Surabaya')
+@section('title', 'Halaman Tidak Ditemukan — 404 | ' . \App\Models\Setting::get('company_name', config('app.name')))
 @section('content')
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
