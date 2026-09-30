@@ -14,265 +14,108 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        /* ── NEW HERO ────────────────────────────────── */
+        /* ── HERO BANNER SLIDER (REFERENCE MATCH 100%) ───────────────────── */
         .cv-hero-modern {
-            background-color: #FAFAFA;
-            padding-top: calc(80px + 3rem);
+            background-color: #F3F4F6;
+            padding-top: calc(80px + 1.75rem);
             padding-bottom: 2rem;
             position: relative;
             overflow: hidden;
             font-family: var(--font);
         }
 
-        .cv-hero-bg-block {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 25%;
-            background-color: #0A1930;
-            /* Navy Blue */
-            z-index: 0;
-        }
-
-        .cv-hero-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        .hero-swiper {
             width: 100%;
-            position: relative;
-            z-index: 1;
+            padding-bottom: 2rem;
+            overflow: visible !important;
         }
 
-        /* Top Section */
-        .cv-hero-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 2rem;
-            position: relative;
+        .hero-swiper .swiper-slide {
+            width: 82%;
+            max-width: 1140px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.65;
+            transform: scale(0.96);
         }
 
-        .cv-hero-top-left {
-            max-width: 75%;
+        .hero-swiper .swiper-slide-active {
+            opacity: 1;
+            transform: scale(1);
         }
 
-        .cv-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 1rem;
-            letter-spacing: 0.02em;
-        }
-
-        .cv-hero-badge::before {
-            content: '';
-            width: 25px;
-            height: 1.5px;
-            background: #DC2626;
-            /* Red accent */
-        }
-
-        .cv-hero-title,
-        h2.cv-hero-title {
-            font-size: clamp(2.5rem, 3.8vw, 4rem);
-            font-weight: 500;
-            color: #0A1930;
-            /* Navy Blue */
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin: 0;
-        }
-
-        .cv-hero-title span,
-        h2.cv-hero-title span {
-            font-weight: 700;
-        }
-
-        /* Static Logo Badge (Just Image, No Pill) */
-        .cv-static-logo-badge {
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .cv-static-logo-badge img {
-            height: 60px;
-            /* Besarkan ukuran sesuai request */
-            width: auto;
-            max-width: 250px;
-            object-fit: contain;
-        }
-
-        /* Middle Section */
-        .cv-hero-mid {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-
-        .cv-hero-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            flex: 1;
-            padding-right: 2rem;
-            justify-content: flex-start;
-            align-items: flex-start;
-            align-content: flex-start;
-        }
-
-        .cv-hero-tags span {
-            font-size: 0.8rem;
-            color: #475569;
-            font-weight: 500;
+        .as-banner-card {
+            display: block;
+            width: 100%;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-        }
-
-        .cv-hero-desc {
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: #64748b;
-            line-height: 1.6;
-            padding-left: 1.5rem;
-            border-left: 2px solid #DC2626;
-            /* Red vertical line */
-            max-width: 400px;
-        }
-
-        /* Bottom Section */
-        .cv-hero-bottom {
+            text-decoration: none;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-            gap: 0;
         }
 
-        .cv-hero-img-wrapper {
-            position: relative;
+        .as-banner-img {
             width: 100%;
-            height: 380px;
-            border-radius: 16px 16px 0 0;
-            overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-            z-index: 1;
-        }
-
-        .cv-hero-img {
-            width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 460px;
             object-fit: cover;
+            border-radius: 22px;
+            display: block;
         }
 
-        /* Stats row — horizontal strip under image */
-        .cv-hero-stats-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            background: #0A1930;
-            border-radius: 0 0 16px 16px;
-            overflow: hidden;
-            z-index: 2;
-        }
-
-        .cv-stat-item {
+        /* Swiper Pagination Track Pill (Matches Screenshot 2) */
+        .as-hero-pagination-wrap {
+            max-width: 1200px;
+            margin: 0.5rem auto 0;
+            padding: 0 1.5rem;
             display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-            padding: 1.25rem 1.5rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            justify-content: flex-end;
+            align-items: center;
         }
 
-        .cv-stat-item:last-child {
-            border-right: none;
+        .hero-swiper-pagination.swiper-pagination-bullets {
+            position: relative;
+            bottom: 0;
+            width: auto !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #3F3F46;
+            padding: 6px 14px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .cv-stat-row {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
+        .hero-swiper-pagination .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.45);
+            opacity: 1;
+            margin: 0 !important;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
-        .cv-stat-val {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1;
-            color: #ffffff;
-            margin: 0;
-            font-variant-numeric: tabular-nums;
+        .hero-swiper-pagination .swiper-pagination-bullet-active {
+            width: 26px;
+            background: #ffffff;
+            border-radius: 10px;
         }
 
-        .cv-stat-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.35);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.15rem;
-        }
-
-        /* Sparkles */
-        .cv-sparkles {
-            position: absolute;
-            left: -30px;
-            top: 50px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 2;
-        }
-
-        .cv-sparkle {
-            color: #DC2626;
-        }
-
-        @media (max-width: 992px) {
-            .cv-hero-top {
-                flex-direction: column;
-                gap: 1rem;
+        @media (max-width: 768px) {
+            .cv-hero-modern {
+                padding-top: calc(70px + 1rem);
+                padding-bottom: 1.5rem;
             }
-
-            .cv-hero-top-left {
-                max-width: 100%;
+            .hero-swiper .swiper-slide {
+                width: 92%;
             }
-
-            .cv-static-logo-badge {
-                display: none !important;
+            .as-banner-img {
+                max-height: 260px;
+                border-radius: 14px;
             }
-
-            .cv-hero-mid {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1.5rem;
-            }
-
-            .cv-hero-desc {
-                border-left: none;
-                border-top: 2px solid #DC2626;
-                padding-left: 0;
-                padding-top: 1rem;
-            }
-
-            .cv-hero-img-wrapper {
-                width: 100%;
-                border-radius: 16px 16px 0 0;
-            }
-
-            .cv-hero-stats-box {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            .cv-hero-bg-block {
-                height: 15%;
+            .as-hero-pagination-wrap {
+                justify-content: center;
             }
         }
 
@@ -987,198 +830,39 @@
         }
     </style>
 
-    {{-- ════ NEW MODERN HERO ════ --}}
+    {{-- ════ HERO BANNER SLIDER (100% REFERENCE MATCH) ════ --}}
     <section class="cv-hero-modern" id="home">
-        <div class="cv-hero-bg-block"></div>
         <div class="swiper hero-swiper">
             <div class="swiper-wrapper">
                 @if(isset($heroSlides) && $heroSlides->count() > 0)
                     @foreach($heroSlides as $slide)
                         <div class="swiper-slide">
-                            <div class="cv-hero-grid">
-
-                                {{-- Top Section --}}
-                                <div class="cv-hero-top">
-                                    <div class="cv-hero-top-left">
-                                        @if($slide->subtitle)
-                                            <div class="cv-hero-badge">{{ $slide->subtitle }}</div>
-                                        @endif
-
-                                        @if($loop->first)
-                                            <h1 class="cv-hero-title">
-                                                {!! str_replace(['Structural Perfection', 'Innovation', 'structural perfection', 'innovation'], ['<span>Structural Perfection</span>', '<span>Innovation</span>', '<span>structural perfection</span>', '<span>innovation</span>'], nl2br(e($slide->title))) !!}
-                                            </h1>
-                                        @else
-                                            <h2 class="cv-hero-title">
-                                                {!! str_replace(['Structural Perfection', 'Innovation', 'structural perfection', 'innovation'], ['<span>Structural Perfection</span>', '<span>Innovation</span>', '<span>structural perfection</span>', '<span>innovation</span>'], nl2br(e($slide->title))) !!}
-                                            </h2>
-                                        @endif
-                                    </div>
-
-                                    <div class="cv-static-logo-badge d-none d-sm-inline-flex">
-                                        @if(!empty($settings['logo']))
-                                            <img src="{{ asset('storage/' . $settings['logo']) }}"
-                                                alt="{{ $settings['company_name'] ?? config('app.name') }}">
-                                        @endif
-                                    </div>
+                            @if($slide->button_url)
+                                <a href="{{ $slide->button_url }}" target="_blank" class="as-banner-card">
+                                    <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
+                                         alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
+                                </a>
+                            @else
+                                <div class="as-banner-card">
+                                    <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
+                                         alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
                                 </div>
-
-                                {{-- Middle Section --}}
-                                <div class="cv-hero-mid">
-                                    <div class="cv-hero-tags">
-                                        @if($slide->tags)
-                                            @foreach(explode(',', $slide->tags) as $tag)
-                                                <span>{{ trim($tag) }}</span>
-                                            @endforeach
-                                        @else
-                                            <span>General Construction Services</span>
-                                            <span>Concrete Work</span>
-                                            <span>Design and Planning</span>
-                                            <span>Civil Works</span>
-                                            <span>Pre-Construction</span>
-                                        @endif
-                                    </div>
-
-                                    @if($slide->description)
-                                        <div class="cv-hero-desc">
-                                            {{ $slide->description }}
-                                        </div>
-                                    @endif
-                                </div>
-
-                                {{-- Bottom Section --}}
-                                <div class="cv-hero-bottom">
-                                    <div class="cv-sparkles d-none d-md-flex">
-                                        <svg class="cv-sparkle" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8z" />
-                                        </svg>
-                                        <svg class="cv-sparkle" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                            style="margin-left:20px;">
-                                            <path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8z" />
-                                        </svg>
-                                    </div>
-
-                                    <div class="cv-hero-img-wrapper">
-                                        @if($slide->image)
-                                            <img src="{{ asset('storage/' . $slide->image) }}" class="cv-hero-img"
-                                                alt="{{ $slide->title }}">
-                                        @else
-                                            <div style="width:100%;height:100%;background:#1E293B;"></div>
-                                        @endif
-                                    </div>
-
-                                    <div class="cv-hero-stats-box">
-                                        <div class="cv-stat-item">
-                                            <div class="cv-stat-row">
-                                                <div class="cv-stat-val">{{ $slide->stat_1_value ?? '640+' }}</div>
-                                            </div>
-                                            <div class="cv-stat-label">{{ $slide->stat_1_label ?? 'Projects Completed' }}</div>
-                                        </div>
-                                        <div class="cv-stat-item">
-                                            <div class="cv-stat-row">
-                                                <div class="cv-stat-val">{{ $slide->stat_2_value ?? '25+' }}</div>
-                                            </div>
-                                            <div class="cv-stat-label">{{ $slide->stat_2_label ?? 'Years of Experience' }}</div>
-                                        </div>
-                                        <div class="cv-stat-item">
-                                            <div class="cv-stat-row">
-                                                <div class="cv-stat-val">{{ $slide->stat_3_value ?? '450+' }}</div>
-                                            </div>
-                                            <div class="cv-stat-label">{{ $slide->stat_3_label ?? 'Happy Customers' }}</div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
+                            @endif
                         </div>
                     @endforeach
                 @else
-                    {{-- Default slide if no slides exist --}}
+                    {{-- Default Banner Slide --}}
                     <div class="swiper-slide">
-                        <div class="cv-hero-grid">
-                            <div class="cv-hero-top">
-                                <div class="cv-hero-top-left">
-                                    <div class="cv-hero-badge">Award-Winning Construction Excellence</div>
-                                    <h1 class="cv-hero-title">Where <span>Innovation</span> Drives<br><span>Structural
-                                            Perfection</span></h1>
-                                </div>
-                                <div class="cv-static-logo-badge d-none d-sm-flex">
-                                    @if(!empty($settings['logo']))
-                                        <img src="{{ asset('storage/' . $settings['logo']) }}" alt="Logo">
-                                    @else
-                                        <span class="cv-text-logo">{{ \App\Models\Setting::get('company_name', config('app.name')) }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="cv-hero-mid">
-                                <div class="cv-hero-tags">
-                                    <span>General Construction Services</span>
-                                    <span>Concrete Work</span>
-                                    <span>Design and Planning</span>
-                                </div>
-                                <div class="cv-hero-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tambahkan
-                                    slide di admin.</div>
-                            </div>
-                            <div class="cv-hero-bottom">
-                                <div class="cv-sparkles d-none d-md-flex">
-                                    <svg class="cv-sparkle" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8z" />
-                                    </svg>
-                                    <svg class="cv-sparkle" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                                        style="margin-left:20px;">
-                                        <path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2 2-8z" />
-                                    </svg>
-                                </div>
-                                <div class="cv-hero-img-wrapper">
-                                    <div style="width:100%;height:100%;background:#1E293B;"></div>
-                                </div>
-                                <div class="cv-hero-stats-box">
-                                    <div class="cv-stat-item">
-                                        <div style="display:flex;align-items:center;gap:0.75rem;">
-                                            <svg width="28" height="28" fill="none" stroke="#DC2626" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path
-                                                    d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-                                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                                                <line x1="12" y1="22.08" x2="12" y2="12" />
-                                            </svg>
-                                            <div class="cv-stat-val">640+</div>
-                                        </div>
-                                        <div class="cv-stat-label">Projects Completed</div>
-                                    </div>
-                                    <div style="width:100%;height:1px;background:rgba(255,255,255,0.1);"></div>
-                                    <div class="cv-stat-item">
-                                        <div style="display:flex;align-items:center;gap:0.75rem;">
-                                            <svg width="28" height="28" fill="none" stroke="#DC2626" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <polyline points="12 6 12 12 16 14" />
-                                            </svg>
-                                            <div class="cv-stat-val">25+</div>
-                                        </div>
-                                        <div class="cv-stat-label">Years of Experience</div>
-                                    </div>
-                                    <div style="width:100%;height:1px;background:rgba(255,255,255,0.1);"></div>
-                                    <div class="cv-stat-item">
-                                        <div style="display:flex;align-items:center;gap:0.75rem;">
-                                            <svg width="28" height="28" fill="none" stroke="#DC2626" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                                                <circle cx="9" cy="7" r="4" />
-                                                <path d="M23 21v-2a4 4 0 00-3-3.87" />
-                                                <path d="M16 3.13a4 4 0 010 7.75" />
-                                            </svg>
-                                            <div class="cv-stat-val">450+</div>
-                                        </div>
-                                        <div class="cv-stat-label">Happy Customers</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="as-banner-card">
+                            <img src="{{ asset('images/hero-banner-default.webp') }}" class="as-banner-img" alt="Air Segar Prigen — Supplier Air Tangki Mineral & Demineral Prigen">
                         </div>
                     </div>
                 @endif
             </div>
+        </div>
+        
+        {{-- Swiper Pagination Track Pill (Matches Screenshot 2) --}}
+        <div class="as-hero-pagination-wrap">
             <div class="swiper-pagination hero-swiper-pagination"></div>
         </div>
     </section>
@@ -2992,13 +2676,12 @@
         document.addEventListener('DOMContentLoaded', function () {
             if (document.querySelector('.hero-swiper')) {
                 new Swiper('.hero-swiper', {
+                    slidesPerView: 'auto',
+                    centeredSlides: true,
+                    spaceBetween: 20,
                     loop: true,
-                    effect: 'fade',
-                    fadeEffect: {
-                        crossFade: true
-                    },
                     autoplay: {
-                        delay: 5000,
+                        delay: 4000,
                         disableOnInteraction: false,
                     },
                     pagination: {

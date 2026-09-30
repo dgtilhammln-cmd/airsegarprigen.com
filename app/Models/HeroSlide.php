@@ -14,6 +14,7 @@ class HeroSlide extends Model
         'tags',
         'icon',
         'image',
+        'alt_text',
         'button_text',
         'button_url',
         'order',

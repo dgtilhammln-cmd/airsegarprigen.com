@@ -18,43 +18,38 @@ class AdminHeroSlideController extends Controller
 
     public function create()
     {
+        $count = HeroSlide::count();
+        if ($count >= 5) {
+            return redirect()->route('admin.hero_slides.index')->with('error', 'Maksimal 5 banner slide. Hapus salah satu slide terlebih dahulu.');
+        }
         return view('admin.hero_slides.form');
     }
 
     public function store(Request $request)
     {
+        $count = HeroSlide::count();
+        if ($count >= 5) {
+            return redirect()->route('admin.hero_slides.index')->with('error', 'Maksimal 5 banner slide diperbolehkan.');
+        }
+
         $validated = $request->validate([
-            'title'       => 'required|max:200',
-            'subtitle'    => 'nullable|max:200',
-            'description' => 'nullable|max:500',
-            'tags'        => 'nullable|max:500',
-            'icon'        => 'nullable|max:50',
-            'image'       => 'nullable|image|max:3072',
-            'button_text' => 'nullable|max:100',
-            'button_url'  => 'nullable|max:300',
-            'order'       => 'integer|min:0',
-            'is_active'   => 'boolean',
-            'stat_1_value'=> 'nullable|max:50',
-            'stat_1_label'=> 'nullable|max:100',
-            'stat_2_value'=> 'nullable|max:50',
-            'stat_2_label'=> 'nullable|max:100',
-            'stat_3_value'=> 'nullable|max:50',
-            'stat_3_label'=> 'nullable|max:100',
+            'image'     => 'required|image|max:10240',
+            'alt_text'  => 'nullable|string|max:255',
+            'button_url'=> 'nullable|url|max:500',
+            'order'     => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
         ]);
 
+        $validated['title']     = $validated['alt_text'] ?? ('Banner Slide ' . ($count + 1));
         $validated['is_active'] = $request->boolean('is_active', true);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1200);
-        }
-
-        $count = HeroSlide::count();
-        if ($count >= 5) {
-            return back()->withErrors(['limit' => 'Maksimal 5 slide diperbolehkan.'])->withInput();
+            // Auto compress to WebP 1920px width
+            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
         }
 
         HeroSlide::create($validated);
-        return redirect()->route('admin.hero_slides.index')->with('success', 'Slide berhasil ditambahkan.');
+        return redirect()->route('admin.hero_slides.index')->with('success', 'Banner slide berhasil ditambahkan (Auto Compress WebP).');
     }
 
     public function edit(HeroSlide $heroSlide)
@@ -65,39 +60,29 @@ class AdminHeroSlideController extends Controller
     public function update(Request $request, HeroSlide $heroSlide)
     {
         $validated = $request->validate([
-            'title'       => 'required|max:200',
-            'subtitle'    => 'nullable|max:200',
-            'description' => 'nullable|max:500',
-            'tags'        => 'nullable|max:500',
-            'icon'        => 'nullable|max:50',
-            'image'       => 'nullable|image|max:3072',
-            'button_text' => 'nullable|max:100',
-            'button_url'  => 'nullable|max:300',
-            'order'       => 'integer|min:0',
-            'is_active'   => 'boolean',
-            'stat_1_value'=> 'nullable|max:50',
-            'stat_1_label'=> 'nullable|max:100',
-            'stat_2_value'=> 'nullable|max:50',
-            'stat_2_label'=> 'nullable|max:100',
-            'stat_3_value'=> 'nullable|max:50',
-            'stat_3_label'=> 'nullable|max:100',
+            'image'     => 'nullable|image|max:10240',
+            'alt_text'  => 'nullable|string|max:255',
+            'button_url'=> 'nullable|url|max:500',
+            'order'     => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
         ]);
 
+        $validated['title']     = $validated['alt_text'] ?? ($heroSlide->title ?? 'Banner Slide');
         $validated['is_active'] = $request->boolean('is_active', true);
 
         if ($request->hasFile('image')) {
             $this->deleteStorageFile($heroSlide->image);
-            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1200);
+            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
         }
 
         $heroSlide->update($validated);
-        return redirect()->route('admin.hero_slides.index')->with('success', 'Slide berhasil diperbarui.');
+        return redirect()->route('admin.hero_slides.index')->with('success', 'Banner slide berhasil diperbarui.');
     }
 
     public function destroy(HeroSlide $heroSlide)
     {
         $this->deleteStorageFile($heroSlide->image ?? null);
         $heroSlide->delete();
-        return back()->with('success', 'Slide berhasil dihapus.');
+        return redirect()->route('admin.hero_slides.index')->with('success', 'Banner slide berhasil dihapus.');
     }
 }
