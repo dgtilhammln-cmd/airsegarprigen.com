@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 
@@ -538,7 +538,7 @@
                         <h3 style="font-size:1.5rem; font-weight:600; color:var(--cv-text); margin-bottom:1rem;">Menjadi
                             Pelopor</h3>
                         <p style="font-size:0.9375rem; color:#475569; line-height:1.7; margin:0;">
-                            {{ str_replace('\App\Models\Setting::get('company_name', config('app.name'))', '\App\Models\Setting::get('company_name', config('app.name'))', $settings['visi'] ?? 'Menjadi perusahaan penyedia cat, coating, dan chemical berskala nasional yang berfokus pada kualitas dan inovasi unggul.') }}
+                            {{ $settings['visi'] ?? 'Menjadi perusahaan penyedia cat, coating, dan chemical berskala nasional yang berfokus pada kualitas dan inovasi unggul.' }}
                         </p>
                     </div>
                 </div>
@@ -548,7 +548,7 @@
                         <h3 style="font-size:1.5rem; font-weight:600; color:var(--cv-text); margin-bottom:1rem;">Solusi
                             Menyeluruh</h3>
                         <p style="font-size:0.9375rem; color:#475569; line-height:1.7; margin:0;">
-                            {{ str_replace('\App\Models\Setting::get('company_name', config('app.name'))', '\App\Models\Setting::get('company_name', config('app.name'))', $settings['misi'] ?? 'Menciptakan produk dan layanan formulasi chemical yang memberikan perlindungan dan ketahanan maksimal pada aset pelanggan.') }}
+                            {{ $settings['misi'] ?? 'Menciptakan produk dan layanan formulasi chemical yang memberikan perlindungan dan ketahanan maksimal pada aset pelanggan.' }}
                         </p>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 
 <style>
@@ -435,7 +435,7 @@ a { text-decoration: none; color: inherit; }
             @endif
         </div>
             <div>
-                <div class="ar-author-name">{{ $article->author ?? 'Tim {{ \App\Models\Setting::get('company_name', config('app.name')) }}' }}</div>
+                <div class="ar-author-name">{{ $article->author ?? ('Tim ' . \App\Models\Setting::get('company_name', config('app.name'))) }}</div>
                 <div class="ar-author-company">{{ \App\Models\Setting::get('company_name', config('app.name')) }} — Cat Industri Indonesia</div>
             </div>
         </div>

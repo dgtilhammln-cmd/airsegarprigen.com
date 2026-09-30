@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title', isset($testimonial) ? 'Edit Testimoni' : 'Tambah Testimoni')
 @section('page-title', isset($testimonial) ? 'Edit Testimoni' : 'Tambah Testimoni')
 @section('content')
@@ -14,7 +14,7 @@
             <div style="display:flex;align-items:center;gap:1.5rem;">
                 <div style="position:relative;flex-shrink:0;">
                     <img id="photo-preview"
-                         src="{{ isset($testimonial) && $testimonial->photo ? asset('storage/'.$testimonial->photo) : (isset($testimonial) ? $testimonial->photo_url : 'https://ui-avatars.com/api/?name={{ \App\Models\Setting::get('company_name', config('app.name')) }}&background=F5A623&color=000000&size=80&bold=true&format=svg') }}"
+                         src="{{ isset($testimonial) && $testimonial->photo ? asset('storage/'.$testimonial->photo) : (isset($testimonial) ? $testimonial->photo_url : 'https://ui-avatars.com/api/?name=Admin&background=F5A623&color=000000&size=80&bold=true&format=svg') }}"
                          alt="Preview"
                          style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #F5A623;">
                 </div>

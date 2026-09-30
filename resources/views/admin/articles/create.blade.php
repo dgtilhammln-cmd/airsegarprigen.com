@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title', isset($article) ? 'Edit Artikel' : 'Tulis Artikel')
 @section('page-title', isset($article) ? 'Edit Artikel' : 'Tulis Artikel Baru')
 @section('content')
@@ -301,7 +301,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Penulis</label>
-                    <input type="text" name="author" value="{{ old('author',$a?->author ?? 'Tim {{ \App\Models\Setting::get('company_name', config('app.name')) }}') }}" class="form-input">
+                    <input type="text" name="author" value="{{ old('author', $a?->author ?? ('Tim ' . \App\Models\Setting::get('company_name', config('app.name')))) }}" class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Kategori</label>
