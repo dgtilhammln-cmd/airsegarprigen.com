@@ -17,3 +17,5 @@ yarn-error.log
 /.vscode
 *.sqlite
 deploy_patch.tar.gz
+deploy_tmp.tar.gz
+*.tar.gz
