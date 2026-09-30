@@ -77,7 +77,7 @@ $adminName = session('admin_name', 'Administrator');
 <div style="margin-bottom:1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
   <div>
     <h1 style="font-size:1.375rem;font-weight:700;color:var(--text1);margin:0 0 .25rem;letter-spacing:-.02em;">Overview</h1>
-    <p style="font-size:.8125rem;color:var(--text3);margin:0;">Ringkasan data website CV. Bintang Energy Surabaya</p>
+    <p style="font-size:.8125rem;color:var(--text3);margin:0;">Ringkasan data website {{ \App\Models\Setting::get('company_name', config('app.name')) }}</p>
   </div>
   <form method="GET" action="{{ route('admin.dashboard') }}" style="display: flex; gap: 0.5rem; align-items: center;">
     <input type="date" id="dash-start" name="start_date" value="{{ $start_date ?? '' }}" style="padding: 0.5rem 0.75rem; font-size: 0.8rem; background: #fff; border: 1px solid var(--border); border-radius: 50px; color: var(--text1); font-family: inherit; font-weight: 500;">

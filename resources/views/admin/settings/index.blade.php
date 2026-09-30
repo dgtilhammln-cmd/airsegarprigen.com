@@ -258,7 +258,7 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
       <div>
         <label class="form-label" for="s-company_name">Nama Perusahaan</label>
-        <input type="text" name="company_name" id="s-company_name" class="form-input" value="{{ $settings['company_name'] ?? '' }}" placeholder="PT Bintang Energy Surabaya">
+        <input type="text" name="company_name" id="s-company_name" class="form-input" value="{{ $settings['company_name'] ?? '' }}" placeholder="Nama perusahaan Anda">
         <p style="font-size:.7rem;color:#94A3B8;margin:.375rem 0 0;">Tampil di footer, halaman about, sitemap, dan seluruh halaman website.</p>
       </div>
       <div>
@@ -384,7 +384,7 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
       </div>
       <div>
         <label class="form-label" for="s-copyright">Copyright Text</label>
-        <input type="text" name="copyright" id="s-copyright" class="form-input" value="{{ $settings['copyright'] ?? '' }}" placeholder="© 2026 CV. Bintang Energy Surabaya. All rights reserved.">
+        <input type="text" name="copyright" id="s-copyright" class="form-input" value="{{ $settings['copyright'] ?? '' }}" placeholder="© 2026 Nama Perusahaan. All rights reserved.">
         <p style="font-size:.7rem;color:#94A3B8;margin:.375rem 0 0;">Tampil di bagian bawah footer.</p>
       </div>
       <div>
@@ -437,7 +437,7 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
           <input type="text" name="meta_title_{{ $page['key'] }}" class="form-input" maxlength="65"
                  value="{{ $settings['meta_title_'.$page['key']] ?? '' }}"
                  oninput="updateCounter(this,'cnt-title-{{ $page['key'] }}')"
-                 placeholder="{{ $page['label'] }} | CV. Bintang Energy Surabaya">
+                 placeholder="{{ $page['label'] }} | {{ $settings['company_name'] ?? config('app.name') }}">
           <div style="font-size:.7rem;color:#94A3B8;margin-top:.25rem;">
             <span id="cnt-title-{{ $page['key'] }}">{{ strlen($settings['meta_title_'.$page['key']] ?? '') }}</span>/65 karakter
           </div>

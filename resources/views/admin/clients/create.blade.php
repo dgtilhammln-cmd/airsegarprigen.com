@@ -134,7 +134,7 @@ function previewLogo(input) {
 function autoAlt(name) {
     const altInput = document.getElementById('alt-text-input');
     if (!altInput) return;
-    altInput.value = name.trim() ? 'Klien CV. Bintang Energy Surabaya | ' + name.trim() : '';
+    altInput.value = name.trim() ? 'Klien | ' + name.trim() : '';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const altInput  = document.getElementById('alt-text-input');
     // Only auto-fill if alt is still empty (new form or blank edit)
     if (nameInput && altInput && !altInput.value && nameInput.value) {
-        altInput.value = 'Klien CV. Bintang Energy Surabaya | ' + nameInput.value;
+        altInput.value = 'Klien | ' + nameInput.value;
     }
 });
 </script>

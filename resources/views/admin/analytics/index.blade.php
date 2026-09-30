@@ -98,7 +98,7 @@
             </div>
         </div>
         <div style="display:flex;align-items:center;gap:.75rem;flex-shrink:0;">
-            <a href="https://wa.me/6285179982373?text={{ urlencode('Halo, saya ingin konsultasi upgrade layanan SEO untuk website CV. Bintang Energy Surabaya.') }}" target="_blank"
+            <a href="https://wa.me/6285179982373?text={{ urlencode('Halo, saya ingin konsultasi upgrade layanan SEO untuk website '.\App\Models\Setting::get('company_name', config('app.name')).'.') }}" target="_blank"
                style="display:inline-flex;align-items:center;gap:.5rem;background:#3B82F6;color:#fff;padding:.7rem 1.5rem;border-radius:12px;text-decoration:none;font-weight:700;font-size:.85rem;box-shadow:0 4px 14px rgba(59,130,246,0.3);transition:all .2s;"
                onmouseover="this.style.background='#2563EB';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(59,130,246,0.4)';"
                onmouseout="this.style.background='#3B82F6';this.style.transform='';this.style.boxShadow='0 4px 14px rgba(59,130,246,0.3)';"
