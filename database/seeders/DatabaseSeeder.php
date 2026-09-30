@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Setting;
-use App\Models\Service;
 use App\Models\GalleryProject;
 use App\Models\Article;
 use App\Models\Client;
@@ -26,9 +25,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ── Admin user ──────────────────────────────────────────────
-        User::updateOrCreate(['email' => 'admin@ptbiner.co.id'], [
-            'name'      => 'Admin CV. Bintang Energy Surabaya',
-            'password'  => Hash::make('BintangEnergy@2026!'),
+        User::updateOrCreate(['email' => 'admin@airsegarprigen.com'], [
+            'name'      => 'Admin Air Segar Prigen',
+            'password'  => Hash::make('AirSegar@2026!'),
             'role'      => 'admin',
             'is_active' => true,
         ]);
@@ -36,65 +35,72 @@ class DatabaseSeeder extends Seeder
         // ── WA Settings ─────────────────────────────────────────────
         if (\App\Models\WaSetting::count() === 0) {
             WaSetting::insert([
-                ['label'=>'WA Utama','nomor_wa'=>'081296565757','template_pesan'=>'Halo CV. Bintang Energy Surabaya, saya ingin menanyakan produk [nama produk]. Mohon informasi harga dan ketersediaannya. Terima kasih.','is_active'=>1,'is_primary'=>1,'order'=>1,'created_at'=>now(),'updated_at'=>now()],
+                ['label'=>'WA Utama','nomor_wa'=>'6281234567890','template_pesan'=>'Halo Air Segar Prigen, saya ingin menanyakan produk [nama produk]. Mohon informasi harga dan ketersediaannya. Terima kasih.','is_active'=>1,'is_primary'=>1,'order'=>1,'created_at'=>now(),'updated_at'=>now()],
             ]);
         }
 
         // ── Site Settings ────────────────────────────────────────────
         $settings = [
             // Identitas Perusahaan
-            ['key'=>'company_name',     'value'=>'UD. Sukses Makmur',                           'type'=>'text','group'=>'general','label'=>'Nama Perusahaan'],
-            ['key'=>'company_tagline',  'value'=>'Distributor Piring Keramik',                  'type'=>'text','group'=>'general','label'=>'Tagline / Slogan'],
-            ['key'=>'address_street',   'value'=>'JL Tanjung Pinang No. 15',                    'type'=>'text','group'=>'general','label'=>'Alamat Jalan'],
-            ['key'=>'address_province', 'value'=>'Jawa Timur',                                  'type'=>'text','group'=>'general','label'=>'Provinsi'],
-            ['key'=>'address_city',     'value'=>'Kota Surabaya',                               'type'=>'text','group'=>'general','label'=>'Kota / Kabupaten'],
-            ['key'=>'address_district', 'value'=>'Pabean Cantian',                              'type'=>'text','group'=>'general','label'=>'Kecamatan'],
-            ['key'=>'address_postal',   'value'=>'60177',                                       'type'=>'text','group'=>'general','label'=>'Kode Pos'],
-            ['key'=>'address_full',     'value'=>'JL Tanjung Pinang No. 15, Pabean Cantian, Kota Surabaya, Jawa Timur, 60177', 'type'=>'text','group'=>'general','label'=>'Alamat Lengkap'],
+            ['key'=>'company_name',     'value'=>'Air Segar Prigen',                              'type'=>'text','group'=>'general','label'=>'Nama Perusahaan'],
+            ['key'=>'company_tagline',  'value'=>'Distributor Air Minum Isi Ulang Premium Prigen', 'type'=>'text','group'=>'general','label'=>'Tagline / Slogan'],
+            ['key'=>'address_street',   'value'=>'Jl. Raya Prigen No. 10',                         'type'=>'text','group'=>'general','label'=>'Alamat Jalan'],
+            ['key'=>'address_province', 'value'=>'Jawa Timur',                                     'type'=>'text','group'=>'general','label'=>'Provinsi'],
+            ['key'=>'address_city',     'value'=>'Pasuruan',                                       'type'=>'text','group'=>'general','label'=>'Kota / Kabupaten'],
+            ['key'=>'address_district', 'value'=>'Prigen',                                         'type'=>'text','group'=>'general','label'=>'Kecamatan'],
+            ['key'=>'address_postal',   'value'=>'67157',                                          'type'=>'text','group'=>'general','label'=>'Kode Pos'],
+            ['key'=>'address_full',     'value'=>'Jl. Raya Prigen No. 10, Prigen, Pasuruan, Jawa Timur 67157', 'type'=>'text','group'=>'general','label'=>'Alamat Lengkap'],
 
             // Hero
-            ['key'=>'hero_headline',    'value'=>'Distribusi Cat & Coating Premium',           'type'=>'text','group'=>'hero','label'=>'Hero Headline'],
-            ['key'=>'hero_subheadline', 'value'=>'CV. Bintang Energy Surabaya — distributor resmi cat industri, cat maritim, dan coating pelindung terpercaya sejak 2007. Melayani kebutuhan industri, kontraktor, dan BUMN di seluruh Indonesia.','type'=>'text','group'=>'hero','label'=>'Hero Sub-headline'],
-            ['key'=>'hero_cta_primary', 'value'=>'Konsultasi & Penawaran',                    'type'=>'text','group'=>'hero','label'=>'CTA Primary Text'],
-            ['key'=>'hero_cta_secondary','value'=>'Lihat Katalog Produk',                     'type'=>'text','group'=>'hero','label'=>'CTA Secondary Text'],
-            ['key'=>'hero_bg_image',    'value'=>'',                                           'type'=>'image','group'=>'hero','label'=>'Hero Background Image'],
+            ['key'=>'hero_headline',    'value'=>'Air Minum Segar Langsung dari Sumber Pegunungan Prigen',  'type'=>'text','group'=>'hero','label'=>'Hero Headline'],
+            ['key'=>'hero_subheadline', 'value'=>'Nikmati kesegaran air pegunungan asli Prigen yang jernih, sehat, dan bebas bakteri. Tersedia dalam kemasan galon, botol, dan layanan isi ulang langsung di depot kami.','type'=>'text','group'=>'hero','label'=>'Hero Sub-headline'],
+            ['key'=>'hero_cta_primary', 'value'=>'Pesan Sekarang',                                 'type'=>'text','group'=>'hero','label'=>'CTA Primary Text'],
+            ['key'=>'hero_cta_secondary','value'=>'Lihat Produk Kami',                             'type'=>'text','group'=>'hero','label'=>'CTA Secondary Text'],
+            ['key'=>'hero_bg_image',    'value'=>'',                                               'type'=>'image','group'=>'hero','label'=>'Hero Background Image'],
+
             // About
-            ['key'=>'about_heading',    'value'=>'Distributor Cat & Coating<br>Berstandar Industri',  'type'=>'text','group'=>'about','label'=>'About Heading'],
-            ['key'=>'about_text',       'value'=>'CV. Bintang Energy Surabaya adalah distributor resmi cat industri dan coating premium yang berpengalaman lebih dari 18 tahun. Kami menyediakan produk dari merek-merek terkemuka dunia seperti Jotun, PPG Sigma, Hempel, dan AkzoNobel untuk kebutuhan maritime, oil & gas, infrastruktur, dan industri manufaktur.','type'=>'text','group'=>'about','label'=>'About Text'],
-            ['key'=>'about_image',      'value'=>'',                                           'type'=>'image','group'=>'about','label'=>'About Image'],
-            ['key'=>'visi',             'value'=>'Menjadi distributor cat dan coating industri terpercaya kelas nasional yang berorientasi pada kepuasan pelanggan dan standar internasional.','type'=>'text','group'=>'about','label'=>'Visi'],
-            ['key'=>'misi',             'value'=>'Menyediakan produk cat dan coating berkualitas tinggi dari merek-merek terpercaya dunia dengan layanan konsultasi profesional, pengiriman tepat waktu, dan harga kompetitif untuk seluruh wilayah Indonesia.','type'=>'text','group'=>'about','label'=>'Misi'],
+            ['key'=>'about_heading',    'value'=>'Air Pegunungan Prigen<br>Murni & Menyehatkan',  'type'=>'text','group'=>'about','label'=>'About Heading'],
+            ['key'=>'about_text',       'value'=>'Air Segar Prigen adalah depot air minum isi ulang premium yang bersumber langsung dari mata air pegunungan Prigen, Pasuruan, Jawa Timur. Kami menjamin kualitas air yang jernih, bebas kuman, dan kaya mineral alami melalui proses filtrasi dan sterilisasi modern berstandar BPOM.','type'=>'text','group'=>'about','label'=>'About Text'],
+            ['key'=>'about_image',      'value'=>'',                                               'type'=>'image','group'=>'about','label'=>'About Image'],
+            ['key'=>'visi',             'value'=>'Menjadi depot air minum isi ulang terpercaya dan terlaris di kawasan Prigen-Pandaan yang mengutamakan kualitas, kesehatan, dan kepuasan pelanggan.','type'=>'text','group'=>'about','label'=>'Visi'],
+            ['key'=>'misi',             'value'=>'Menyediakan air minum berkualitas tinggi yang bersumber dari pegunungan Prigen dengan harga terjangkau, pelayanan antar cepat, dan proses produksi higienis bersertifikat.','type'=>'text','group'=>'about','label'=>'Misi'],
+
             // Stats
-            ['key'=>'stat_years',    'value'=>'18+',                'type'=>'text','group'=>'stats','label'=>'Tahun Pengalaman'],
-            ['key'=>'stat_clients',  'value'=>'500+',               'type'=>'text','group'=>'stats','label'=>'Klien / Proyek'],
-            ['key'=>'stat_products', 'value'=>'1.000+',             'type'=>'text','group'=>'stats','label'=>'SKU Produk'],
-            ['key'=>'stat_coverage', 'value'=>'Seluruh Indonesia',  'type'=>'text','group'=>'stats','label'=>'Jangkauan'],
+            ['key'=>'stat_years',    'value'=>'10+',              'type'=>'text','group'=>'stats','label'=>'Tahun Berdiri'],
+            ['key'=>'stat_clients',  'value'=>'2.000+',           'type'=>'text','group'=>'stats','label'=>'Pelanggan Setia'],
+            ['key'=>'stat_products', 'value'=>'5',                'type'=>'text','group'=>'stats','label'=>'Varian Produk'],
+            ['key'=>'stat_coverage', 'value'=>'Prigen & Sekitar', 'type'=>'text','group'=>'stats','label'=>'Area Layanan'],
+
             // Contact
-            ['key'=>'phone',    'value'=>'031-1234-5678',                                          'type'=>'text','group'=>'contact','label'=>'Telepon'],
-            ['key'=>'wa1',      'value'=>'081296565757',                                           'type'=>'text','group'=>'contact','label'=>'WhatsApp Utama'],
-            ['key'=>'email',    'value'=>'info@ptbiner.co.id',                                     'type'=>'text','group'=>'contact','label'=>'Email'],
-            ['key'=>'address',  'value'=>'Jl. Industri Raya No. 12, Surabaya, Jawa Timur 60194',  'type'=>'text','group'=>'contact','label'=>'Alamat'],
-            ['key'=>'maps_embed','value'=>'https://maps.google.com/maps?q=-7.2575,112.7521&output=embed','type'=>'text','group'=>'contact','label'=>'Maps Embed URL'],
+            ['key'=>'phone',    'value'=>'0343-123456',                                               'type'=>'text','group'=>'contact','label'=>'Telepon'],
+            ['key'=>'wa1',      'value'=>'6281234567890',                                             'type'=>'text','group'=>'contact','label'=>'WhatsApp Utama'],
+            ['key'=>'email',    'value'=>'info@airsegarprigen.com',                                   'type'=>'text','group'=>'contact','label'=>'Email'],
+            ['key'=>'address',  'value'=>'Jl. Raya Prigen No. 10, Prigen, Pasuruan, Jawa Timur 67157','type'=>'text','group'=>'contact','label'=>'Alamat'],
+            ['key'=>'maps_embed','value'=>'https://maps.google.com/maps?q=-7.7167,112.6833&output=embed','type'=>'text','group'=>'contact','label'=>'Maps Embed URL'],
+
             // Social
             ['key'=>'instagram','value'=>'','type'=>'text','group'=>'social','label'=>'Instagram URL'],
             ['key'=>'facebook', 'value'=>'','type'=>'text','group'=>'social','label'=>'Facebook URL'],
             ['key'=>'youtube',  'value'=>'','type'=>'text','group'=>'social','label'=>'YouTube URL'],
+
             // Footer
-            ['key'=>'footer_desc', 'value'=>'Distributor resmi cat industri dan coating premium sejak 2007. Melayani kebutuhan maritim, oil & gas, infrastruktur, dan manufaktur di seluruh Indonesia.','type'=>'text','group'=>'footer','label'=>'Footer Description'],
-            ['key'=>'copyright',   'value'=>'© 2007–2026 CV. Bintang Energy Surabaya. All rights reserved.','type'=>'text','group'=>'footer','label'=>'Copyright'],
+            ['key'=>'footer_desc', 'value'=>'Depot air minum isi ulang premium bersumber dari pegunungan Prigen. Jernih, sehat, dan segar langsung dari alam untuk keluarga Anda.','type'=>'text','group'=>'footer','label'=>'Footer Description'],
+            ['key'=>'copyright',   'value'=>'© 2015–2026 Air Segar Prigen. All rights reserved.','type'=>'text','group'=>'footer','label'=>'Copyright'],
+
             // SEO
-            ['key'=>'meta_title_home','value'=>'CV. Bintang Energy Surabaya — Distributor Cat Industri & Coating Premium #1',  'type'=>'text','group'=>'seo','label'=>'Meta Title Home'],
-            ['key'=>'meta_desc_home', 'value'=>'Distributor resmi cat industri Jotun, PPG Sigma, Hempel, dan AkzoNobel. Melayani kebutuhan maritim, pabrik, dan infrastruktur seluruh Indonesia. Hubungi: 0812-9656-5757.','type'=>'text','group'=>'seo','label'=>'Meta Desc Home'],
+            ['key'=>'meta_title_home','value'=>'Air Segar Prigen — Depot Air Minum Isi Ulang Premium Pegunungan Prigen',    'type'=>'text','group'=>'seo','label'=>'Meta Title Home'],
+            ['key'=>'meta_desc_home', 'value'=>'Depot air minum isi ulang premium bersumber dari mata air pegunungan Prigen. Jernih, bebas bakteri, kaya mineral. Antar ke rumah, harga terjangkau.','type'=>'text','group'=>'seo','label'=>'Meta Desc Home'],
             ['key'=>'og_image_default','value'=>'','type'=>'image','group'=>'seo','label'=>'Default OG Image (1200x630)'],
+
             // Meta halaman lain
-            ['key'=>'meta_title_services','value'=>'Katalog Produk Cat Industri & Coating | CV. Bintang Energy Surabaya','type'=>'text','group'=>'seo','label'=>'Meta Title Products'],
-            ['key'=>'meta_desc_services', 'value'=>'Temukan produk cat Jotun, PPG Sigma, Hempel, AkzoNobel untuk kebutuhan maritim, industri, dan infrastruktur. Harga kompetitif, pengiriman seluruh Indonesia.','type'=>'text','group'=>'seo','label'=>'Meta Desc Products'],
-            ['key'=>'meta_title_about',   'value'=>'Tentang Kami | CV. Bintang Energy Surabaya - Distributor Cat Industri','type'=>'text','group'=>'seo','label'=>'Meta Title About'],
-            ['key'=>'meta_desc_about',    'value'=>'Profil CV. Bintang Energy Surabaya, distributor cat industri dan coating terpercaya berdiri sejak 2007. Lebih dari 500 klien dari berbagai sektor.','type'=>'text','group'=>'seo','label'=>'Meta Desc About'],
-            ['key'=>'meta_title_contact', 'value'=>'Hubungi Kami | CV. Bintang Energy Surabaya','type'=>'text','group'=>'seo','label'=>'Meta Title Contact'],
-            ['key'=>'meta_desc_contact',  'value'=>'Konsultasi kebutuhan cat dan coating gratis. Tim ahli kami siap membantu memilih produk yang paling sesuai untuk proyek industri Anda.','type'=>'text','group'=>'seo','label'=>'Meta Desc Contact'],
-            ['key'=>'meta_title_gallery', 'value'=>'Galeri Proyek | CV. Bintang Energy Surabaya','type'=>'text','group'=>'seo','label'=>'Meta Title Gallery'],
-            ['key'=>'meta_title_articles','value'=>'Artikel & Insight Industri Cat | CV. Bintang Energy Surabaya','type'=>'text','group'=>'seo','label'=>'Meta Title Articles'],
+            ['key'=>'meta_title_services','value'=>'Produk Air Minum | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Products'],
+            ['key'=>'meta_desc_services', 'value'=>'Galon 19L, botol 600ml, dan 1500ml dari air pegunungan Prigen. Isi ulang galon murah, antar cepat se-area Prigen, Pandaan, dan sekitarnya.','type'=>'text','group'=>'seo','label'=>'Meta Desc Products'],
+            ['key'=>'meta_title_about',   'value'=>'Tentang Kami | Air Segar Prigen - Depot Air Minum Pegunungan','type'=>'text','group'=>'seo','label'=>'Meta Title About'],
+            ['key'=>'meta_desc_about',    'value'=>'Profil Air Segar Prigen, depot air minum isi ulang berdiri sejak 2015. Sumber air langsung dari pegunungan Prigen, proses filtrasi modern, bersertifikat BPOM.','type'=>'text','group'=>'seo','label'=>'Meta Desc About'],
+            ['key'=>'meta_title_contact', 'value'=>'Hubungi Kami | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Contact'],
+            ['key'=>'meta_desc_contact',  'value'=>'Pesan air galon antar ke rumah atau hubungi kami untuk info harga dan kerjasama distributor. Air Segar Prigen siap melayani area Prigen, Pandaan, Pasuruan.','type'=>'text','group'=>'seo','label'=>'Meta Desc Contact'],
+            ['key'=>'meta_title_gallery', 'value'=>'Galeri | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Gallery'],
+            ['key'=>'meta_title_articles','value'=>'Artikel & Info Kesehatan Air Minum | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Articles'],
         ];
         foreach ($settings as $s) {
             Setting::updateOrCreate(['key' => $s['key']], array_merge($s, ['created_at'=>now(),'updated_at'=>now()]));
@@ -102,20 +108,18 @@ class DatabaseSeeder extends Seeder
 
         // ── Gallery Projects ─────────────────────────────────────────
         $galleries = [
-            ['title'=>'Pengecatan Lambung Kapal Tanker','category'=>'maritim','client'=>'PT. Pelayaran Samudra Raya','location'=>'Surabaya','year'=>2024,'order'=>1],
-            ['title'=>'Coating Struktur Baja Jembatan','category'=>'infrastruktur','client'=>'PT. Wijaya Karya (Persero)','location'=>'Jawa Timur','year'=>2024,'order'=>2],
-            ['title'=>'Cat Lantai Pabrik Otomotif','category'=>'industri','client'=>'PT. Astra Daihatsu Motor','location'=>'Karawang','year'=>2023,'order'=>3],
-            ['title'=>'Protective Coating Offshore Platform','category'=>'oil-gas','client'=>'PT. Pertamina Internasional EP','location'=>'Kalimantan Timur','year'=>2023,'order'=>4],
-            ['title'=>'Cat Anti Karat Fasilitas Pelabuhan','category'=>'maritim','client'=>'PT. Pelabuhan Indonesia III','location'=>'Tanjung Perak, Surabaya','year'=>2023,'order'=>5],
-            ['title'=>'Interior & Exterior Coating Gedung Pemerintah','category'=>'komersial','client'=>'Dinas PU Jawa Timur','location'=>'Surabaya','year'=>2022,'order'=>6],
-            ['title'=>'Epoxy Floor Coating Gudang Logistik','category'=>'industri','client'=>'PT. JNE Logistics','location'=>'Sidoarjo','year'=>2022,'order'=>7],
-            ['title'=>'Coating Refinery Unit Kilang Minyak','category'=>'oil-gas','client'=>'PT. Chandra Asri Petrochemical','location'=>'Cilegon, Banten','year'=>2024,'order'=>8],
+            ['title'=>'Pengiriman Galon ke Perumahan Prigen Permai','category'=>'residensial','client'=>'Perumahan Prigen Permai','location'=>'Prigen, Pasuruan','year'=>2024,'order'=>1],
+            ['title'=>'Supply Air Minum untuk Hotel Natura Prigen','category'=>'hotel','client'=>'Hotel Natura Prigen','location'=>'Prigen, Pasuruan','year'=>2024,'order'=>2],
+            ['title'=>'Kerjasama Depot Air dengan Kafe Lokal','category'=>'usaha-f&b','client'=>'Kafe Lereng Welirang','location'=>'Pandaan, Pasuruan','year'=>2023,'order'=>3],
+            ['title'=>'Supply Air untuk Area Wisata Tretes','category'=>'wisata','client'=>'Pengelola Wisata Tretes','location'=>'Tretes, Prigen','year'=>2023,'order'=>4],
+            ['title'=>'Distribusi Air Galon ke Kantor Pemerintah','category'=>'perkantoran','client'=>'Kecamatan Prigen','location'=>'Prigen, Pasuruan','year'=>2023,'order'=>5],
+            ['title'=>'Kemitraan dengan Warung dan UMKM Lokal','category'=>'umkm','client'=>'UMKM Prigen','location'=>'Prigen & Pandaan','year'=>2022,'order'=>6],
         ];
         foreach ($galleries as $g) {
             GalleryProject::updateOrCreate(['title'=>$g['title']], array_merge($g, [
-                'description' => 'Pengerjaan proyek '.$g['title'].' menggunakan produk cat dan coating premium dari CV. Bintang Energy Surabaya. Hasil tahan lama, sesuai standar internasional.',
+                'description' => 'Layanan pengiriman air minum segar pegunungan Prigen untuk '.$g['title'].'. Kualitas terjamin, pengiriman tepat waktu.',
                 'image'       => '',
-                'alt_text'    => $g['title'].' — CV. Bintang Energy Surabaya',
+                'alt_text'    => $g['title'].' — Air Segar Prigen',
                 'is_active'   => true, 'created_at'=>now(),'updated_at'=>now()
             ]));
         }
@@ -123,57 +127,57 @@ class DatabaseSeeder extends Seeder
         // ── Articles ─────────────────────────────────────────────────
         $articles = [
             [
-                'title'        => '5 Alasan Mengapa Cat Jotun Cocok untuk Proyek Maritim Indonesia',
-                'slug'         => 'cat-jotun-untuk-proyek-maritim',
-                'excerpt'      => 'Lingkungan laut yang korosif membutuhkan perlindungan ekstra. Ketahui mengapa cat Jotun menjadi pilihan utama untuk kapal dan struktur offshore di Indonesia.',
-                'category'     => 'Tips Industri',
+                'title'        => 'Manfaat Air Pegunungan untuk Kesehatan Tubuh',
+                'slug'         => 'manfaat-air-pegunungan-untuk-kesehatan',
+                'excerpt'      => 'Air pegunungan mengandung mineral alami yang sangat baik untuk tubuh. Pelajari manfaat lengkapnya dan kenapa air segar pegunungan Prigen jadi pilihan keluarga sehat.',
+                'category'     => 'Kesehatan',
                 'is_published' => true,
                 'published_at' => now()->subDays(4),
-                'author'       => 'Tim CV. Bintang Energy Surabaya',
-                'meta_title'   => '5 Alasan Cat Jotun untuk Proyek Maritim | CV. Bintang Energy Surabaya',
-                'meta_desc'    => 'Kenapa Jotun jadi pilihan utama untuk cat maritim? Simak 5 alasan teknisnya di sini.',
+                'author'       => 'Tim Air Segar Prigen',
+                'meta_title'   => 'Manfaat Air Pegunungan untuk Kesehatan | Air Segar Prigen',
+                'meta_desc'    => 'Air pegunungan Prigen kaya mineral alami. Simak manfaatnya untuk kesehatan keluarga Anda di sini.',
             ],
             [
-                'title'        => 'Perbedaan Epoxy, Polyurethane, dan Alkyd: Pilih yang Mana?',
-                'slug'         => 'perbedaan-epoxy-polyurethane-alkyd',
-                'excerpt'      => 'Banyak pelanggan bingung menentukan jenis coating yang tepat. Artikel ini membantu Anda memahami perbedaan karakteristik dan aplikasi masing-masing jenis.',
+                'title'        => 'Perbedaan Air Isi Ulang vs Air Kemasan: Mana Lebih Baik?',
+                'slug'         => 'perbedaan-air-isi-ulang-vs-kemasan',
+                'excerpt'      => 'Banyak keluarga masih bingung memilih antara air isi ulang dan air kemasan. Artikel ini membandingkan kualitas, harga, dan dampak lingkungan keduanya.',
                 'category'     => 'Edukasi',
                 'is_published' => true,
                 'published_at' => now()->subDays(11),
-                'author'       => 'Tim CV. Bintang Energy Surabaya',
-                'meta_title'   => 'Epoxy vs Polyurethane vs Alkyd: Perbedaan & Kegunaannya',
-                'meta_desc'    => 'Panduan memilih jenis coating yang tepat antara epoxy, polyurethane, dan alkyd untuk berbagai aplikasi industri.',
+                'author'       => 'Tim Air Segar Prigen',
+                'meta_title'   => 'Air Isi Ulang vs Air Kemasan: Mana Lebih Baik? | Air Segar Prigen',
+                'meta_desc'    => 'Perbandingan lengkap air isi ulang vs air kemasan dari segi kualitas, harga, dan dampak lingkungan.',
             ],
             [
-                'title'        => 'Cara Menghitung Kebutuhan Cat untuk Proyek Industri Skala Besar',
-                'slug'         => 'cara-menghitung-kebutuhan-cat-industri',
-                'excerpt'      => 'Salah menghitung kebutuhan cat bisa membuat proyek molor atau boros anggaran. Ikuti panduan teknis kami untuk estimasi yang akurat.',
-                'category'     => 'Panduan',
+                'title'        => 'Cara Merawat Galon Air Agar Tetap Bersih dan Higienis',
+                'slug'         => 'cara-merawat-galon-air-agar-bersih',
+                'excerpt'      => 'Galon yang kotor bisa menjadi sumber bakteri berbahaya. Ikuti panduan mudah merawat galon air minum agar tetap bersih, aman, dan tahan lama.',
+                'category'     => 'Tips',
                 'is_published' => true,
                 'published_at' => now()->subDays(19),
-                'author'       => 'Tim CV. Bintang Energy Surabaya',
-                'meta_title'   => 'Cara Menghitung Kebutuhan Cat Industri | CV. Bintang Energy Surabaya',
-                'meta_desc'    => 'Panduan teknis menghitung volume cat yang dibutuhkan berdasarkan luas permukaan, DFT, dan spreading rate.',
+                'author'       => 'Tim Air Segar Prigen',
+                'meta_title'   => 'Cara Merawat Galon Air agar Tetap Bersih | Air Segar Prigen',
+                'meta_desc'    => 'Panduan praktis merawat galon air minum agar tetap higienis dan bebas bakteri untuk keluarga sehat.',
             ],
         ];
-        $contentTemplate = '<h2>Pendahuluan</h2><p>Pemilihan produk cat dan coating yang tepat adalah investasi jangka panjang yang menentukan umur aset Anda. CV. Bintang Energy Surabaya hadir sebagai mitra terpercaya dalam menyediakan solusi proteksi permukaan terbaik.</p><h2>Detail Pembahasan</h2><p>Sebagai distributor resmi cat industri dari merek-merek terkemuka dunia seperti <strong>Jotun</strong>, <strong>PPG Sigma</strong>, <strong>Hempel</strong>, dan <strong>AkzoNobel</strong>, kami memastikan setiap produk yang kami suplai memenuhi standar kualitas internasional dan sesuai dengan spesifikasi teknis proyek Anda.</p><p>Tim konsultan teknis kami yang berpengalaman siap membantu mulai dari pemilihan sistem coating yang tepat, kalkulasi kebutuhan material, hingga pendampingan teknis di lapangan.</p><h2>Kesimpulan</h2><p>Hubungi tim ahli CV. Bintang Energy Surabaya di <strong>0812-9656-5757</strong> untuk konsultasi gratis dan penawaran harga terbaik untuk kebutuhan proyek Anda.</p>';
+        $contentTemplate = '<h2>Pendahuluan</h2><p>Air adalah kebutuhan dasar setiap manusia. Mendapatkan air minum yang bersih, sehat, dan berkualitas adalah hak setiap keluarga. Air Segar Prigen hadir untuk memenuhi kebutuhan tersebut dengan menghadirkan air langsung dari sumber mata air pegunungan Prigen yang jernih dan kaya mineral.</p><h2>Detail Pembahasan</h2><p>Air dari pegunungan Prigen telah melalui proses filtrasi modern dan sterilisasi UV untuk memastikan kebersihannya. Setiap tetes air yang kami hadirkan terjamin bebas bakteri, bebas kuman, dan aman untuk dikonsumsi seluruh anggota keluarga, mulai dari anak-anak hingga lansia.</p><p>Dengan pengalaman lebih dari 10 tahun melayani masyarakat Prigen dan sekitarnya, kami berkomitmen untuk terus menghadirkan air minum berkualitas dengan harga yang terjangkau dan layanan antar yang cepat dan terpercaya.</p><h2>Kesimpulan</h2><p>Hubungi Air Segar Prigen sekarang untuk pemesanan air galon, botol, atau konsultasi kerjasama distributor. Kami siap melayani area Prigen, Pandaan, Tretes, dan sekitarnya.</p>';
         foreach ($articles as $a) {
             Article::updateOrCreate(['slug'=>$a['slug']], array_merge($a, [
-                'content'=>$contentTemplate, 'views'=>rand(80,600),
+                'content'=>$contentTemplate, 'views'=>rand(50,300),
                 'created_at'=>now(),'updated_at'=>now()
             ]));
         }
 
         // ── Clients ──────────────────────────────────────────────────
         $clients = [
-            ['name'=>'PT. Pertamina (Persero)',         'city'=>'Jakarta',      'order'=>1],
-            ['name'=>'PT. PLN (Persero)',                'city'=>'Jakarta',      'order'=>2],
-            ['name'=>'PT. Pelabuhan Indonesia III',      'city'=>'Surabaya',     'order'=>3],
-            ['name'=>'PT. Wijaya Karya (Persero)',       'city'=>'Jakarta',      'order'=>4],
-            ['name'=>'PT. Astra Daihatsu Motor',         'city'=>'Karawang',     'order'=>5],
-            ['name'=>'PT. Chandra Asri Petrochemical',   'city'=>'Cilegon',      'order'=>6],
-            ['name'=>'PT. Semen Indonesia (Persero)',    'city'=>'Gresik',       'order'=>7],
-            ['name'=>'PT. Krakatau Steel (Persero)',     'city'=>'Cilegon',      'order'=>8],
+            ['name'=>'Perumahan Prigen Permai',   'city'=>'Prigen',   'order'=>1],
+            ['name'=>'Hotel Natura Prigen',        'city'=>'Prigen',   'order'=>2],
+            ['name'=>'Kafe Lereng Welirang',       'city'=>'Pandaan',  'order'=>3],
+            ['name'=>'Pengelola Wisata Tretes',    'city'=>'Tretes',   'order'=>4],
+            ['name'=>'Kecamatan Prigen',           'city'=>'Prigen',   'order'=>5],
+            ['name'=>'RSUD Bangil',                'city'=>'Bangil',   'order'=>6],
+            ['name'=>'SD Negeri Prigen 1',         'city'=>'Prigen',   'order'=>7],
+            ['name'=>'Toko Swalayan Prigen Indah', 'city'=>'Prigen',   'order'=>8],
         ];
         foreach ($clients as $c) {
             Client::updateOrCreate(['name'=>$c['name']], array_merge($c, [
@@ -185,28 +189,27 @@ class DatabaseSeeder extends Seeder
         if (\App\Models\Testimonial::count() === 0) {
             Testimonial::insert([
                 [
-                    'name'=>'Ir. Bambang Sutrisno',
-                    'company'=>'PT. Pelabuhan Indonesia III',
-                    'position'=>'Project Manager',
-                    'content'=>'CV. Bintang Energy Surabaya membuktikan diri sebagai mitra yang sangat profesional. Produk cat anti korosi Jotun yang mereka suplai terbukti tahan di lingkungan pelabuhan yang sangat korosif. Pengiriman tepat waktu dan tim teknisnya sangat responsif.',
+                    'name'=>'Ibu Sari Rahayu',
+                    'company'=>'Perumahan Prigen Permai',
+                    'position'=>'Ibu Rumah Tangga',
+                    'content'=>'Sudah 3 tahun langganan Air Segar Prigen, airnya memang beda! Segar, jernih, dan anak-anak suka banget. Pengiriman juga selalu tepat waktu. Sangat rekomendasikan untuk keluarga!',
                     'rating'=>5,'is_active'=>1,'order'=>1,'created_at'=>now(),'updated_at'=>now()
                 ],
                 [
-                    'name'=>'Drs. Hendra Wijaya',
-                    'company'=>'PT. Chandra Asri Petrochemical',
-                    'position'=>'Maintenance Superintendent',
-                    'content'=>'Sudah 5 tahun kami mempercayakan kebutuhan coating untuk unit kilang kami ke CV. Bintang Energy Surabaya. Kualitas produk dan konsistensi layanan mereka tidak perlu diragukan lagi. Sangat direkomendasikan untuk proyek oil & gas.',
+                    'name'=>'Pak Budi Santoso',
+                    'company'=>'Hotel Natura Prigen',
+                    'position'=>'Manager Operasional',
+                    'content'=>'Kami sudah kerjasama dengan Air Segar Prigen selama 2 tahun untuk kebutuhan air minum tamu hotel. Kualitasnya konsisten, pelayanannya profesional, dan harganya kompetitif. Tamu kami pun puas!',
                     'rating'=>5,'is_active'=>1,'order'=>2,'created_at'=>now(),'updated_at'=>now()
                 ],
                 [
-                    'name'=>'Agus Firmansyah, ST.',
-                    'company'=>'PT. Wijaya Karya (Persero)',
-                    'position'=>'Site Engineer',
-                    'content'=>'Kami menggunakan produk PPG Sigma dari CV. Bintang Energy Surabaya untuk proyek jembatan di Jawa Timur. Hasilnya sangat memuaskan — adhesion kuat, tidak mudah terkelupas, dan warnanya tetap terjaga meski terpapar cuaca ekstrem.',
+                    'name'=>'Mas Dian Firmansyah',
+                    'company'=>'Kafe Lereng Welirang',
+                    'position'=>'Pemilik Kafe',
+                    'content'=>'Air dari Air Segar Prigen bikin minuman di kafe saya lebih enak dan segar. Pelanggan sering tanya kenapa kopi dan tehnya beda, rahasianya ya air pegunungan Prigen ini!',
                     'rating'=>5,'is_active'=>1,'order'=>3,'created_at'=>now(),'updated_at'=>now()
                 ],
             ]);
         }
     }
 }
-

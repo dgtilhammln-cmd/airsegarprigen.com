@@ -11,34 +11,34 @@ class SeoSeeder extends Seeder
     {
         $seo = [
             'home' => [
-                'title' => 'CV. Karya Perdana Teknik | Hoist Crane & Cargo Lift Specialist',
-                'desc' => 'Spesialis manufaktur, instalasi, dan maintenance Overhead Crane, Chain Hoist, Wire Rope Hoist, Gantry Crane & Cargo Lift di Jawa Timur dan seluruh Indonesia.',
-                'keywords' => 'hoist crane surabaya, overhead crane gresik, jual crane indonesia, cargo lift sidoarjo, pabrik gantry crane, maintenance hoist crane, spesialis angkat angkut industri'
+                'title' => 'Air Segar Prigen | Depot Air Minum Isi Ulang Premium Pegunungan',
+                'desc' => 'Depot air minum isi ulang premium bersumber dari mata air pegunungan Prigen. Jernih, bebas bakteri, kaya mineral alami. Antar ke rumah se-area Prigen, Pandaan, Tretes.',
+                'keywords' => 'air minum prigen, depot air isi ulang prigen, air galon prigen, air pegunungan prigen pasuruan, air segar prigen, isi ulang galon prigen'
             ],
             'about' => [
-                'title' => 'Tentang Kami | Profil CV. Karya Perdana Teknik Gresik',
-                'desc' => 'Berpengalaman sejak 2013, CV. Karya Perdana Teknik adalah perusahaan terpercaya dalam penyediaan mesin Hoist, Crane System & Cargo Lift berstandar internasional.',
-                'keywords' => 'profil karya perdana teknik, tentang kpt gresik, spesialis hoist crane berpengalaman, perusahaan crane jawa timur, sejarah kpt crane'
+                'title' => 'Tentang Kami | Air Segar Prigen - Depot Air Minum Pegunungan',
+                'desc' => 'Berdiri sejak 2015, Air Segar Prigen adalah depot air minum isi ulang terpercaya yang bersumber dari mata air pegunungan Prigen, Pasuruan, Jawa Timur.',
+                'keywords' => 'profil air segar prigen, tentang depot air prigen, sejarah air segar prigen, depot air minum pegunungan pasuruan'
             ],
             'services' => [
-                'title' => 'Produk & Layanan Instalasi Crane, Hoist & Lift Industri',
-                'desc' => 'Solusi lengkap pengadaan, pemasangan, dan pemeliharaan Overhead Crane, Cargo Lift, Jib Crane & Monorail Hoist. Dilengkapi garansi purna jual yang responsif.',
-                'keywords' => 'layanan instalasi crane, jasa pasang cargo lift, produk hoist crane, overhead crane fabrikasi, perbaikan mesin angkat angkut, gantry crane gresik'
+                'title' => 'Produk Air Minum | Air Segar Prigen - Galon & Botol Pegunungan',
+                'desc' => 'Produk air minum Air Segar Prigen: galon 19L, botol 600ml, botol 1500ml. Sumber mata air pegunungan Prigen, proses filtrasi modern, harga terjangkau.',
+                'keywords' => 'air galon prigen, botol air prigen, isi ulang galon murah prigen, produk air minum pegunungan, harga air galon prigen'
             ],
             'gallery' => [
-                'title' => 'Galeri Proyek & Portofolio Pemasangan Crane Lift | KPT',
-                'desc' => 'Dokumentasi hasil pengerjaan proyek Overhead Crane, Cargo Lift, dan Gantry Crane di berbagai sektor industri dan manufaktur di seluruh wilayah Indonesia.',
-                'keywords' => 'galeri proyek crane, portofolio cargo lift, hasil pemasangan hoist, dokumentasi overhead crane, proyek kpt gresik, instalasi alat berat'
+                'title' => 'Galeri & Portofolio Layanan | Air Segar Prigen',
+                'desc' => 'Dokumentasi layanan pengiriman air minum Air Segar Prigen ke berbagai pelanggan di wilayah Prigen, Pandaan, Tretes, dan sekitarnya.',
+                'keywords' => 'galeri air segar prigen, portofolio depot air prigen, pelanggan air segar prigen, pengiriman air galon prigen'
             ],
             'articles' => [
-                'title' => 'Artikel, Tips Maintenance & Informasi Hoist Crane Terbaru',
-                'desc' => 'Panduan lengkap seputar dunia alat angkat angkut industri, tips perawatan crane, serta berita terbaru dari CV. Karya Perdana Teknik.',
-                'keywords' => 'artikel hoist crane, tips maintenance crane, berita industri manufaktur, panduan perawatan cargo lift, blog alat berat, edukasi overhead crane'
+                'title' => 'Artikel & Tips Kesehatan Air Minum | Air Segar Prigen',
+                'desc' => 'Baca artikel informatif tentang manfaat air pegunungan, tips merawat galon, dan informasi seputar kesehatan air minum dari Air Segar Prigen.',
+                'keywords' => 'artikel air minum sehat, tips galon air bersih, manfaat air pegunungan, edukasi kesehatan air, blog air segar prigen'
             ],
             'contact' => [
-                'title' => 'Hubungi Kami | Konsultasi Kebutuhan Hoist Crane & Lift',
-                'desc' => 'Dapatkan konsultasi gratis untuk kebutuhan mesin angkat angkut industri Anda. Hubungi spesialis kami di CV. Karya Perdana Teknik, Pergudangan Legundi Gresik.',
-                'keywords' => 'kontak karya perdana teknik, hubungi teknisi crane, alamat kpt gresik, nomor wa spesialis hoist, konsultasi cargo lift gratis, penawaran harga crane'
+                'title' => 'Hubungi Kami | Pesan Air Galon Antar Rumah - Air Segar Prigen',
+                'desc' => 'Pesan air galon antar ke rumah atau hubungi kami untuk info harga dan kerjasama. Air Segar Prigen melayani area Prigen, Pandaan, Tretes, dan sekitarnya.',
+                'keywords' => 'pesan air galon prigen, antar air minum prigen, kontak air segar prigen, nomor wa depot air prigen, order air galon pasuruan'
             ]
         ];
 
