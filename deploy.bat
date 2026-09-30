@@ -19,13 +19,13 @@ if exist %ARCHIVE% (
     timeout /t 1 /nobreak >nul
 )
 
-echo [1/4] Push update ke GitHub...
-git add -A
+echo [1/4] Push update ke GitHub (cepat & tanpa vendor)...
+git add app bootstrap config database public public_html resources routes storage .env artisan composer.json .gitignore deploy.bat deploy.ps1 2>nul
 git commit -m "deploy: %DATE% %TIME%" 2>nul
 git push origin main
 echo.
 
-echo [2/4] Membuat paket deployment (termasuk vendor lengkap)...
+echo [2/4] Membuat paket deployment (termasuk vendor)...
 tar -czf %ARCHIVE% ^
     --exclude=".git" ^
     --exclude=".github" ^
@@ -60,7 +60,7 @@ echo Upload berhasil.
 echo.
 
 echo [4/4] Ekstrak, Migrate, Seed, & Clear Cache di Server (masukkan password)...
-ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && chmod -R 775 storage bootstrap/cache && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULY ==='"
+ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && chmod -R 775 storage bootstrap/cache && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 echo.
 del /f /q %ARCHIVE% 2>nul
