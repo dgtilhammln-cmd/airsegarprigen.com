@@ -19,34 +19,37 @@ class AdminSettingsController extends Controller
 
     public function update(Request $request)
     {
-        $imageKeys = ['hero_bg_image', 'hero_main_image', 'hero_secondary_image', 'about_image', 'about_c3_image', 'og_image_default', 'logo', 'favicon', 'coverage_map'];
+        $imageKeys = ['hero_bg_image', 'hero_main_image', 'hero_secondary_image', 'about_image', 'about_c3_image', 'og_image_default', 'logo', 'favicon', 'coverage_map', 'compro'];
         $data      = $request->except(['_token', '_method']);
 
         foreach ($data as $key => $value) {
-            // Jika array, ubah menjadi JSON string agar bisa disimpan di DB (kecuali untuk file upload yang tidak ada di $data)
+            // Jangan timpa file/gambar dengan string kosong dari request text biasa
+            if (in_array($key, $imageKeys, true)) {
+                continue;
+            }
+
+            // Jika array, ubah menjadi JSON string
             if (is_array($value)) {
-                // Filter array kosong dan reset index (array_values) untuk menghindari format object JSON yang salah
                 $value = json_encode(array_values(array_filter($value)));
             }
             
             $existing = Setting::where('key', $key)->first();
             $type     = $existing?->type ?? 'text';
-            if ($type !== 'image') {
-                Setting::set($key, $value ?? '', $type);
-            }
+            Setting::set($key, $value ?? '', $type);
         }
 
-        // Handle image uploads
+        // Handle file/image uploads
         foreach ($request->allFiles() as $key => $file) {
             if (!$file->isValid()) continue;
 
-            // Handle favicon separately (ico/png, no WebP conversion)
+            // Handle favicon separately (ico/png/svg, no WebP conversion)
             if ($key === 'favicon') {
-                $path = 'settings/favicon.' . $file->getClientOriginalExtension();
+                $ext  = $file->getClientOriginalExtension();
+                $path = 'settings/favicon.' . $ext;
                 Storage::disk('public')->put($path, file_get_contents($file->getRealPath()));
                 Setting::set($key, $path, 'image');
-                // Also copy to public/
-                copy($file->getRealPath(), base_path('public_html/favicon.ico'));
+                @copy($file->getRealPath(), base_path('public_html/favicon.ico'));
+                @copy($file->getRealPath(), base_path('public/favicon.ico'));
                 continue;
             }
 
@@ -75,6 +78,7 @@ class AdminSettingsController extends Controller
         }
 
         Setting::clearCache();
+        \Illuminate\Support\Facades\Cache::flush();
         return back()->with('success', 'Pengaturan berhasil disimpan!');
     }
 }
