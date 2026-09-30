@@ -21,14 +21,14 @@ if (Test-Path $ARCHIVE) {
 
 # 1. Git Push (fast, excludes vendor)
 Write-Host "[1/4] Push update ke GitHub..." -ForegroundColor Yellow
-git add app bootstrap config database public public_html resources routes storage .env artisan composer.json .gitignore deploy.bat deploy.ps1 2>$null
+git add app bootstrap config database public_html resources routes storage .env artisan composer.json .gitignore deploy.bat deploy.ps1 2>$null
 git commit -m "deploy: $(Get-Date -Format 'yyyy-MM-dd HH:mm')" 2>$null
 git push origin main
 Write-Host ""
 
 # 2. Compress archive
 Write-Host "[2/4] Membuat paket deployment (termasuk vendor)..." -ForegroundColor Yellow
-& tar -czf $ARCHIVE --exclude=".git" --exclude="node_modules" --exclude=".trash" --exclude="$ARCHIVE" --exclude="bootstrap/cache/*.php" --exclude="public/storage" --exclude="public_html/storage" --exclude="storage/logs/*" --exclude="storage/framework/cache/*" --exclude="storage/framework/sessions/*" --exclude="storage/framework/views/*" app bootstrap config database public public_html resources routes storage vendor .env artisan composer.json
+& tar -czf $ARCHIVE --exclude=".git" --exclude="node_modules" --exclude=".trash" --exclude="$ARCHIVE" --exclude="bootstrap/cache/*.php" --exclude="public_html/storage" --exclude="storage/logs/*" --exclude="storage/framework/cache/*" --exclude="storage/framework/sessions/*" --exclude="storage/framework/views/*" app bootstrap config database public_html resources routes storage vendor .env artisan composer.json
 
 if (-not (Test-Path $ARCHIVE)) {
     Write-Host "ERROR: Gagal membuat tar archive!" -ForegroundColor Red
@@ -51,7 +51,7 @@ Write-Host ""
 
 # 4. SSH Extract, Setup Storage, Migrate, Seed & Optimize
 Write-Host "[4/4] Ekstrak, Setup Storage, Migrate, Seed, & Clear Cache di Server (masukkan password)..." -ForegroundColor Yellow
-$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
+$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/app/public storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && cd $REMOTE_DIR/public_html && rm -rf storage && ln -sfn ../storage/app/public storage && cd $REMOTE_DIR && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 ssh -p $SSH_PORT "${SSH_USER}@${SSH_HOST}" $remoteCmd
 
