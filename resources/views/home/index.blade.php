@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
     @push('styles')
@@ -9,8 +9,7 @@
         @endif
     @endpush
     {{-- ════════════════════════════════════════════════
-    HOME PAGE — {{ \App\Models\Setting::get('company_name', config('app.name')) }} Cat Industri
-    {{ \App\Models\Setting::get('company_name', config('app.name')) }} | {{ \App\Models\Setting::get('company_name', config('app.name')) }}
+    HOME PAGE — Cat Industri & Commercial Coating
     ════════════════════════════════════════════════ --}}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />

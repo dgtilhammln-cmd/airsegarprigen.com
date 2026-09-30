@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 
 <style>
@@ -335,7 +335,7 @@
 
         <p class="sv-intro">
             @if(request('category') && ($activeCat = $categories->firstWhere('slug', request('category'))))
-                {{ $activeCat->description ?? 'Temukan berbagai pilihan produk ' . $activeCat->name . ' berkualitas tinggi dari {{ \App\Models\Setting::get('company_name', config('app.name')) }}.' }}
+                {{ $activeCat->description ?? ('Temukan berbagai pilihan produk ' . $activeCat->name . ' berkualitas tinggi dari ' . \App\Models\Setting::get('company_name', config('app.name')) . '.') }}
             @else
                 {{ \App\Models\Setting::get('company_name', config('app.name')) }} menyediakan berbagai merk cat dan coating premium untuk industri, maritim, dan komersial. Temukan produk yang tepat untuk kebutuhan Anda.
             @endif
