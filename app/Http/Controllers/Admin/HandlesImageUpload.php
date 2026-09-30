@@ -84,7 +84,7 @@ trait HandlesImageUpload
             throw new \Exception("Gagal memproses gambar. Pastikan file valid.");
         }
         
-        $tempPath = storage_path('app/public/temp_' . uniqid() . '.webp');
+        $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'webp_' . uniqid() . '.webp';
         
         try {
             // Try saving directly to a file path

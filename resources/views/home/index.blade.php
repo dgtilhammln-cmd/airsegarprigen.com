@@ -831,39 +831,56 @@
     </style>
 
     {{-- ════ HERO BANNER SLIDER (100% REFERENCE MATCH) ════ --}}
-    <section class="cv-hero-modern" id="home">
-        <div class="swiper hero-swiper">
-            <div class="swiper-wrapper">
-                @if(isset($heroSlides) && $heroSlides->count() > 0)
-                    @foreach($heroSlides as $slide)
-                        <div class="swiper-slide">
-                            @if($slide->button_url)
-                                <a href="{{ $slide->button_url }}" target="_blank" class="as-banner-card">
-                                    <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
-                                         alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
-                                </a>
-                            @else
-                                <div class="as-banner-card">
-                                    <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
-                                         alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
-                                </div>
+    @php
+        $heroBgColor   = $settings['hero_bg_color'] ?? '#F3F4F6';
+        $heroBgImage   = !empty($settings['hero_bg_image']) ? asset('storage/' . $settings['hero_bg_image']) : null;
+        $rawOpacity    = floatval($settings['hero_bg_opacity'] ?? 100);
+        $heroBgOpacity = $rawOpacity > 1 ? ($rawOpacity / 100.0) : $rawOpacity;
+    @endphp
+
+    <section class="cv-hero-modern" id="home" style="background-color: {{ $heroBgColor }}; position: relative;">
+        @if($heroBgImage)
+            <div class="cv-hero-bg-overlay" style="position: absolute; inset: 0; background-image: url('{{ $heroBgImage }}'); background-size: cover; background-position: center; opacity: {{ $heroBgOpacity }}; pointer-events: none; z-index: 0;"></div>
+        @endif
+
+        <div style="position: relative; z-index: 1;">
+            <div class="swiper hero-swiper">
+                <div class="swiper-wrapper">
+                    @php $hasAnySlideImage = isset($heroSlides) && $heroSlides->where('image', '!=', null)->where('image', '!=', '')->count() > 0; @endphp
+                    @if($hasAnySlideImage)
+                        @foreach($heroSlides->where('is_active', true) as $slide)
+                            @if($slide->image)
+                            <div class="swiper-slide">
+                                @if($slide->button_url)
+                                    <a href="{{ $slide->button_url }}" target="_blank" class="as-banner-card">
+                                        <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
+                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
+                                    </a>
+                                @else
+                                    <div class="as-banner-card">
+                                        <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
+                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
+                                    </div>
+                                @endif
+                            </div>
                             @endif
+                        @endforeach
+                    @else
+                        {{-- Belum ada banner — tampilkan placeholder gradient --}}
+                        <div class="swiper-slide">
+                            <div class="as-banner-card" style="background:linear-gradient(135deg,#0A1930 0%,#1a3a6e 100%); min-height:360px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem;">
+                                <div style="color:#fff; font-size:1.75rem; font-weight:800; text-align:center; padding:2rem;">{{ $settings['company_name'] ?? 'Air Segar Prigen' }}</div>
+                                <div style="color:rgba(255,255,255,0.8); font-size:1rem; text-align:center;">{{ $settings['company_tagline'] ?? 'Supplier Air Tangki Mineral & Demineral Prigen' }}</div>
+                            </div>
                         </div>
-                    @endforeach
-                @else
-                    {{-- Default Banner Slide --}}
-                    <div class="swiper-slide">
-                        <div class="as-banner-card">
-                            <img src="{{ asset('images/hero-banner-default.webp') }}" class="as-banner-img" alt="Air Segar Prigen — Supplier Air Tangki Mineral & Demineral Prigen">
-                        </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
-        </div>
-        
-        {{-- Swiper Pagination Track Pill (Matches Screenshot 2) --}}
-        <div class="as-hero-pagination-wrap">
-            <div class="swiper-pagination hero-swiper-pagination"></div>
+            
+            {{-- Swiper Pagination Track Pill (Matches Screenshot 2) --}}
+            <div class="as-hero-pagination-wrap">
+                <div class="swiper-pagination hero-swiper-pagination"></div>
+            </div>
         </div>
     </section>
 

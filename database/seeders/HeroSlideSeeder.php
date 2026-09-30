@@ -9,7 +9,10 @@ class HeroSlideSeeder extends Seeder
 {
     public function run(): void
     {
-        HeroSlide::truncate();
+        // Only seed default slides if table is completely empty — never overwrite existing slides
+        if (HeroSlide::count() > 0) {
+            return;
+        }
 
         HeroSlide::create([
             'title'       => "Supplier Air Tangki Mineral\n& Demineral Prigen",
@@ -18,11 +21,10 @@ class HeroSlideSeeder extends Seeder
             'tags'        => 'Air Tangki Mineral, Air Demineral, Antar ke Lokasi',
             'button_text' => 'Pesan Sekarang',
             'button_url'  => '/contact',
+            'image'       => null,
+            'alt_text'    => 'Supplier Air Tangki Mineral & Demineral Prigen',
             'order'       => 1,
             'is_active'   => true,
-            'stat_1_value' => '500+',  'stat_1_label' => 'Pelanggan Terlayani',
-            'stat_2_value' => '10+',   'stat_2_label' => 'Tahun Pengalaman',
-            'stat_3_value' => '2',     'stat_3_label' => 'Jenis Produk Air',
         ]);
 
         HeroSlide::create([
@@ -32,11 +34,10 @@ class HeroSlideSeeder extends Seeder
             'tags'        => 'Air Demineral, Boiler Industri, TDS Rendah',
             'button_text' => 'Info & Harga',
             'button_url'  => '/products',
+            'image'       => null,
+            'alt_text'    => 'Air Demineral Industri TDS Rendah - Air Segar Prigen',
             'order'       => 2,
             'is_active'   => true,
-            'stat_1_value' => '500+',  'stat_1_label' => 'Pelanggan Terlayani',
-            'stat_2_value' => '10+',   'stat_2_label' => 'Tahun Pengalaman',
-            'stat_3_value' => '2',     'stat_3_label' => 'Jenis Produk Air',
         ]);
     }
 }

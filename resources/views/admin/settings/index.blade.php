@@ -504,13 +504,53 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
 <div id="tab-hero" class="tab-section" style="display:none;">
   <div style="display:flex;flex-direction:column;gap:1.25rem;">
 
-    {{-- Images --}}
-    <div style="background:#FFFFFF;border:1px solid #E2E8F0;box-shadow:0 4px 15px rgba(0,0,0,0.03);border-radius:10px;padding:1.5rem;">
-      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.25rem;">
-        <svg width="14" height="14" fill="none" stroke="#DC2626" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#DC2626;">Gambar Background</div>
+    {{-- Hero Background & Section Customization --}}
+    <div style="background:#FFFFFF;border:1px solid rgba(59,130,246,0.25);box-shadow:0 4px 20px rgba(0,0,0,0.03);border-radius:14px;padding:1.5rem;">
+      <div style="display:flex;align-items:center;gap:.625rem;margin-bottom:1.25rem;">
+        <svg width="20" height="20" fill="none" stroke="#3B82F6" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div>
+          <div style="font-size:.85rem;font-weight:800;color:#1E293B;">Pengaturan Hero Banner & Background Section</div>
+          <p style="font-size:.7rem;color:#64748B;margin:0;">Atur gambar background belakang banner slider, warna section, dan transparansi (opacity)</p>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;">
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+        {{-- Hero Bg Image --}}
+        <div>
+          <label class="form-label">Gambar Background Belakang Banner</label>
+          @if(!empty($settings['hero_bg_image']))
+          <div style="margin-bottom:.75rem;border-radius:8px;overflow:hidden;border:1px solid #E2E8F0;position:relative;">
+            <img src="{{ asset('storage/'.$settings['hero_bg_image']) }}" style="height:100px;width:100%;object-fit:cover;" alt="Hero Bg Image">
+            <span style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.75);color:#fff;font-size:0.65rem;padding:2px 8px;border-radius:4px;font-weight:600;">Bg Saat Ini</span>
+          </div>
+          @endif
+          <input type="file" name="hero_bg_image" class="form-input" accept="image/*" style="padding:.5rem;">
+          <p style="font-size:.7rem;color:#94A3B8;margin:.375rem 0 0;">Gambar di belakang slider banner. Auto kompres WebP 1920px.</p>
+        </div>
+
+        {{-- Hero Bg Color --}}
+        <div>
+          <label class="form-label" for="s-hero_bg_color">Warna Background Section (Hex / Picker)</label>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <input type="color" value="{{ $settings['hero_bg_color'] ?? '#F3F4F6' }}" oninput="document.getElementById('s-hero_bg_color').value = this.value" style="width:44px;height:42px;border:1.5px solid #E4E7F0;border-radius:8px;cursor:pointer;padding:2px;background:#fff;flex-shrink:0;">
+            <input type="text" name="hero_bg_color" id="s-hero_bg_color" class="form-input" value="{{ $settings['hero_bg_color'] ?? '#F3F4F6' }}" placeholder="#F3F4F6">
+          </div>
+          <p style="font-size:.7rem;color:#94A3B8;margin:.375rem 0 0;">Contoh: <code>#F3F4F6</code> (Terang), <code>#0F172A</code> (Gelap), <code>#0A1930</code> (Biru)</p>
+        </div>
+
+        {{-- Hero Bg Opacity --}}
+        <div>
+          <label class="form-label" for="s-hero_bg_opacity">Opacity / Transparansi Gambar (%)</label>
+          <div style="display:flex;gap:0.75rem;align-items:center;margin-bottom:.25rem;">
+            <input type="range" min="0" max="100" step="5" value="{{ $settings['hero_bg_opacity'] ?? 100 }}" oninput="document.getElementById('s-hero_bg_opacity').value = this.value; document.getElementById('opacity-val-display').innerText = this.value + '%'" style="flex:1;accent-color:#3B82F6;cursor:pointer;">
+            <input type="number" name="hero_bg_opacity" id="s-hero_bg_opacity" class="form-input" value="{{ $settings['hero_bg_opacity'] ?? 100 }}" min="0" max="100" style="width:75px;text-align:center;font-weight:700;" oninput="document.getElementById('opacity-val-display').innerText = this.value + '%'">
+          </div>
+          <p style="font-size:.7rem;color:#94A3B8;margin:0;">Nilai saat ini: <strong id="opacity-val-display" style="color:#3B82F6;">{{ $settings['hero_bg_opacity'] ?? 100 }}%</strong> (0% = Transparan, 100% = Solid)</p>
+        </div>
+      </div>
+
+      {{-- Other sub-page bg images --}}
+      <div style="border-top:1px dashed #E2E8F0;padding-top:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
         @foreach([
           'breadcrumb_bg' => 'Header Sub-halaman (Layanan, Artikel, dll)',
           'about_image'   => 'Foto About / Profile (Lama)',
@@ -518,7 +558,7 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
         <div>
           <label class="form-label">{{ $imgLabel }}</label>
           @if(!empty($settings[$imgKey]))
-          <div style="margin-bottom:.75rem;border-radius:6px;overflow:hidden;border:1px solid #E2E8F0;box-shadow:0 4px 15px rgba(0,0,0,0.03);">
+          <div style="margin-bottom:.75rem;border-radius:6px;overflow:hidden;border:1px solid #E2E8F0;">
             <img src="{{ asset('storage/'.$settings[$imgKey]) }}" style="height:90px;width:100%;object-fit:cover;" alt="{{ $imgLabel }}">
           </div>
           @endif

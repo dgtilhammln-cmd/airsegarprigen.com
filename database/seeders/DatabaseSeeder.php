@@ -63,6 +63,8 @@ class DatabaseSeeder extends Seeder
             ['key'=>'hero_cta_primary', 'value'=>'Pesan Sekarang',                                          'type'=>'text','group'=>'hero','label'=>'CTA Primary Text'],
             ['key'=>'hero_cta_secondary','value'=>'Lihat Produk Kami',                                      'type'=>'text','group'=>'hero','label'=>'CTA Secondary Text'],
             ['key'=>'hero_bg_image',    'value'=>'',                                                        'type'=>'image','group'=>'hero','label'=>'Hero Background Image'],
+            ['key'=>'hero_bg_color',    'value'=>'#F3F4F6',                                                 'type'=>'text','group'=>'hero','label'=>'Hero Background Color'],
+            ['key'=>'hero_bg_opacity',  'value'=>'100',                                                     'type'=>'text','group'=>'hero','label'=>'Hero Background Opacity (%)'],
 
             // About
             ['key'=>'about_heading',    'value'=>'Supplier Air Tangki Mineral<br>& Demineral Terpercaya',   'type'=>'text','group'=>'about','label'=>'About Heading'],
@@ -107,8 +109,16 @@ class DatabaseSeeder extends Seeder
             ['key'=>'meta_title_gallery', 'value'=>'Galeri Pengiriman | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Gallery'],
             ['key'=>'meta_title_articles','value'=>'Artikel & Info Seputar Air Mineral & Demineral | Air Segar Prigen','type'=>'text','group'=>'seo','label'=>'Meta Title Articles'],
         ];
+        // Image settings: ONLY insert if key doesn't exist yet — never overwrite uploaded images
+        $imageKeys = ['logo', 'favicon', 'og_image_default', 'hero_bg_image', 'hero_main_image', 'hero_secondary_image', 'about_image', 'about_c3_image', 'coverage_map', 'compro'];
         foreach ($settings as $s) {
-            Setting::updateOrCreate(['key' => $s['key']], array_merge($s, ['created_at'=>now(),'updated_at'=>now()]));
+            if (in_array($s['key'], $imageKeys, true)) {
+                // Only create if not exists — preserve any uploaded image value
+                Setting::firstOrCreate(['key' => $s['key']], array_merge($s, ['created_at'=>now(),'updated_at'=>now()]));
+            } else {
+                // Text settings can be updated with new defaults if needed
+                Setting::updateOrCreate(['key' => $s['key']], array_merge($s, ['created_at'=>now(),'updated_at'=>now()]));
+            }
         }
 
         // ── Gallery Projects ─────────────────────────────────────────
