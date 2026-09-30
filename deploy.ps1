@@ -51,7 +51,7 @@ Write-Host ""
 
 # 4. SSH Extract, Setup Storage, Migrate, Seed & Optimize
 Write-Host "[4/4] Ekstrak, Setup Storage, Migrate, Seed, & Clear Cache di Server (masukkan password)..." -ForegroundColor Yellow
-$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/app/public storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && cd $REMOTE_DIR/public_html && rm -rf storage && ln -sfn ../storage/app/public storage && cd $REMOTE_DIR && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
+$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/app/public storage/logs bootstrap/cache public_html/css && chmod -R 777 storage bootstrap/cache && cp resources/css/app.css public_html/css/app.css && cd $REMOTE_DIR/public_html && rm -rf storage app bootstrap config database resources routes vendor scratch artisan composer.json composer.lock .env add_*.php temp_*.php && ln -sfn ../storage/app/public storage && cd $REMOTE_DIR && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 ssh -p $SSH_PORT "${SSH_USER}@${SSH_HOST}" $remoteCmd
 
