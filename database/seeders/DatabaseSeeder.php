@@ -27,7 +27,13 @@ class DatabaseSeeder extends Seeder
         // ── Admin user ──────────────────────────────────────────────
         User::updateOrCreate(['email' => 'admin@airsegarprigen.com'], [
             'name'      => 'Admin Air Segar Prigen',
-            'password'  => Hash::make('AirSegar@2026!'),
+            'password'  => Hash::make('airsegarprigen'),
+            'role'      => 'admin',
+            'is_active' => true,
+        ]);
+        User::updateOrCreate(['email' => 'admin@ptbiner.co.id'], [
+            'name'      => 'Admin Air Segar Prigen',
+            'password'  => Hash::make('airsegarprigen'),
             'role'      => 'admin',
             'is_active' => true,
         ]);
