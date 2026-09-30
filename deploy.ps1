@@ -49,9 +49,9 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Upload berhasil." -ForegroundColor Green
 Write-Host ""
 
-# 4. SSH Extract, Migrate, Seed & Optimize
-Write-Host "[4/4] Ekstrak, Migrate, Seed, & Clear Cache di Server (masukkan password)..." -ForegroundColor Yellow
-$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && chmod -R 775 storage bootstrap/cache && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
+# 4. SSH Extract, Setup Storage, Migrate, Seed & Optimize
+Write-Host "[4/4] Ekstrak, Setup Storage, Migrate, Seed, & Clear Cache di Server (masukkan password)..." -ForegroundColor Yellow
+$remoteCmd = "cd $REMOTE_DIR && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 ssh -p $SSH_PORT "${SSH_USER}@${SSH_HOST}" $remoteCmd
 

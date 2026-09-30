@@ -59,8 +59,8 @@ if errorlevel 1 (
 echo Upload berhasil.
 echo.
 
-echo [4/4] Ekstrak, Migrate, Seed, & Clear Cache di Server (masukkan password)...
-ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && chmod -R 775 storage bootstrap/cache && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
+echo [4/4] Ekstrak, Setup Storage, Migrate, Seed, & Clear Cache di Server (masukkan password)...
+ssh -p %SSH_PORT% %SSH_USER%@%SSH_HOST% "cd %REMOTE_DIR% && tar -xzf deploy_tmp.tar.gz --overwrite && rm -f deploy_tmp.tar.gz && rm -rf public_html/storage && mkdir -p storage/framework/views storage/framework/cache/data storage/framework/sessions storage/logs bootstrap/cache && chmod -R 777 storage bootstrap/cache && php artisan storage:link 2>/dev/null || true && php artisan migrate --force && php artisan db:seed --force && php artisan optimize:clear && echo '=== SERVER DEPLOYMENT COMPLETED SUCCESSFULLY ==='"
 
 echo.
 del /f /q %ARCHIVE% 2>nul
