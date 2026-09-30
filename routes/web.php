@@ -59,10 +59,57 @@ Route::post('/request-order', [LeadController::class, 'store'])->name('lead.stor
 // Sitemap & robots
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/sitemap', [SitemapController::class, 'index'])->name('sitemap');
-Route::get('/robots.txt', function () {
-    $content = "User-agent: *\nAllow: /\n\nSitemap: " . url('/sitemap.xml');
-    return response($content, 200)->header('Content-Type', 'text/plain');
+// Storage File Stream Fallback (Guarantees image serving on Hostinger even if symlinks fail)
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . ltrim($path, '/'));
+    if (!file_exists($fullPath)) {
+        $fullPathAlt = base_path('public_html/storage/' . ltrim($path, '/'));
+        if (file_exists($fullPathAlt)) {
+            $fullPath = $fullPathAlt;
+        } else {
+            $fullPathAlt2 = base_path('public/storage/' . ltrim($path, '/'));
+            if (file_exists($fullPathAlt2)) {
+                $fullPath = $fullPathAlt2;
+            } else {
+                abort(404);
+            }
+        }
+    }
+
+    $mime = @mime_content_type($fullPath);
+    if (!$mime || $mime === 'text/plain') {
+        $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+        $mime = match ($ext) {
+            'webp'  => 'image/webp',
+            'png'   => 'image/png',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'svg'   => 'image/svg+xml',
+            'gif'   => 'image/gif',
+            'ico'   => 'image/x-icon',
+            'pdf'   => 'application/pdf',
+            default => 'application/octet-stream',
+        };
+    }
+
+    return response()->file($fullPath, [
+        'Content-Type'  => $mime,
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*');
+
+// Favicon fallback route
+Route::get('/favicon.ico', function () {
+    $fav = \App\Models\Setting::get('favicon');
+    $path = $fav ? storage_path('app/public/' . $fav) : base_path('public_html/favicon.ico');
+    if (!file_exists($path)) {
+        $path = base_path('public/favicon.ico');
+    }
+    if (file_exists($path)) {
+        return response()->file($path, ['Content-Type' => 'image/x-icon']);
+    }
+    abort(404);
 });
+
 
 // Deployment Helper Route untuk Hostinger (Hapus route ini setelah selesai deploy!)
 Route::get('/deploy-hostinger', function () {
