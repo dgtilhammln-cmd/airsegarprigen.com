@@ -24,56 +24,7 @@ use App\Http\Controllers\Admin\AdminLeadController;
 use App\Http\Controllers\Admin\AdminServiceCategoryController;
 use App\Http\Controllers\Admin\AdminHeroSlideController;
 
-/*
-|--------------------------------------------------------------------------
-| TEMPORARY DEPLOY ROUTE — HAPUS SETELAH MIGRATE SELESAI!
-|--------------------------------------------------------------------------
-*/
-Route::get('/deploy-setup-AirSegar2026', function () {
-    $token = request('token');
-    if ($token !== 'AirSegar2026!Deploy') {
-        abort(403, 'Forbidden');
-    }
 
-    $action = request('action', 'status');
-    $log    = [];
-
-    try {
-        if ($action === 'migrate' || $action === 'full') {
-            ob_start();
-            \Artisan::call('migrate', ['--force' => true]);
-            $log['migrate'] = \Artisan::output();
-        }
-        if ($action === 'seed' || $action === 'full') {
-            \Artisan::call('db:seed', ['--force' => true]);
-            $log['seed'] = \Artisan::output();
-        }
-        if ($action === 'cache' || $action === 'full') {
-            \Artisan::call('optimize:clear');
-            $log['optimize:clear'] = \Artisan::output();
-            \Artisan::call('view:cache');
-            $log['view:cache'] = \Artisan::output();
-        }
-        if ($action === 'link' || $action === 'full') {
-            \Artisan::call('storage:link');
-            $log['storage:link'] = \Artisan::output();
-        }
-        if ($action === 'status') {
-            \Artisan::call('migrate:status');
-            $log['migrate:status'] = \Artisan::output();
-        }
-    } catch (\Throwable $e) {
-        $log['ERROR'] = $e->getMessage();
-    }
-
-    $output = "=== DEPLOY SETUP (" . strtoupper($action) . ") ===\n\n";
-    foreach ($log as $cmd => $out) {
-        $output .= ">>> $cmd\n$out\n";
-    }
-    $output .= "\n=== DONE ===";
-
-    return response($output, 200)->header('Content-Type', 'text/plain');
-});
 
 /*
 |--------------------------------------------------------------------------
