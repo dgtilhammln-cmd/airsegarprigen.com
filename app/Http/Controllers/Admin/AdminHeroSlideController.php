@@ -33,23 +33,32 @@ class AdminHeroSlideController extends Controller
         }
 
         $validated = $request->validate([
-            'image'     => 'required|image|max:10240',
-            'alt_text'  => 'nullable|string|max:255',
-            'button_url'=> 'nullable|url|max:500',
-            'order'     => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
+            'image'         => 'required|image|max:10240',
+            'alt_text'      => 'nullable|string|max:255',
+            'button_url'    => 'nullable|url|max:500',
+            'order'         => 'nullable|integer|min:0',
+            'is_active'     => 'boolean',
+            'compress_webp' => 'nullable|boolean',
         ]);
 
-        $validated['title']     = $validated['alt_text'] ?? ('Banner Slide ' . ($count + 1));
-        $validated['is_active'] = $request->boolean('is_active', true);
+        $validated['title']         = $validated['alt_text'] ?? ('Banner Slide ' . ($count + 1));
+        $validated['is_active']     = $request->boolean('is_active', true);
+        $validated['compress_webp'] = $request->boolean('compress_webp', true);
 
         if ($request->hasFile('image')) {
-            // Auto compress to WebP 1920px width
-            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
+            if ($validated['compress_webp']) {
+                $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
+            } else {
+                $validated['image'] = $this->storeOriginal($request->file('image'), 'hero_slides');
+            }
         }
 
         HeroSlide::create($validated);
-        return redirect()->route('admin.hero_slides.index')->with('success', 'Banner slide berhasil ditambahkan (Auto Compress WebP).');
+        $msg = $validated['compress_webp'] 
+            ? 'Banner slide berhasil ditambahkan (WebP Compress ON).' 
+            : 'Banner slide berhasil ditambahkan (Kualitas High Quality Asli - WebP Compress OFF).';
+
+        return redirect()->route('admin.hero_slides.index')->with('success', $msg);
     }
 
     public function edit(HeroSlide $heroSlide)
@@ -60,19 +69,25 @@ class AdminHeroSlideController extends Controller
     public function update(Request $request, HeroSlide $heroSlide)
     {
         $validated = $request->validate([
-            'image'     => 'nullable|image|max:10240',
-            'alt_text'  => 'nullable|string|max:255',
-            'button_url'=> 'nullable|url|max:500',
-            'order'     => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
+            'image'         => 'nullable|image|max:10240',
+            'alt_text'      => 'nullable|string|max:255',
+            'button_url'    => 'nullable|url|max:500',
+            'order'         => 'nullable|integer|min:0',
+            'is_active'     => 'boolean',
+            'compress_webp' => 'nullable|boolean',
         ]);
 
-        $validated['title']     = $validated['alt_text'] ?? ($heroSlide->title ?? 'Banner Slide');
-        $validated['is_active'] = $request->boolean('is_active', true);
+        $validated['title']         = $validated['alt_text'] ?? ($heroSlide->title ?? 'Banner Slide');
+        $validated['is_active']     = $request->boolean('is_active', true);
+        $validated['compress_webp'] = $request->boolean('compress_webp', true);
 
         if ($request->hasFile('image')) {
             $this->deleteStorageFile($heroSlide->image);
-            $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
+            if ($validated['compress_webp']) {
+                $validated['image'] = $this->storeWebP($request->file('image'), 'hero_slides', 1920, 700, 85);
+            } else {
+                $validated['image'] = $this->storeOriginal($request->file('image'), 'hero_slides');
+            }
         }
 
         $heroSlide->update($validated);

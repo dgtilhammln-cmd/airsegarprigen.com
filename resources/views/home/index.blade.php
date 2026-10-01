@@ -63,6 +63,36 @@
             display: block;
         }
 
+        /* Hero Banner Skeleton Loading */
+        .as-hero-skeleton {
+            width: 82%;
+            max-width: 1140px;
+            height: 460px;
+            margin: 0 auto;
+            border-radius: 22px;
+            background: linear-gradient(90deg, rgba(30, 41, 59, 0.6) 25%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.6) 75%);
+            background-size: 200% 100%;
+            animation: hero-skeleton-pulse 1.5s infinite linear;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            z-index: 10;
+        }
+
+        .as-hero-skeleton-hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        @keyframes hero-skeleton-pulse {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
         /* Swiper Pagination Track Pill (Matches Screenshot 2) */
         .as-hero-pagination-wrap {
             max-width: 1200px;
@@ -844,22 +874,33 @@
         @endif
 
         <div style="position: relative; z-index: 1;">
-            <div class="swiper hero-swiper">
+            {{-- Skeleton Loading Placeholder --}}
+            <div id="heroSkeleton" class="as-hero-skeleton"></div>
+
+            <div class="swiper hero-swiper" style="opacity: 0; transition: opacity 0.4s ease;" id="heroSwiperContainer">
                 <div class="swiper-wrapper">
-                    @php $hasAnySlideImage = isset($heroSlides) && $heroSlides->where('image', '!=', null)->where('image', '!=', '')->count() > 0; @endphp
+                    @php 
+                        $activeSlides = isset($heroSlides) ? $heroSlides->where('is_active', true)->where('image', '!=', null)->where('image', '!=', '') : collect();
+                        $slideCount = $activeSlides->count();
+                        $hasAnySlideImage = $slideCount > 0;
+                        // Apabila terdapat 2 banner, kita duplikasi slide (concat) agar Swiper dapat melakukan rotasi/looping berulang terus dari akhir ke awal secara seamless tanpa jeda.
+                        $slidesToRender = ($slideCount == 2) ? $activeSlides->concat($activeSlides) : $activeSlides;
+                    @endphp
                     @if($hasAnySlideImage)
-                        @foreach($heroSlides->where('is_active', true) as $slide)
+                        @foreach($slidesToRender as $slide)
                             @if($slide->image)
                             <div class="swiper-slide">
                                 @if($slide->button_url)
                                     <a href="{{ $slide->button_url }}" target="_blank" class="as-banner-card">
                                         <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
-                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
+                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager"
+                                             onload="dismissHeroSkeleton()">
                                     </a>
                                 @else
                                     <div class="as-banner-card">
                                         <img src="{{ asset('storage/' . $slide->image) }}" class="as-banner-img"
-                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager">
+                                             alt="{{ $slide->alt_text ?: ($slide->title ?: 'Banner Air Segar Prigen') }}" loading="eager"
+                                             onload="dismissHeroSkeleton()">
                                     </div>
                                 @endif
                             </div>
@@ -2690,21 +2731,47 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        function dismissHeroSkeleton() {
+            const skel = document.getElementById('heroSkeleton');
+            const container = document.getElementById('heroSwiperContainer');
+            if (skel) {
+                skel.classList.add('as-hero-skeleton-hidden');
+            }
+            if (container) {
+                container.style.opacity = '1';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            // Fallback: pastikan skeleton ter-dismiss jika gambar ter-cached / terlambat event onload
+            setTimeout(dismissHeroSkeleton, 600);
+
+            const activeSlideCount = {{ isset($heroSlides) ? $heroSlides->where('is_active', true)->where('image', '!=', null)->where('image', '!=', '')->count() : 0 }};
+            const shouldLoop = activeSlideCount >= 2;
+
             if (document.querySelector('.hero-swiper')) {
-                new Swiper('.hero-swiper', {
+                const heroSwiper = new Swiper('.hero-swiper', {
                     slidesPerView: 'auto',
                     centeredSlides: true,
                     spaceBetween: 20,
-                    loop: true,
-                    autoplay: {
-                        delay: 4000,
+                    loop: shouldLoop,
+                    loopedSlides: shouldLoop ? 4 : 1,
+                    loopAdditionalSlides: shouldLoop ? 2 : 0,
+                    autoplay: shouldLoop ? {
+                        delay: 3500,
                         disableOnInteraction: false,
-                    },
+                        pauseOnMouseEnter: true,
+                    } : false,
+                    speed: 700,
                     pagination: {
                         el: '.hero-swiper-pagination',
                         clickable: true,
                     },
+                    on: {
+                        init: function () {
+                            dismissHeroSkeleton();
+                        }
+                    }
                 });
             }
         });

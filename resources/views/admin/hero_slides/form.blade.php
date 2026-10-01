@@ -17,7 +17,7 @@
         {{-- Upload Image Banner --}}
         <div class="admin-card">
             <h3 style="font-size:.75rem;font-weight:700;color:#1B6FE8;text-transform:uppercase;letter-spacing:.1em;margin:0 0 1.25rem;">
-                Gambar Banner Slider (Auto WebP Compress)
+                Gambar Banner Slider
             </h3>
             
             @if(isset($slide) && $slide->image)
@@ -29,9 +29,28 @@
 
             <label class="form-label">Upload File Gambar {{ !isset($slide) ? '*' : '(Opsional jika ingin mengganti)' }}</label>
             <input type="file" name="image" accept="image/*" class="form-input" style="padding:.5rem;" {{ !isset($slide) ? 'required' : '' }}>
-            <p style="font-size:.75rem;color:#A1A1AA;margin:.375rem 0 0;">
-                ⚡ File otomatis dikompres ke format <strong>WebP (Rasio HD 1920×700px)</strong> untuk performa loading kilat.
-            </p>
+            
+            {{-- Toggle Kompres WebP --}}
+            <div style="margin-top:1.25rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+                    <div>
+                        <label for="compress_webp" style="font-size:.9rem;font-weight:700;color:#F4F4F5;cursor:pointer;display:flex;align-items:center;gap:.5rem;">
+                            <span>Kompres Format WebP</span>
+                            <span id="compress_badge" style="font-size:.7rem;padding:.15rem .5rem;border-radius:20px;font-weight:700;{{ old('compress_webp', $slide->compress_webp ?? true) ? 'background:rgba(34,197,94,0.2);color:#4ade80;' : 'background:rgba(234,179,8,0.2);color:#fde047;' }}">
+                                {{ old('compress_webp', $slide->compress_webp ?? true) ? 'ON (WebP Auto Compress)' : 'OFF (High Quality Asli)' }}
+                            </span>
+                        </label>
+                        <p style="font-size:.75rem;color:#A1A1AA;margin:.375rem 0 0;line-height:1.4;">
+                            • <strong>ON (Disarankan):</strong> Mengompres file ke format WebP (1920×700px) agar loading website kilat.<br>
+                            • <strong>OFF:</strong> Mengunggah gambar versi High Quality asli (resolusi dan kualitas awal tanpa kompresi).
+                        </p>
+                    </div>
+                    <div>
+                        <input type="hidden" name="compress_webp" value="0">
+                        <input type="checkbox" name="compress_webp" id="compress_webp" value="1" {{ old('compress_webp', $slide->compress_webp ?? true) ? 'checked' : '' }} onchange="document.getElementById('compress_badge').textContent = this.checked ? 'ON (WebP Auto Compress)' : 'OFF (High Quality Asli)'; document.getElementById('compress_badge').style.background = this.checked ? 'rgba(34,197,94,0.2)' : 'rgba(234,179,8,0.2)'; document.getElementById('compress_badge').style.color = this.checked ? '#4ade80' : '#fde047';" style="accent-color:#1B6FE8;width:22px;height:22px;cursor:pointer;">
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Alt Text & Link --}}

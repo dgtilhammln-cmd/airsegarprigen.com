@@ -19,14 +19,16 @@ class HeroSlide extends Model
         'button_url',
         'order',
         'is_active',
+        'compress_webp',
         'stat_1_value', 'stat_1_label',
         'stat_2_value', 'stat_2_label',
         'stat_3_value', 'stat_3_label',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'order'     => 'integer',
+        'is_active'     => 'boolean',
+        'compress_webp' => 'boolean',
+        'order'         => 'integer',
     ];
 
     public function scopeActive(Builder $query): Builder

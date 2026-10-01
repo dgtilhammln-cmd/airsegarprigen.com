@@ -181,6 +181,17 @@ trait HandlesImageUpload
     }
 
     /**
+     * Store uploaded image in original uncompressed format
+     */
+    protected function storeOriginal(UploadedFile $file, string $folder): string
+    {
+        $ext = strtolower($file->getClientOriginalExtension() ?: 'jpg');
+        $filename = $folder . '/' . Str::random(16) . '.' . $ext;
+        Storage::disk('public')->put($filename, file_get_contents($file->getRealPath()));
+        return $filename;
+    }
+
+    /**
      * Delete file from public storage safely
      */
     protected function deleteStorageFile(?string $path): void
