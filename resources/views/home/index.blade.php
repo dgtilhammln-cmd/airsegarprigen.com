@@ -152,8 +152,8 @@
         /* Mobile Friendly & Proportional Spacing */
         @media (max-width: 768px) {
             .cv-hero-modern {
-                padding-top: calc(70px + 1.25rem); /* Equal 1.25rem spacing under fixed header */
-                padding-bottom: 1.25rem;            /* Equal 1.25rem spacing above next section */
+                padding-top: 0.5rem;
+                padding-bottom: 1rem;
             }
             .hero-swiper .swiper-slide {
                 width: 90%;
@@ -665,138 +665,109 @@
             color: var(--text-4);
         }
 
-        /* ── PREMIUM CLIENT BAR ──────────── */
+        /* ── ELEGANT CLIENTS SWIPE SECTION ── */
         .cv-clients-section {
             background: #ffffff;
-            padding: 3.5rem 0;
-            border-top: 1px solid rgba(14, 165, 233, 0.08);
-            border-bottom: 1px solid rgba(14, 165, 233, 0.08);
+            padding: 2.5rem 0 2rem;
+            border-top: 1px solid #F1F5F9;
+            border-bottom: 1px solid #F1F5F9;
             overflow: hidden;
             position: relative;
-        }
-
-        .cv-clients-header {
-            max-width: 1200px;
-            margin: 0 auto 2.5rem;
-            padding: 0 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 0.5rem;
         }
 
         .cv-clients-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #64748B;
-        }
-
-        .cv-clients-count {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #DC2626;
-            background: #FEF2F2;
-            padding: 0.35rem 1rem;
-            border-radius: 20px;
-            border: 1px solid rgba(14, 165, 233, 0.15);
-        }
-
-        /* Marquee Container */
-        .cv-marquee-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-        }
-
-        /* Fade edges */
-        .cv-marquee-container::before,
-        .cv-marquee-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 150px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .cv-marquee-container::before {
-            left: 0;
-            background: linear-gradient(to right, #ffffff, transparent);
-        }
-
-        .cv-marquee-container::after {
-            right: 0;
-            background: linear-gradient(to left, #ffffff, transparent);
-        }
-
-        /* Infinite Animation */
-        @keyframes scrollLeft {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        .cv-marquee-track {
-            display: flex;
-            gap: 2rem;
-            padding: 1.5rem 1rem;
-            width: max-content;
-            animation: scrollLeft 40s linear infinite;
-        }
-
-        .cv-marquee-container:hover .cv-marquee-track {
-            animation-play-state: paused;
-        }
-
-        /* Card Design */
-        .cv-client-logo-card {
-            background: #F8FAFC;
-            border: 1.5px solid #E2E8F0;
-            border-radius: 16px;
-            padding: 1rem 1.75rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            min-width: 180px;
-            max-width: 220px;
-            height: 110px;
-            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-        }
-
-        .cv-client-logo-card:hover {
-            border-color: #EF4444;
-            background: #ffffff;
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(14, 165, 233, 0.12);
-        }
-
-        .cv-client-logo-img {
-            max-height: 52px;
-            max-width: 160px;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            filter: grayscale(80%) opacity(0.8);
-            transition: all 0.3s;
+            color: #94A3B8;
+            text-align: center;
+            margin-bottom: 1.5rem;
             display: block;
         }
 
-        .cv-client-logo-card:hover .cv-client-logo-img {
+        /* Swiper clients - no scrollbar, no bullets */
+        .cv-clients-swiper {
+            width: 100%;
+            overflow: hidden;
+            padding: 0.5rem 1.5rem 0.5rem;
+            box-sizing: border-box;
+            cursor: grab;
+        }
+        .cv-clients-swiper:active {
+            cursor: grabbing;
+        }
+        .cv-clients-swiper .swiper-wrapper {
+            align-items: center;
+        }
+        .cv-clients-swiper .swiper-slide {
+            width: auto !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Logo item — no box, just the image */
+        .cv-client-logo-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.5rem;
+            height: 64px;
+            flex-shrink: 0;
+        }
+
+        .cv-client-logo-item img {
+            height: auto;
+            width: auto;
+            max-height: 48px;
+            max-width: 120px;
+            object-fit: contain;
+            filter: grayscale(100%) opacity(0.55);
+            transition: filter 0.3s ease;
+            display: block;
+        }
+
+        .cv-client-logo-item img:hover {
             filter: grayscale(0%) opacity(1);
         }
+
+        /* Text-only client name (no logo) */
+        .cv-client-text-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+            height: 64px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94A3B8;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .cv-client-text-item::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #CBD5E1;
+            flex-shrink: 0;
+        }
+
+        /* Fade edges for depth */
+        .cv-clients-fade-left,
+        .cv-clients-fade-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .cv-clients-fade-left  { left: 0;  background: linear-gradient(to right, #ffffff, transparent); }
+        .cv-clients-fade-right { right: 0; background: linear-gradient(to left,  #ffffff, transparent); }
 
         .cv-client-logo-name {
             font-size: 0.7rem;
@@ -875,7 +846,7 @@
 
         @media (max-width: 640px) {
             .cv-hero-modern {
-                padding-top: calc(46px + 1.5rem);
+                padding-top: 0.5rem;
             }
 
             .cv-hero-grid {
@@ -987,31 +958,64 @@
         </div>
     </section>
 
-    {{-- ════ PREMIUM CLIENTS BAR ════ --}}
+    {{-- ════ ELEGANT CLIENTS SWIPE BAR ════ --}}
     @if($clients->count())
         <section class="cv-clients-section">
-            <div class="cv-clients-header">
-                <span class="cv-clients-label">Dipercaya oleh perusahaan terkemuka</span>
-            </div>
+            <span class="cv-clients-label">Dipercaya oleh perusahaan terkemuka</span>
 
-            <div class="cv-marquee-container">
-                <div class="cv-marquee-track">
-                    {{-- Loop twice to create seamless infinite scroll effect --}}
-                    @foreach([1, 2] as $loopGroup)
+            <div style="position:relative;">
+                {{-- Fade edge overlays --}}
+                <div class="cv-clients-fade-left"></div>
+                <div class="cv-clients-fade-right"></div>
+
+                {{-- Swipeable clients slider --}}
+                <div class="swiper cv-clients-swiper" id="clientsSwiper">
+                    <div class="swiper-wrapper">
                         @foreach($clients as $client)
-                            @if($client->logo)
-                                <div class="cv-client-logo-card">
-                                    <img src="{{ asset('storage/' . $client->logo) }}" alt="{{ $client->alt_text ?: $client->name }}"
-                                        class="cv-client-logo-img" title="{{ $client->name }}" loading="lazy">
-                                </div>
-                            @else
-                                <div class="cv-client-chip-v2">{{ $client->name }}</div>
-                            @endif
+                            <div class="swiper-slide">
+                                @if($client->logo)
+                                    <div class="cv-client-logo-item">
+                                        <img src="{{ asset('storage/' . $client->logo) }}"
+                                             alt="{{ $client->alt_text ?: $client->name }}"
+                                             title="{{ $client->name }}"
+                                             loading="lazy">
+                                    </div>
+                                @else
+                                    <div class="cv-client-text-item">{{ $client->name }}</div>
+                                @endif
+                            </div>
                         @endforeach
-                    @endforeach
+                    </div>
                 </div>
             </div>
         </section>
+
+        <script>
+        (function() {
+            function initClientsSwiper() {
+                if (typeof Swiper === 'undefined') {
+                    setTimeout(initClientsSwiper, 100);
+                    return;
+                }
+                new Swiper('#clientsSwiper', {
+                    slidesPerView: 'auto',
+                    spaceBetween: 0,
+                    freeMode: true,
+                    grabCursor: true,
+                    loop: false,
+                    pagination: false,
+                    navigation: false,
+                    scrollbar: false,
+                    mousewheel: false,
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initClientsSwiper);
+            } else {
+                initClientsSwiper();
+            }
+        })();
+        </script>
     @endif
 
     {{-- ════ ABOUT SECTION (PREMIUM 4 CARDS) ════ --}}
