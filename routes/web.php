@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\AdminLeadController;
 use App\Http\Controllers\Admin\AdminServiceCategoryController;
 use App\Http\Controllers\Admin\AdminHeroSlideController;
+use App\Http\Controllers\Admin\AdminHeaderController;
 
 
 
@@ -273,5 +274,9 @@ Route::prefix('admin')->group(function () {
             'edit'    => 'admin.hero_slides.edit',    'update'  => 'admin.hero_slides.update',
             'destroy' => 'admin.hero_slides.destroy',
         ]);
+
+        // Header & Navigation Settings
+        Route::get('/header', [AdminHeaderController::class, 'index'])->name('admin.header.index');
+        Route::post('/header', [AdminHeaderController::class, 'update'])->name('admin.header.update');
     });
 });
