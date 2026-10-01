@@ -11,6 +11,9 @@
     $logoBold       = \App\Models\Setting::get('header_logo_bold',   '1') == '1';
     $logoAlign      = \App\Models\Setting::get('header_logo_align',  'center');
     $logoHeight     = \App\Models\Setting::get('header_logo_height', '80');
+    $navTopSize     = (int)\App\Models\Setting::get('nav_top_font_size',    '11');
+    $navBottomSize  = (int)\App\Models\Setting::get('nav_bottom_font_size', '14');
+    $navGap         = (int)\App\Models\Setting::get('nav_line_height',      '2');
 
     // CTA Button (Default 0 / hidden to match reference image, configurable in admin)
     $ctaShow        = \App\Models\Setting::get('header_cta_show',       '0') == '1';
@@ -52,10 +55,13 @@
             $bottomBold  = \App\Models\Setting::get('nav_bottom_bold_' . $key, $item['def_bottom_bold']) == '1';
             $side        = \App\Models\Setting::get('nav_side_' . $key, $item['def_side']);
             $order       = (int)\App\Models\Setting::get('nav_order_' . $key, $item['def_order']);
+            $customUrl   = \App\Models\Setting::get('nav_url_' . $key, '');
+
+            $targetUrl   = !empty($customUrl) ? $customUrl : route($item['route']);
 
             $linkData = [
                 'key'         => $key,
-                'url'         => route($item['route']),
+                'url'         => $targetUrl,
                 'top_label'   => $topLabel,
                 'bottom_label'=> $bottomLabel,
                 'top_bold'    => $topBold,
@@ -78,8 +84,13 @@
     usort($rightNavLinks, fn($a, $b) => $a['order'] <=> $b['order']);
     usort($allNavLinks,   fn($a, $b) => $a['order'] <=> $b['order']);
 
-    // Resolve CTA href
-    if ($ctaType === 'wa' && $waNav) {
+    // Resolve CTA href & action
+    $ctaOnClick = '';
+    if ($ctaType === 'modal') {
+        $ctaHref    = '#';
+        $ctaTarget  = '_self';
+        $ctaOnClick = "if(typeof openOrderModal==='function'){ openOrderModal('CTA Header: ".$ctaText."'); return false; }";
+    } elseif ($ctaType === 'wa' && $waNav) {
         $waNum = preg_replace('/[^0-9]/', '', $waNav->nomor_wa ?? '');
         if (str_starts_with($waNum, '0')) {
             $waNum = '62' . substr($waNum, 1);
@@ -88,7 +99,7 @@
         $ctaTarget = '_blank';
     } elseif ($ctaType === 'custom' && $ctaUrl) {
         $ctaHref   = $ctaUrl;
-        $ctaTarget = '_blank';
+        $ctaTarget = str_starts_with($ctaUrl, 'http') ? '_blank' : '_self';
     } else {
         $ctaHref   = route('contact');
         $ctaTarget = '_self';
@@ -161,16 +172,16 @@
     /* Text Lines */
     .custom-nav-top {
         font-family: var(--font-primary, 'Outfit', 'Montserrat', sans-serif);
-        font-size: 0.68rem;
+        font-size: {{ $navTopSize }}px;
         line-height: 1.1;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 2px;
+        margin-bottom: {{ $navGap }}px;
         display: block;
     }
     .custom-nav-bottom {
         font-family: var(--font-primary, 'Outfit', 'Montserrat', sans-serif);
-        font-size: 0.85rem;
+        font-size: {{ $navBottomSize }}px;
         line-height: 1.1;
         letter-spacing: 0.06em;
         text-transform: uppercase;

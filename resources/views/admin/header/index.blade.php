@@ -58,12 +58,15 @@
             </div>
 
             @php
-                $siteFont   = old('site_font_family',   $settings['site_font_family']   ?? '"Outfit", "Montserrat", sans-serif');
-                $headerBg   = old('header_bg_color',   $settings['header_bg_color']   ?? '#F2F4F7');
-                $headerText = old('header_text_color', $settings['header_text_color'] ?? '#0055D4');
-                $logoBold   = old('header_logo_bold',  $settings['header_logo_bold']  ?? '1') == '1';
-                $logoAlign  = old('header_logo_align', $settings['header_logo_align'] ?? 'center');
-                $logoHeight = old('header_logo_height', $settings['header_logo_height']?? '80');
+                $siteFont       = old('site_font_family',   $settings['site_font_family']   ?? '"Outfit", "Montserrat", sans-serif');
+                $headerBg       = old('header_bg_color',   $settings['header_bg_color']   ?? '#F2F4F7');
+                $headerText     = old('header_text_color', $settings['header_text_color'] ?? '#0055D4');
+                $logoBold       = old('header_logo_bold',  $settings['header_logo_bold']  ?? '1') == '1';
+                $logoAlign      = old('header_logo_align', $settings['header_logo_align'] ?? 'center');
+                $logoHeight     = old('header_logo_height', $settings['header_logo_height']?? '80');
+                $navTopSize     = old('nav_top_font_size',  $settings['nav_top_font_size']  ?? '11');
+                $navBottomSize  = old('nav_bottom_font_size', $settings['nav_bottom_font_size'] ?? '14');
+                $navLineHeight  = old('nav_line_height',   $settings['nav_line_height']   ?? '2');
             @endphp
 
             {{-- Global Font Selection --}}
@@ -113,6 +116,39 @@
                         oninput="document.getElementById('logo-height-val').textContent = this.value; updateLivePreview();"
                         style="width:100%;accent-color:#1B6FE8;">
                     <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.25rem;">Logo diset lebih besar dibanding teks menu (Default: 80px)</span>
+                </div>
+
+                {{-- Nav Top Font Size Slider --}}
+                <div>
+                    <label class="form-label" style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Ukuran Font Baris Atas (Sub-Text) — <span id="nav-top-size-val" style="color:#1B6FE8;font-weight:800;">{{ $navTopSize }}</span>px
+                    </label>
+                    <input type="range" name="nav_top_font_size" id="nav_top_font_size" min="8" max="20" value="{{ $navTopSize }}"
+                        oninput="document.getElementById('nav-top-size-val').textContent = this.value; updateLivePreview();"
+                        style="width:100%;accent-color:#1B6FE8;">
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.25rem;">Ukuran sub-text baris pertama teks menu (Default: 11px)</span>
+                </div>
+
+                {{-- Nav Bottom Font Size Slider --}}
+                <div>
+                    <label class="form-label" style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Ukuran Font Baris Bawah (Label Utama) — <span id="nav-bottom-size-val" style="color:#1B6FE8;font-weight:800;">{{ $navBottomSize }}</span>px
+                    </label>
+                    <input type="range" name="nav_bottom_font_size" id="nav_bottom_font_size" min="10" max="24" value="{{ $navBottomSize }}"
+                        oninput="document.getElementById('nav-bottom-size-val').textContent = this.value; updateLivePreview();"
+                        style="width:100%;accent-color:#1B6FE8;">
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.25rem;">Ukuran label utama baris kedua teks menu (Default: 14px)</span>
+                </div>
+
+                {{-- Nav Line Height / Spacing Slider --}}
+                <div>
+                    <label class="form-label" style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Jarak Antar Baris Teks Menu — <span id="nav-lh-val" style="color:#1B6FE8;font-weight:800;">{{ $navLineHeight }}</span>px
+                    </label>
+                    <input type="range" name="nav_line_height" id="nav_line_height" min="0" max="16" step="1" value="{{ $navLineHeight }}"
+                        oninput="document.getElementById('nav-lh-val').textContent = this.value; updateLivePreview();"
+                        style="width:100%;accent-color:#1B6FE8;">
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.25rem;">Jarak (px) antara baris atas dan bawah teks menu. 0 = rapat (Default: 2px)</span>
                 </div>
 
                 {{-- Header BG Color --}}
@@ -456,6 +492,14 @@ function updateLivePreview() {
     const ctaBg       = document.getElementById('cta_bg_text').value || '#0055D4';
     const ctaColor    = document.getElementById('cta_text_text').value || '#FFFFFF';
 
+    // New: font size & line-height controls
+    const navTopSizeEl    = document.getElementById('nav_top_font_size');
+    const navBottomSizeEl = document.getElementById('nav_bottom_font_size');
+    const navLhEl         = document.getElementById('nav_line_height');
+    const navTopPx        = navTopSizeEl    ? (navTopSizeEl.value    || '11') : '11';
+    const navBottomPx     = navBottomSizeEl ? (navBottomSizeEl.value || '14') : '14';
+    const navGapPx        = navLhEl         ? (navLhEl.value         || '2')  : '2';
+
     bgContainer.style.backgroundColor = headerBg;
     bgContainer.style.fontFamily = fontVal;
 
@@ -476,14 +520,19 @@ function updateLivePreview() {
     keysList.forEach(k => {
         const isShowEl = document.getElementById('nav_show_' + k);
         if (isShowEl && isShowEl.checked) {
-            const topVal = (document.getElementById('nav_label_top_' + k) ? document.getElementById('nav_label_top_' + k).value : '').trim();
-            const topBold = document.getElementById('nav_top_bold_' . k) ? document.getElementById('nav_top_bold_' + k).checked : false;
-            const bottomVal = (document.getElementById('nav_label_bottom_' + k) ? document.getElementById('nav_label_bottom_' + k).value : '').trim();
-            const bottomBold = document.getElementById('nav_bottom_bold_' + k) ? document.getElementById('nav_bottom_bold_' + k).checked : true;
-            const sideEl = document.getElementById('nav_side_' + k);
-            const side = sideEl ? sideEl.value : 'left';
-            const orderEl = document.getElementById('nav_order_' + k);
-            const order = orderEl ? parseInt(orderEl.value) || 99 : 99;
+            const topEl      = document.getElementById('nav_label_top_' + k);
+            const topBoldEl  = document.getElementById('nav_top_bold_' + k);
+            const botEl      = document.getElementById('nav_label_bottom_' + k);
+            const botBoldEl  = document.getElementById('nav_bottom_bold_' + k);
+            const sideEl     = document.getElementById('nav_side_' + k);
+            const orderEl    = document.getElementById('nav_order_' + k);
+
+            const topVal     = topEl     ? topEl.value.trim()     : '';
+            const topBold    = topBoldEl ? topBoldEl.checked      : false;
+            const bottomVal  = botEl     ? botEl.value.trim()     : '';
+            const bottomBold = botBoldEl ? botBoldEl.checked      : true;
+            const side       = sideEl    ? sideEl.value           : 'left';
+            const order      = orderEl   ? parseInt(orderEl.value) || 99 : 99;
 
             const itemObj = { topVal, topBold, bottomVal, bottomBold, side, order };
             if (side === 'left') {
@@ -498,23 +547,20 @@ function updateLivePreview() {
     rightItems.sort((a,b) => a.order - b.order);
 
     const renderNavHtml = (items) => {
-        return items.map(item => `
-            <div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${headerText};font-family:${fontVal};">
-                ${item.topVal ? `<span style="font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;font-weight:${item.topBold ? '800':'500'};">${item.topVal}</span>` : ''}
-                <span style="font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:${item.bottomBold ? '800':'500'};">${item.bottomVal}</span>
-            </div>
-        `).join('');
+        return items.map(item => {
+            const topHtml = item.topVal
+                ? `<span style="font-size:${navTopPx}px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:${navGapPx}px;font-weight:${item.topBold ? '800':'500'};display:block;line-height:1.1;">${item.topVal}</span>`
+                : '';
+            const botHtml = `<span style="font-size:${navBottomPx}px;letter-spacing:0.06em;text-transform:uppercase;font-weight:${item.bottomBold ? '800':'500'};display:block;line-height:1.1;">${item.bottomVal}</span>`;
+            return `<div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:${headerText};font-family:${fontVal};">${topHtml}${botHtml}</div>`;
+        }).join('');
     };
 
     document.getElementById('preview-left-nav').innerHTML = renderNavHtml(leftItems);
-    
+
     let rightHtml = renderNavHtml(rightItems);
     if (ctaShow) {
-        rightHtml += `
-            <div style="background:${ctaBg};color:${ctaColor};padding:0.4rem 1.1rem;border-radius:99px;font-size:0.8rem;font-weight:700;margin-left:0.5rem;">
-                ${ctaText}
-            </div>
-        `;
+        rightHtml += `<div style="background:${ctaBg};color:${ctaColor};padding:0.4rem 1.1rem;border-radius:99px;font-size:0.8rem;font-weight:700;margin-left:0.5rem;">${ctaText}</div>`;
     }
     document.getElementById('preview-right-nav').innerHTML = rightHtml;
 }

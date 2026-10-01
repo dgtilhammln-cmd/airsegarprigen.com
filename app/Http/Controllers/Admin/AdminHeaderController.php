@@ -26,6 +26,9 @@ class AdminHeaderController extends Controller
             'header_logo_bold'       => 'nullable|boolean',
             'header_logo_align'      => 'required|in:center,left,right',
             'header_logo_height'     => 'required|integer|min:30|max:160',
+            'nav_top_font_size'      => 'required|integer|min:8|max:20',
+            'nav_bottom_font_size'   => 'required|integer|min:10|max:24',
+            'nav_line_height'        => 'required|integer|min:0|max:16',
 
             // Active / Hover color legacy fallbacks
             'header_active_bg_color'   => 'nullable|string|max:30',
@@ -35,7 +38,7 @@ class AdminHeaderController extends Controller
             // CTA Button
             'header_cta_show'        => 'nullable|boolean',
             'header_cta_text'        => 'required|string|max:50',
-            'header_cta_type'        => 'required|in:wa,custom',
+            'header_cta_type'        => 'required|in:wa,modal,custom',
             'header_cta_url'         => 'nullable|string|max:255',
             'header_cta_bg_color'    => 'required|string|max:30',
             'header_cta_text_color'  => 'required|string|max:30',
@@ -52,6 +55,7 @@ class AdminHeaderController extends Controller
             $rules['nav_show_' . $k]          = 'nullable|boolean';
             $rules['nav_block_robot_' . $k]   = 'nullable|boolean';
             $rules['nav_order_' . $k]         = 'required|integer|min:1|max:99';
+            $rules['nav_url_' . $k]           = 'nullable|string|max:255';
             $rules['nav_label_top_' . $k]     = 'nullable|string|max:50';
             $rules['nav_top_bold_' . $k]      = 'nullable|boolean';
             $rules['nav_label_bottom_' . $k]  = 'required|string|max:50';
