@@ -1108,6 +1108,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <style>
         /* CSS FOR PREMIUM ABOUT SECTION */
