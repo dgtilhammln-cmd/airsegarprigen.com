@@ -2815,10 +2815,8 @@
                 const heroSwiper = new Swiper('.hero-swiper', {
                     slidesPerView: 'auto',
                     centeredSlides: true,
-                    spaceBetween: 20,
+                    spaceBetween: 16,
                     loop: shouldLoop,
-                    loopedSlides: shouldLoop ? 4 : 1,
-                    loopAdditionalSlides: shouldLoop ? 2 : 0,
                     autoplay: shouldLoop ? {
                         delay: 3500,
                         disableOnInteraction: false,
