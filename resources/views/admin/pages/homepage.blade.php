@@ -372,6 +372,8 @@
                 <button type="button" class="hp-subtab-btn {{ $loop->first ? 'active' : '' }}" onclick="switchSecTab('{{ $k }}', this)" id="tab-btn-sec-{{ $k }}">
                     @if($sec['icon'] === 'video')
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    @elseif($sec['icon'] === 'layout')
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                     @elseif($sec['icon'] === 'users')
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1 0 7.75"/></svg>
                     @elseif($sec['icon'] === 'building')
@@ -477,7 +479,7 @@
                     {{-- Upload Foto / Image Banner --}}
                     <div class="hp-field-group full" style="background:#F8FAFC;padding:1.25rem;border-radius:14px;border:1px solid #E2E8F0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                            <label class="hp-label" style="font-size:0.9rem;margin:0;">Foto / Media Section</label>
+                            <label class="hp-label" style="font-size:0.9rem;margin:0;">Foto / Media Section Utama</label>
                             <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:#16a34a;cursor:pointer;font-weight:600;">
                                 <input type="checkbox" name="page_home_compress_{{ $k }}" value="1" checked style="accent-color:#16a34a;">
                                 Auto Compress Foto (Optimalkan Ukuran WebP)
@@ -495,6 +497,77 @@
                     </div>
 
                 </div>
+
+                {{-- MULTIPLE LANDING PAGE IMAGES & REORDER MANAGER (For Landing Page section) --}}
+                @if($k === 'landing_page')
+                    <div class="hp-cards-section" style="background:#F4F7FE;border-color:#CBD5E1;">
+                        <div class="hp-cards-header">
+                            <div>
+                                <h4 class="hp-cards-title" style="font-size:1.05rem;color:#1B6FE8;">Upload Gambar Landing Page Full Size (Tanpa Terpotong)</h4>
+                                <p style="font-size:0.78rem;color:#64748B;margin:2px 0 0;">Upload banyak gambar landing page, atur urutan interaktif, dan kontrol ON/OFF compress per foto.</p>
+                            </div>
+                            <button type="button" class="hp-btn-add" onclick="addLandingImgItem('{{ $k }}')">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Upload Gambar Landing Page
+                            </button>
+                        </div>
+
+                        <div id="landing-imgs-container-{{ $k }}">
+                            @forelse($sec['landing_images'] as $lIdx => $lImg)
+                                <div class="hp-card-item landing-item-row" id="landing-img-item-{{ $k }}-{{ $lIdx }}" style="border-left:4px solid #1B6FE8;">
+                                    <div class="hp-card-item-head">
+                                        <div class="hp-card-item-title">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                                            Gambar Landing Page #{{ $lIdx + 1 }}
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:0.5rem;">
+                                            <button type="button" class="hp-btn-add" style="padding:0.35rem 0.75rem;font-size:0.75rem;background:#475569;" onclick="moveLandingItem('landing-img-item-{{ $k }}-{{ $lIdx }}', 'up')">
+                                                ▲ Naik
+                                            </button>
+                                            <button type="button" class="hp-btn-add" style="padding:0.35rem 0.75rem;font-size:0.75rem;background:#475569;" onclick="moveLandingItem('landing-img-item-{{ $k }}-{{ $lIdx }}', 'down')">
+                                                ▼ Turun
+                                            </button>
+                                            <button type="button" class="hp-btn-del" onclick="removeCardItem('landing-img-item-{{ $k }}-{{ $lIdx }}')">
+                                                Hapus Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="hp-form-grid" style="margin-bottom:0;">
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">File Foto / Banner Landing Page</label>
+                                            @if(!empty($lImg['image']))
+                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:1rem;">
+                                                    <img src="{{ asset('storage/' . $lImg['image']) }}" style="max-height:100px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                    <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image]" value="{{ $lImg['image'] }}">
+                                                </div>
+                                            @endif
+                                            <input type="file" name="landing_items_{{ $k }}[{{ $lIdx }}][file]" class="hp-input" accept="image/*">
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Judul / Label Gambar (Opsional)</label>
+                                            <input type="text" name="landing_items_{{ $k }}[{{ $lIdx }}][title]" class="hp-input" value="{{ $lImg['title'] ?? '' }}" placeholder="Contoh: Showcase Produk Banner 1">
+
+                                            <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+                                                <label class="hp-label" style="margin:0;cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:#16a34a;">
+                                                    <input type="checkbox" name="landing_items_{{ $k }}[{{ $lIdx }}][compress]" value="1" {{ ($lImg['compress'] ?? true) ? 'checked' : '' }} style="accent-color:#16a34a;">
+                                                    Auto Compress Foto (ON / OFF)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][order]" class="landing-order-input" value="{{ $lImg['order'] ?? $lIdx }}">
+                                    </div>
+                                </div>
+                            @empty
+                                <div id="empty-landing-msg-{{ $k }}" style="text-align:center;padding:2rem;color:#94A3B8;font-size:0.85rem;font-weight:500;">
+                                    Belum ada gambar landing page. Klik tombol "+ Upload Gambar Landing Page" di atas untuk menambahkan gambar full width tanpa terpotong.
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                @endif
 
                 {{-- DYNAMIC CARDS MANAGER --}}
                 <div class="hp-cards-section">
@@ -589,9 +662,85 @@ function switchSecTab(key, btn) {
 
 function removeCardItem(cardId) {
     const el = document.getElementById(cardId);
-    if (el && confirm('Apakah Anda yakin ingin menghapus card ini?')) {
+    if (el && confirm('Apakah Anda yakin ingin menghapus item ini?')) {
         el.remove();
     }
+}
+
+function moveLandingItem(itemId, direction) {
+    const el = document.getElementById(itemId);
+    if (!el) return;
+    if (direction === 'up' && el.previousElementSibling) {
+        el.parentNode.insertBefore(el, el.previousElementSibling);
+    } else if (direction === 'down' && el.nextElementSibling) {
+        el.parentNode.insertBefore(el.nextElementSibling, el);
+    }
+    reindexLandingOrders();
+}
+
+function reindexLandingOrders() {
+    const items = document.querySelectorAll('.landing-item-row');
+    items.forEach((item, index) => {
+        const orderInput = item.querySelector('.landing-order-input');
+        if (orderInput) orderInput.value = index;
+    });
+}
+
+let landingCounters = 100;
+
+function addLandingImgItem(secKey) {
+    const container = document.getElementById('landing-imgs-container-' + secKey);
+    const emptyMsg = document.getElementById('empty-landing-msg-' + secKey);
+    if(emptyMsg) emptyMsg.style.display = 'none';
+
+    landingCounters++;
+    const idx = landingCounters;
+    const itemId = `landing-img-item-${secKey}-${idx}`;
+
+    const html = `
+        <div class="hp-card-item landing-item-row" id="${itemId}" style="border-left:4px solid #1B6FE8;">
+            <div class="hp-card-item-head">
+                <div class="hp-card-item-title">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                    Gambar Landing Page Baru
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <button type="button" class="hp-btn-add" style="padding:0.35rem 0.75rem;font-size:0.75rem;background:#475569;" onclick="moveLandingItem('${itemId}', 'up')">
+                        ▲ Naik
+                    </button>
+                    <button type="button" class="hp-btn-add" style="padding:0.35rem 0.75rem;font-size:0.75rem;background:#475569;" onclick="moveLandingItem('${itemId}', 'down')">
+                        ▼ Turun
+                    </button>
+                    <button type="button" class="hp-btn-del" onclick="removeCardItem('${itemId}')">
+                        Hapus Gambar
+                    </button>
+                </div>
+            </div>
+            <div class="hp-form-grid" style="margin-bottom:0;">
+                <div class="hp-field-group">
+                    <label class="hp-label">File Foto / Banner Landing Page</label>
+                    <input type="file" name="landing_items_${secKey}[${idx}][file]" class="hp-input" accept="image/*" required>
+                </div>
+
+                <div class="hp-field-group">
+                    <label class="hp-label">Judul / Label Gambar (Opsional)</label>
+                    <input type="text" name="landing_items_${secKey}[${idx}][title]" class="hp-input" value="Landing Page Image" placeholder="Contoh: Banner Showcase 1">
+
+                    <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+                        <label class="hp-label" style="margin:0;cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:#16a34a;">
+                            <input type="checkbox" name="landing_items_${secKey}[${idx}][compress]" value="1" checked style="accent-color:#16a34a;">
+                            Auto Compress Foto (ON / OFF)
+                        </label>
+                    </div>
+                </div>
+
+                <input type="hidden" name="landing_items_${secKey}[${idx}][order]" class="landing-order-input" value="${idx}">
+            </div>
+        </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', html);
+    reindexLandingOrders();
 }
 
 let cardCounters = {};

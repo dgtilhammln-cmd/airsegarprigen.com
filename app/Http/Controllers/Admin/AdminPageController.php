@@ -29,6 +29,19 @@ class AdminPageController extends Controller
                 ['title' => 'Cat Anti Karat Baja', 'desc' => 'Tahan cuaca ekstrem dan korosi.', 'icon' => 'shield', 'color' => '#1E293B'],
             ]
         ],
+        'landing_page' => [
+            'label'        => 'Landing Page',
+            'icon'         => 'layout',
+            'headline'     => 'Landing Page Full Display',
+            'subline'      => 'Tampilan visual gambar banner full width tanpa terpotong untuk showcase produk & industri.',
+            'badge'        => 'LANDING PAGE',
+            'bg_color'     => '#FFFFFF',
+            'text_color'   => '#0F172A',
+            'accent_color' => '#1B6FE8',
+            'btn_text'     => 'Konsultasi Sekarang',
+            'btn_url'      => 'https://wa.me/628113526618',
+            'cards'        => []
+        ],
         'clients' => [
             'label'        => 'Why Choose / Clients',
             'icon'         => 'users',
@@ -164,6 +177,10 @@ class AdminPageController extends Controller
                 $cards = $cfg['cards'];
             }
 
+            // Raw landing images if present
+            $rawLandingImgs = $settings["page_home_landing_images_{$key}"] ?? null;
+            $landingImages = $rawLandingImgs ? json_decode($rawLandingImgs, true) : [];
+
             $sections[$key] = [
                 'key'            => $key,
                 'label'          => $cfg['label'],
@@ -180,6 +197,7 @@ class AdminPageController extends Controller
                 'btn_text'       => $settings["page_home_btn_text_{$key}"] ?? $cfg['btn_text'],
                 'btn_url'        => $settings["page_home_btn_url_{$key}"] ?? $cfg['btn_url'],
                 'cards'          => $cards,
+                'landing_images' => is_array($landingImages) ? $landingImages : [],
             ];
         }
 
@@ -241,6 +259,58 @@ class AdminPageController extends Controller
                 Setting::set("page_home_image_{$section}", $path);
             }
         }
+
+        // Handle Multiple Landing Page Image Uploads & Reordering
+        $existingLandingImgs = json_decode(Setting::get("page_home_landing_images_{$section}", '[]'), true) ?: [];
+        $landingInput = $request->input("landing_items_{$section}", []);
+        $processedLandingImgs = [];
+
+        if (is_array($landingInput)) {
+            foreach ($landingInput as $idx => $item) {
+                $imgOriginal = $item['existing_image'] ?? '';
+
+                // New image upload if present
+                $fileKey = "landing_items_{$section}.{$idx}.file";
+                if ($request->hasFile($fileKey)) {
+                    $file = $request->file($fileKey);
+                    $doCompress = isset($item['compress']) && $item['compress'] == '1';
+
+                    if ($doCompress) {
+                        $gdImg = $this->gdLoad($file);
+                        if ($gdImg) {
+                            $filename = "landing/{$section}_" . time() . "_{$idx}.webp";
+                            ob_start();
+                            imagewebp($gdImg, null, 85);
+                            $contents = ob_get_clean();
+                            imagedestroy($gdImg);
+                            Storage::disk('public')->put($filename, $contents);
+                            $imgOriginal = $filename;
+                        } else {
+                            $imgOriginal = $file->store("landing", 'public');
+                        }
+                    } else {
+                        // Store original full resolution without cropping or compression
+                        $imgOriginal = $file->store("landing", 'public');
+                    }
+                }
+
+                if ($imgOriginal) {
+                    $processedLandingImgs[] = [
+                        'image'    => $imgOriginal,
+                        'title'    => $item['title'] ?? '',
+                        'order'    => (int)($item['order'] ?? $idx),
+                        'compress' => isset($item['compress']) ? ($item['compress'] == '1') : true,
+                    ];
+                }
+            }
+        }
+
+        // Sort landing images by interactive order field
+        usort($processedLandingImgs, function($a, $b) {
+            return ($a['order'] ?? 0) <=> ($b['order'] ?? 0);
+        });
+
+        Setting::set("page_home_landing_images_{$section}", json_encode(array_values($processedLandingImgs)));
 
         // Handle Dynamic Cards (Tambah Card / Hapus Card)
         $cardsInput = $request->input("cards_{$section}", []);

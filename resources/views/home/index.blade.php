@@ -960,6 +960,51 @@
     </section>
     @endif
 
+    {{-- ════ LANDING PAGE FULL IMAGE SHOWCASE ════ --}}
+    @if(\App\Models\Setting::get('page_home_show_landing_page','1') == '1')
+        @php
+            $lpBg = \App\Models\Setting::get('page_home_bg_landing_page', '#FFFFFF');
+            $lpHd = \App\Models\Setting::get('page_home_headline_landing_page');
+            $lpSub = \App\Models\Setting::get('page_home_subline_landing_page');
+            $lpBd = \App\Models\Setting::get('page_home_badge_landing_page');
+            $lpImgsRaw = \App\Models\Setting::get('page_home_landing_images_landing_page');
+            $lpImgs = $lpImgsRaw ? json_decode($lpImgsRaw, true) : [];
+        @endphp
+        <section class="cv-landing-page-section" id="landing" style="background-color: {{ $lpBg }}; width:100%; position:relative; overflow:hidden;">
+            @if($lpHd || $lpSub || $lpBd)
+                <div class="container" style="padding: 4rem 1.5rem 2rem; text-align: center; max-width: 900px; margin: 0 auto;">
+                    @if($lpBd)
+                        <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#1B6FE8; margin-bottom:1rem; display:inline-flex; align-items:center; gap:0.5rem;">
+                            <span style="width:6px; height:6px; background:#1B6FE8; border-radius:50%;"></span>
+                            {{ $lpBd }}
+                        </div>
+                    @endif
+                    @if($lpHd)
+                        <h2 style="font-size:clamp(2rem, 4vw, 3.25rem); font-weight:700; color:#0F172A; line-height:1.15; margin-bottom:1rem;">{!! $lpHd !!}</h2>
+                    @endif
+                    @if($lpSub)
+                        <p style="font-size:1.05rem; color:#64748B; line-height:1.6; margin:0 auto;">{{ $lpSub }}</p>
+                    @endif
+                </div>
+            @endif
+
+            @if(is_array($lpImgs) && count($lpImgs) > 0)
+                <div class="cv-landing-images-track" style="width:100%; display:flex; flex-direction:column; gap:0;">
+                    @foreach($lpImgs as $lpItem)
+                        @if(!empty($lpItem['image']))
+                            <div class="cv-landing-img-wrap" style="width:100%; position:relative; margin:0; padding:0;">
+                                <img src="{{ asset('storage/' . $lpItem['image']) }}" 
+                                     alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
+                                     loading="lazy" 
+                                     style="width:100%; height:auto; display:block; object-fit:contain; max-width:100%;">
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            @endif
+        </section>
+    @endif
+
     @if(\App\Models\Setting::get('page_home_show_clients','1') == '1')
     {{-- ELEGANT CLIENTS SWIPE BAR --}}
     @if($clients->count())
