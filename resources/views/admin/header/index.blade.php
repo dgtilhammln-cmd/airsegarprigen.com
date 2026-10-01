@@ -185,6 +185,136 @@
             </div>
         </div>
 
+        {{-- ── CARD 4: SCROLLBAR KUSTOM ── --}}
+        @php
+            $sbWidth      = old('scrollbar_width',       $settings['scrollbar_width']       ?? '8');
+            $sbRadius     = old('scrollbar_radius',      $settings['scrollbar_radius']      ?? '999');
+            $sbThumb      = old('scrollbar_thumb_color', $settings['scrollbar_thumb_color'] ?? '#0A1930');
+            $sbTrack      = old('scrollbar_track_color', $settings['scrollbar_track_color'] ?? '#F1F5F9');
+            $sbHover      = old('scrollbar_thumb_hover', $settings['scrollbar_thumb_hover'] ?? '#1B6FE8');
+        @endphp
+        <div class="admin-card" style="margin-bottom: 1.5rem; padding: 1.5rem; background: #fff; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;border-bottom:1px solid #F1F5F9;padding-bottom:.875rem;">
+                <div style="width:36px;height:36px;background:rgba(99,102,241,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#6366F1;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="19" y="3" width="3" height="18" rx="1.5"/><rect x="17" y="8" width="7" height="8" rx="3.5" fill="currentColor" stroke="none"/></svg>
+                </div>
+                <div>
+                    <h3 style="font-size:1rem;font-weight:700;color:#0F172A;margin:0;">Kustomisasi Scrollbar</h3>
+                    <p style="font-size:.75rem;color:#64748B;margin:2px 0 0;">Atur tampilan scrollbar di halaman frontend (lebar, sudut, warna).</p>
+                </div>
+            </div>
+
+            {{-- Live Preview --}}
+            <div style="margin-bottom:1.5rem;padding:1rem 1.25rem;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;">
+                <p style="font-size:.75rem;font-weight:700;color:#64748B;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.08em;">Preview Scrollbar</p>
+                <div id="sb-preview-wrap" style="height:80px;overflow-y:scroll;border-radius:8px;background:#fff;padding:.5rem 1rem;border:1px solid #E2E8F0;">
+                    <p style="font-size:.82rem;color:#475569;line-height:1.8;margin:0;">Ini adalah contoh konten yang bisa di-scroll. Geser ke bawah untuk melihat tampilan scrollbar.<br>Baris 2 – Atur lebar, sudut, dan warna sesuai brand website Anda.<br>Baris 3 – Perubahan tampak setelah disimpan.<br>Baris 4 – Scrollbar custom hanya aktif di Chrome, Edge, dan Safari.</p>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem;">
+
+                {{-- Width --}}
+                <div>
+                    <label style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Lebar Scrollbar — <span id="sb-width-val">{{ $sbWidth }}</span>px
+                    </label>
+                    <input type="range" name="scrollbar_width" id="sb-width" min="0" max="24" value="{{ $sbWidth }}"
+                        oninput="document.getElementById('sb-width-val').textContent=this.value; updateScrollbarPreview();"
+                        style="width:100%;accent-color:#6366F1;">
+                    <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94A3B8;margin-top:.25rem;">
+                        <span>0 (Hidden)</span><span>8 (Default)</span><span>24 (Max)</span>
+                    </div>
+                </div>
+
+                {{-- Border Radius --}}
+                <div>
+                    <label style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Sudut Scrollbar — <span id="sb-radius-val">{{ $sbRadius >= 999 ? 'Bulat' : $sbRadius.'px' }}</span>
+                    </label>
+                    <input type="range" name="scrollbar_radius" id="sb-radius" min="0" max="999" value="{{ $sbRadius }}"
+                        oninput="document.getElementById('sb-radius-val').textContent=(this.value>=999?'Bulat':this.value+'px'); updateScrollbarPreview();"
+                        style="width:100%;accent-color:#6366F1;">
+                    <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94A3B8;margin-top:.25rem;">
+                        <span>Lancip (0)</span><span>Setengah</span><span>Bulat (999)</span>
+                    </div>
+                </div>
+
+                {{-- Thumb Color --}}
+                <div>
+                    <label style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Warna Thumb (Handle)
+                    </label>
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                        <input type="color" value="{{ $sbThumb }}" oninput="document.getElementById('sb-thumb-text').value=this.value; updateScrollbarPreview();"
+                            style="width:42px;height:42px;border:none;border-radius:8px;cursor:pointer;">
+                        <input type="text" name="scrollbar_thumb_color" id="sb-thumb-text" value="{{ $sbThumb }}"
+                            oninput="updateScrollbarPreview();"
+                            style="flex:1;padding:.45rem .875rem;border-radius:8px;border:1px solid #CBD5E1;font-size:.85rem;font-weight:600;">
+                    </div>
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.35rem;">Default: #0A1930 (Dark Navy)</span>
+                </div>
+
+                {{-- Track Color --}}
+                <div>
+                    <label style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Warna Track (Rel)
+                    </label>
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                        <input type="color" value="{{ str_starts_with($sbTrack, '#') ? $sbTrack : '#F1F5F9' }}" oninput="document.getElementById('sb-track-text').value=this.value; updateScrollbarPreview();"
+                            style="width:42px;height:42px;border:none;border-radius:8px;cursor:pointer;">
+                        <input type="text" name="scrollbar_track_color" id="sb-track-text" value="{{ $sbTrack }}"
+                            oninput="updateScrollbarPreview();"
+                            style="flex:1;padding:.45rem .875rem;border-radius:8px;border:1px solid #CBD5E1;font-size:.85rem;font-weight:600;">
+                    </div>
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.35rem;">Default: #F1F5F9 (Abu Terang)</span>
+                </div>
+
+                {{-- Hover Color --}}
+                <div>
+                    <label style="font-size:.85rem;font-weight:700;color:#334155;display:block;margin-bottom:.5rem;">
+                        Warna Thumb saat Hover
+                    </label>
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                        <input type="color" value="{{ $sbHover }}" oninput="document.getElementById('sb-hover-text').value=this.value; updateScrollbarPreview();"
+                            style="width:42px;height:42px;border:none;border-radius:8px;cursor:pointer;">
+                        <input type="text" name="scrollbar_thumb_hover" id="sb-hover-text" value="{{ $sbHover }}"
+                            oninput="updateScrollbarPreview();"
+                            style="flex:1;padding:.45rem .875rem;border-radius:8px;border:1px solid #CBD5E1;font-size:.85rem;font-weight:600;">
+                    </div>
+                    <span style="font-size:.7rem;color:#94A3B8;display:block;margin-top:.35rem;">Default: #1B6FE8 (Biru)</span>
+                </div>
+
+            </div>
+
+            {{-- Quick Presets --}}
+            <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid #F1F5F9;">
+                <p style="font-size:.75rem;font-weight:700;color:#64748B;margin-bottom:.625rem;text-transform:uppercase;letter-spacing:.08em;">Preset Cepat</p>
+                <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+                    <button type="button" onclick="applyScrollbarPreset('8','999','#0A1930','#F1F5F9','#1B6FE8')"
+                        style="padding:.4rem .9rem;border-radius:20px;border:1.5px solid #CBD5E1;background:#fff;font-size:.75rem;font-weight:600;cursor:pointer;color:#475569;">
+                        🎨 Default Navy
+                    </button>
+                    <button type="button" onclick="applyScrollbarPreset('6','999','#DC2626','#FEF2F2','#B91C1C')"
+                        style="padding:.4rem .9rem;border-radius:20px;border:1.5px solid #FECACA;background:#FEF2F2;font-size:.75rem;font-weight:600;cursor:pointer;color:#991B1B;">
+                        🔴 Merah
+                    </button>
+                    <button type="button" onclick="applyScrollbarPreset('6','999','#16A34A','#F0FDF4','#15803D')"
+                        style="padding:.4rem .9rem;border-radius:20px;border:1.5px solid #BBF7D0;background:#F0FDF4;font-size:.75rem;font-weight:600;cursor:pointer;color:#166534;">
+                        🟢 Hijau
+                    </button>
+                    <button type="button" onclick="applyScrollbarPreset('4','0','#334155','#E2E8F0','#0F172A')"
+                        style="padding:.4rem .9rem;border-radius:20px;border:1.5px solid #E2E8F0;background:#F8FAFC;font-size:.75rem;font-weight:600;cursor:pointer;color:#334155;">
+                        📐 Lancip Tipis
+                    </button>
+                    <button type="button" onclick="applyScrollbarPreset('0','999','#0A1930','#F1F5F9','#1B6FE8')"
+                        style="padding:.4rem .9rem;border-radius:20px;border:1.5px solid #E2E8F0;background:#F8FAFC;font-size:.75rem;font-weight:600;cursor:pointer;color:#334155;">
+                        🚫 Sembunyikan
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div style="display:flex;gap:.75rem;margin-top:1.5rem;">
             <button type="submit" style="background:#1B6FE8;padding:0.75rem 2rem;border-radius:12px;font-weight:700;color:#fff;border:none;cursor:pointer;font-size:.9rem;box-shadow:0 4px 14px rgba(27,111,232,0.3);">
                 Simpan Pengaturan Header
@@ -192,4 +322,49 @@
         </div>
     </form>
 </div>
+
+<script>
+function updateScrollbarPreview() {
+    const w = document.getElementById('sb-width').value;
+    const r = document.getElementById('sb-radius').value;
+    const thumb = document.getElementById('sb-thumb-text').value;
+    const track = document.getElementById('sb-track-text').value;
+    const hover = document.getElementById('sb-hover-text').value;
+
+    // Inject / update preview style
+    let styleEl = document.getElementById('sb-preview-style');
+    if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = 'sb-preview-style';
+        document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = `
+        #sb-preview-wrap::-webkit-scrollbar { width: ${w}px; }
+        #sb-preview-wrap::-webkit-scrollbar-track { background: ${track}; border-radius: ${r}px; }
+        #sb-preview-wrap::-webkit-scrollbar-thumb { background: ${thumb}; border-radius: ${r}px; border: 2px solid ${track}; }
+        #sb-preview-wrap::-webkit-scrollbar-thumb:hover { background: ${hover}; }
+    `;
+}
+
+function applyScrollbarPreset(w, r, thumb, track, hover) {
+    document.getElementById('sb-width').value = w;
+    document.getElementById('sb-radius').value = r;
+    document.getElementById('sb-thumb-text').value = thumb;
+    document.getElementById('sb-track-text').value = track;
+    document.getElementById('sb-hover-text').value = hover;
+    document.getElementById('sb-width-val').textContent = w;
+    document.getElementById('sb-radius-val').textContent = (r >= 999 ? 'Bulat' : r + 'px');
+    // Sync color pickers
+    document.querySelectorAll('input[type=color]').forEach(function(el, i) {
+        if (i === 2) el.value = thumb;
+        if (i === 3) el.value = track;
+        if (i === 4) el.value = hover;
+    });
+    updateScrollbarPreview();
+}
+
+// Init preview on load
+document.addEventListener('DOMContentLoaded', updateScrollbarPreview);
+</script>
 @endsection
+

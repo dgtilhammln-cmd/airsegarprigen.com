@@ -45,6 +45,13 @@ class AdminHeaderController extends Controller
             'header_cta_url'         => 'nullable|string|max:255',
             'header_cta_bg_color'    => 'required|string|max:20',
             'header_cta_text_color'  => 'required|string|max:20',
+
+            // Scrollbar
+            'scrollbar_width'        => 'required|integer|min:0|max:32',
+            'scrollbar_radius'       => 'required|integer|min:0|max:999',
+            'scrollbar_thumb_color'  => 'required|string|max:20',
+            'scrollbar_track_color'  => 'required|string|max:20',
+            'scrollbar_thumb_hover'  => 'required|string|max:20',
         ]);
 
         // Process boolean checkboxes

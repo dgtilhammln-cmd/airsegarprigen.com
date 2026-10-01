@@ -17,6 +17,12 @@
         $preloaderLogo  = $layoutSettings['logo'] ?? null;
         $headScripts    = $layoutSettings['head_scripts']  ?? '';
         $bodyScripts    = $layoutSettings['body_scripts']  ?? '';
+        // Scrollbar settings
+        $sbWidth        = $layoutSettings['scrollbar_width']        ?? '8';
+        $sbRadius       = $layoutSettings['scrollbar_radius']       ?? '999';
+        $sbThumbColor   = $layoutSettings['scrollbar_thumb_color']  ?? '#0A1930';
+        $sbTrackColor   = $layoutSettings['scrollbar_track_color']  ?? '#F1F5F9';
+        $sbThumbHover   = $layoutSettings['scrollbar_thumb_hover']  ?? '#1B6FE8';
     @endphp
 
     {{-- SEO Component --}}
@@ -66,6 +72,31 @@
         }
     </style>
     @endif
+
+    {{-- Custom Scrollbar Styles --}}
+    <style>
+        ::-webkit-scrollbar {
+            width: {{ (int)$sbWidth }}px;
+            height: {{ (int)$sbWidth }}px;
+        }
+        ::-webkit-scrollbar-track {
+            background: {{ $sbTrackColor }};
+            border-radius: {{ (int)$sbRadius }}px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: {{ $sbThumbColor }};
+            border-radius: {{ (int)$sbRadius }}px;
+            border: 2px solid {{ $sbTrackColor }};
+            transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: {{ $sbThumbHover }};
+        }
+        * {
+            scrollbar-width: {{ (int)$sbWidth <= 4 ? 'thin' : ((int)$sbWidth <= 0 ? 'none' : 'auto') }};
+            scrollbar-color: {{ $sbThumbColor }} {{ $sbTrackColor }};
+        }
+    </style>
 
     {{-- Breadcrumb / Page Hero Background --}}
     @if($breadcrumbBg)
