@@ -14,19 +14,14 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        /* ── HERO BANNER SLIDER (REFERENCE MATCH 100%) ───────────────────── */
-        .cv-hero-modern {
-            background-color: #F3F4F6;
         /* ── HERO BANNER SLIDER (PREMIUM BALANCED & MOBILE FRIENDLY) ── */
         .cv-hero-modern {
+            background-color: #F3F4F6;
             padding-top: calc(80px + 1.75rem);
             padding-bottom: 1.75rem;
             position: relative;
             overflow: hidden;
             font-family: var(--font);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .hero-swiper {
@@ -903,6 +898,19 @@
         }
     </style>
 
+    <script>
+        window.dismissHeroSkeleton = function() {
+            var skel = document.getElementById('heroSkeleton');
+            var container = document.getElementById('heroSwiperContainer');
+            if (skel) {
+                skel.classList.add('as-hero-skeleton-hidden');
+            }
+            if (container) {
+                container.style.opacity = '1';
+            }
+        };
+    </script>
+
     {{-- ════ HERO BANNER SLIDER (100% REFERENCE MATCH) ════ --}}
     @php
         $heroBgColor   = $settings['hero_bg_color'] ?? '#F3F4F6';
@@ -926,8 +934,19 @@
                         $activeSlides = isset($heroSlides) ? $heroSlides->where('is_active', true)->where('image', '!=', null)->where('image', '!=', '') : collect();
                         $slideCount = $activeSlides->count();
                         $hasAnySlideImage = $slideCount > 0;
-                        // Apabila terdapat 2 banner, kita duplikasi slide (concat) agar Swiper dapat melakukan rotasi/looping berulang terus dari akhir ke awal secara seamless tanpa jeda.
-                        $slidesToRender = ($slideCount == 2) ? $activeSlides->concat($activeSlides) : $activeSlides;
+
+                        // Duplikasi slide jika >= 2 agar total slide minimal 6, mencegah Swiper Loop Warning di konsol browser.
+                        $slidesToRender = collect();
+                        if ($slideCount > 0) {
+                            if ($slideCount >= 2) {
+                                $slidesToRender = $activeSlides;
+                                while ($slidesToRender->count() < 6) {
+                                    $slidesToRender = $slidesToRender->concat($activeSlides);
+                                }
+                            } else {
+                                $slidesToRender = $activeSlides;
+                            }
+                        }
                     @endphp
                     @if($hasAnySlideImage)
                         @foreach($slidesToRender as $slide)
