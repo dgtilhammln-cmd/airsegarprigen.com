@@ -32,13 +32,13 @@
         }
 
         .hero-swiper .swiper-slide {
-            width: 84%;
-            max-width: 1140px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.6;
-            transform: scale(0.96);
+            height: auto;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.65;
+            transform: scale(0.95);
             display: flex;
             justify-content: center;
+            box-sizing: border-box;
         }
 
         .hero-swiper .swiper-slide-active {
@@ -2813,9 +2813,9 @@
 
             if (document.querySelector('.hero-swiper')) {
                 const heroSwiper = new Swiper('.hero-swiper', {
-                    slidesPerView: 'auto',
+                    slidesPerView: 1.16,
                     centeredSlides: true,
-                    spaceBetween: 16,
+                    spaceBetween: 12,
                     loop: shouldLoop,
                     autoplay: shouldLoop ? {
                         delay: 3500,
@@ -2826,6 +2826,16 @@
                     pagination: {
                         el: '.hero-swiper-pagination',
                         clickable: true,
+                    },
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1.2,
+                            spaceBetween: 18,
+                        },
+                        1024: {
+                            slidesPerView: 1.25,
+                            spaceBetween: 24,
+                        }
                     },
                     on: {
                         init: function () {
