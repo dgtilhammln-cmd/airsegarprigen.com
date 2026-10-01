@@ -20,29 +20,46 @@ class SitemapController extends Controller
         $addressFull    = Setting::get('address_full', '');
         $siteUrl        = url('/');
 
-        $staticPages = [
-            ['url' => route('home'),     'label' => 'Beranda',      'priority' => '1.0', 'changefreq' => 'weekly',  'lastmod' => now()->toDateString()],
-            ['url' => route('about'),    'label' => 'Tentang Kami', 'priority' => '0.8', 'changefreq' => 'monthly', 'lastmod' => now()->toDateString()],
-            ['url' => route('products'), 'label' => 'Produk',       'priority' => '0.9', 'changefreq' => 'weekly',  'lastmod' => now()->toDateString()],
-            ['url' => route('articles'), 'label' => 'Artikel',      'priority' => '0.8', 'changefreq' => 'daily',   'lastmod' => now()->toDateString()],
-            ['url' => route('contact'),  'label' => 'Kontak',       'priority' => '0.7', 'changefreq' => 'monthly', 'lastmod' => now()->toDateString()],
+        $allStaticPages = [
+            ['key' => 'home',     'url' => route('home'),     'label' => 'Beranda',      'priority' => '1.0', 'changefreq' => 'weekly'],
+            ['key' => 'about',    'url' => route('about'),    'label' => 'Tentang Kami', 'priority' => '0.8', 'changefreq' => 'monthly'],
+            ['key' => 'products', 'url' => route('products'), 'label' => 'Produk',       'priority' => '0.9', 'changefreq' => 'weekly'],
+            ['key' => 'articles', 'url' => route('articles'), 'label' => 'Artikel',      'priority' => '0.8', 'changefreq' => 'daily'],
+            ['key' => 'contact',  'url' => route('contact'),  'label' => 'Kontak',       'priority' => '0.7', 'changefreq' => 'monthly'],
+            ['key' => 'gallery',  'url' => route('gallery'),  'label' => 'Galeri',       'priority' => '0.8', 'changefreq' => 'monthly'],
         ];
 
-        $serviceUrls = $services->map(fn($s) => [
+        $staticPages = [];
+        foreach ($allStaticPages as $p) {
+            $showKey  = 'nav_show_' . $p['key'];
+            $isActive = Setting::get($showKey, '1') === '1';
+
+            if ($isActive) {
+                $staticPages[] = [
+                    'url'        => $p['url'],
+                    'label'      => Setting::get('nav_label_bottom_' . $p['key'], $p['label']),
+                    'priority'   => $p['priority'],
+                    'changefreq' => $p['changefreq'],
+                    'lastmod'    => now()->toDateString(),
+                ];
+            }
+        }
+
+        $serviceUrls = Setting::get('nav_show_products', '1') === '1' ? $services->map(fn($s) => [
             'url'        => route('products.show', $s->slug),
             'label'      => $s->name,
             'priority'   => '0.85',
             'changefreq' => 'monthly',
             'lastmod'    => $s->updated_at->toDateString(),
-        ])->toArray();
+        ])->toArray() : [];
 
-        $articleUrls = $articles->map(fn($a) => [
+        $articleUrls = Setting::get('nav_show_articles', '1') === '1' ? $articles->map(fn($a) => [
             'url'        => route('articles.show', $a->slug),
             'label'      => $a->title,
             'priority'   => '0.7',
             'changefreq' => 'monthly',
             'lastmod'    => $a->updated_at->toDateString(),
-        ])->toArray();
+        ])->toArray() : [];
 
         $urls = array_merge($staticPages, $serviceUrls, $articleUrls);
 

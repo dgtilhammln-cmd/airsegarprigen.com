@@ -34,7 +34,25 @@
 <title>{{ $seoData['title'] ?? $siteDefaultTitle }}</title>
 <meta name="description" content="{{ $seoData['description'] ?? $companyName . ' — ' . ($companyTagline ?: 'Distributor & Supplier Cat Industrial Indonesia.') }}">
 @php
-    $robotsDirective = $seoData['robots'] ?? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    $routeKeyMap = [
+        'home'     => 'home',
+        'about'    => 'about',
+        'products' => 'products',
+        'gallery'  => 'gallery',
+        'articles' => 'articles',
+        'contact'  => 'contact',
+    ];
+    $routeName = request()->route() ? request()->route()->getName() : '';
+    $mainRouteKey = explode('.', $routeName)[0] ?? '';
+    
+    $navShowKey = isset($routeKeyMap[$mainRouteKey]) ? 'nav_show_' . $routeKeyMap[$mainRouteKey] : null;
+    $isNavDisabled = $navShowKey && \App\Models\Setting::get($navShowKey, '1') === '0';
+
+    if ($isNavDisabled) {
+        $robotsDirective = 'noindex, nofollow, noarchive';
+    } else {
+        $robotsDirective = $seoData['robots'] ?? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    }
 @endphp
 <meta name="robots" content="{{ $robotsDirective }}">
 <meta name="keywords" content="{{ $seoData['keywords'] ?? '' }}">

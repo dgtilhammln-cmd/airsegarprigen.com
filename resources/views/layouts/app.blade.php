@@ -23,6 +23,8 @@
         $sbThumbColor   = $layoutSettings['scrollbar_thumb_color']  ?? '#0A1930';
         $sbTrackColor   = $layoutSettings['scrollbar_track_color']  ?? '#F1F5F9';
         $sbThumbHover   = $layoutSettings['scrollbar_thumb_hover']  ?? '#1B6FE8';
+        // Global Site Font
+        $siteFont       = $layoutSettings['site_font_family']       ?? "'Montserrat', sans-serif";
     @endphp
 
     {{-- SEO Component --}}
@@ -33,12 +35,27 @@
     <link rel="shortcut icon" href="{{ $favicon }}">
     <link rel="apple-touch-icon" href="{{ $favicon }}">
 
-    {{-- Google Fonts: Montserrat — Non-blocking --}}
+    {{-- Google Fonts Collection (Montserrat, Outfit, Inter, Plus Jakarta Sans, Poppins, Syne) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    {{-- Custom / Termina Demi Font Fallback Definition --}}
+    <style>
+        @font-face {
+            font-family: 'Termina Demi';
+            src: local('Termina Demi'), local('Termina-Demi'), local('Termina Bold'), local('Termina');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        :root {
+            --font-primary: {!! $siteFont !!};
+        }
+        body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, nav, a, p, span, div, li, td, th {
+            font-family: var(--font-primary) !important;
+        }
+    </style>
 
     {{-- AOS Animate on Scroll — Non-blocking --}}
     <link rel="preload" as="style" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
