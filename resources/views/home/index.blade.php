@@ -17,8 +17,8 @@
         /* ── HERO BANNER SLIDER (PREMIUM BALANCED & MOBILE FRIENDLY) ── */
         .cv-hero-modern {
             background-color: #F3F4F6;
-            padding-top: calc(80px + 1.75rem);
-            padding-bottom: 1.75rem;
+            padding-top: 1rem;
+            padding-bottom: 1.5rem;
             position: relative;
             overflow: hidden;
             font-family: var(--font);

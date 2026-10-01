@@ -45,10 +45,19 @@
     $routeName = request()->route() ? request()->route()->getName() : '';
     $mainRouteKey = explode('.', $routeName)[0] ?? '';
     
-    $navShowKey = isset($routeKeyMap[$mainRouteKey]) ? 'nav_show_' . $routeKeyMap[$mainRouteKey] : null;
-    $isNavDisabled = $navShowKey && \App\Models\Setting::get($navShowKey, '1') === '0';
+    // Check if robot blocking (noindex) is explicitly activated for this route/page
+    $isRobotBlocked = false;
+    foreach (['home', 'about', 'products', 'gallery', 'articles', 'contact', 'client', 'tank', 'oem', 'call'] as $key) {
+        if (\App\Models\Setting::get('nav_block_robot_' . $key, '0') === '1') {
+            // Check if key matches route
+            if ($key === $mainRouteKey || (isset($routeKeyMap[$key]) && $routeKeyMap[$key] === $mainRouteKey)) {
+                $isRobotBlocked = true;
+                break;
+            }
+        }
+    }
 
-    if ($isNavDisabled) {
+    if ($isRobotBlocked) {
         $robotsDirective = 'noindex, nofollow, noarchive';
     } else {
         $robotsDirective = $seoData['robots'] ?? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';

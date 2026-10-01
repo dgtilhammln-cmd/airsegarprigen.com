@@ -25,6 +25,7 @@ class AdminHeaderController extends Controller
             'header_text_color'      => 'required|string|max:30',
             'header_logo_bold'       => 'nullable|boolean',
             'header_logo_align'      => 'required|in:center,left,right',
+            'header_logo_height'     => 'required|integer|min:30|max:160',
 
             // Active / Hover color legacy fallbacks
             'header_active_bg_color'   => 'nullable|string|max:30',
@@ -49,6 +50,8 @@ class AdminHeaderController extends Controller
 
         foreach ($menuKeys as $k) {
             $rules['nav_show_' . $k]          = 'nullable|boolean';
+            $rules['nav_block_robot_' . $k]   = 'nullable|boolean';
+            $rules['nav_order_' . $k]         = 'required|integer|min:1|max:99';
             $rules['nav_label_top_' . $k]     = 'nullable|string|max:50';
             $rules['nav_top_bold_' . $k]      = 'nullable|boolean';
             $rules['nav_label_bottom_' . $k]  = 'required|string|max:50';
@@ -65,6 +68,7 @@ class AdminHeaderController extends Controller
         ];
         foreach ($menuKeys as $k) {
             $booleans[] = 'nav_show_' . $k;
+            $booleans[] = 'nav_block_robot_' . $k;
             $booleans[] = 'nav_top_bold_' . $k;
             $booleans[] = 'nav_bottom_bold_' . $k;
         }

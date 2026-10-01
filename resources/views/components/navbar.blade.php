@@ -5,35 +5,36 @@
     $waNav          = \App\Models\WaSetting::primary();
     $currentUrl     = url()->current();
 
-    // ── Header General Styling ──
-    $headerBg       = \App\Models\Setting::get('header_bg_color',   '#F2F4F7');
-    $headerText     = \App\Models\Setting::get('header_text_color', '#0056B3');
-    $logoBold       = \App\Models\Setting::get('header_logo_bold',  '1') == '1';
-    $logoAlign      = \App\Models\Setting::get('header_logo_align', 'center');
+    // ── Header General Styling & Logo Height ──
+    $headerBg       = \App\Models\Setting::get('header_bg_color',    '#F2F4F7');
+    $headerText     = \App\Models\Setting::get('header_text_color',  '#0055D4');
+    $logoBold       = \App\Models\Setting::get('header_logo_bold',   '1') == '1';
+    $logoAlign      = \App\Models\Setting::get('header_logo_align',  'center');
+    $logoHeight     = \App\Models\Setting::get('header_logo_height', '80');
 
-    // CTA Button
-    $ctaShow        = \App\Models\Setting::get('header_cta_show',       '1') == '1';
+    // CTA Button (Default 0 / hidden to match reference image, configurable in admin)
+    $ctaShow        = \App\Models\Setting::get('header_cta_show',       '0') == '1';
     $ctaText        = \App\Models\Setting::get('header_cta_text',       'Konsultasi');
     $ctaType        = \App\Models\Setting::get('header_cta_type',       'wa');
     $ctaUrl         = \App\Models\Setting::get('header_cta_url',        '');
-    $ctaBg          = \App\Models\Setting::get('header_cta_bg_color',   '#0056B3');
+    $ctaBg          = \App\Models\Setting::get('header_cta_bg_color',   '#0055D4');
     $ctaTextColor   = \App\Models\Setting::get('header_cta_text_color', '#FFFFFF');
 
-    // ── Navigation Menu Definitions (Menu Baru & Menu Lama) ──
+    // ── Navigation Menu Definitions ──
     $menuConfig = [
-        // Menu BARU (Aktif Default)
-        ['key' => 'home',     'route' => 'home',     'def_show' => '1', 'def_top' => '',            'def_top_bold' => '0', 'def_bottom' => 'BERANDA',     'def_bottom_bold' => '1', 'def_side' => 'left'],
-        ['key' => 'client',   'route' => 'about',    'def_show' => '1', 'def_top' => 'KLIEN',       'def_top_bold' => '0', 'def_bottom' => 'KAMI',        'def_bottom_bold' => '1', 'def_side' => 'left'],
-        ['key' => 'tank',     'route' => 'products', 'def_show' => '1', 'def_top' => 'AIR TANGKI',  'def_top_bold' => '0', 'def_bottom' => 'SIAP KIRIM',  'def_bottom_bold' => '1', 'def_side' => 'left'],
-        ['key' => 'oem',      'route' => 'articles', 'def_show' => '1', 'def_top' => 'AMDK &',      'def_top_bold' => '0', 'def_bottom' => 'MAKLON',      'def_bottom_bold' => '1', 'def_side' => 'right'],
-        ['key' => 'call',     'route' => 'contact',  'def_show' => '1', 'def_top' => 'HUBUNGI',     'def_top_bold' => '0', 'def_bottom' => 'KAMI!',      'def_bottom_bold' => '1', 'def_side' => 'right'],
+        // Menu BARU (Format Gambar Referensi - Order 1..4)
+        ['key' => 'client',   'route' => 'about',    'def_order' => 1, 'def_show' => '1', 'def_top' => 'KLIEN',       'def_top_bold' => '0', 'def_bottom' => 'KAMI',        'def_bottom_bold' => '1', 'def_side' => 'left'],
+        ['key' => 'tank',     'route' => 'products', 'def_order' => 2, 'def_show' => '1', 'def_top' => 'AIR TANGKI',  'def_top_bold' => '0', 'def_bottom' => 'SIAP KIRIM',  'def_bottom_bold' => '1', 'def_side' => 'left'],
+        ['key' => 'oem',      'route' => 'articles', 'def_order' => 3, 'def_show' => '1', 'def_top' => 'AMDK &',      'def_top_bold' => '0', 'def_bottom' => 'MAKLON',      'def_bottom_bold' => '1', 'def_side' => 'right'],
+        ['key' => 'call',     'route' => 'contact',  'def_order' => 4, 'def_show' => '1', 'def_top' => 'HUBUNGI',     'def_top_bold' => '0', 'def_bottom' => 'KAMI!',      'def_bottom_bold' => '1', 'def_side' => 'right'],
 
-        // Menu LAMA (Bisa diaktifkan / dinonaktifkan di /admin/header)
-        ['key' => 'about',    'route' => 'about',    'def_show' => '0', 'def_top' => 'TENTANG',     'def_top_bold' => '0', 'def_bottom' => 'KAMI (LAMA)', 'def_bottom_bold' => '1', 'def_side' => 'left'],
-        ['key' => 'products', 'route' => 'products', 'def_show' => '0', 'def_top' => 'DAFTAR',      'def_top_bold' => '0', 'def_bottom' => 'PRODUK (LAMA)','def_bottom_bold' => '1', 'def_side' => 'left'],
-        ['key' => 'gallery',  'route' => 'gallery',  'def_show' => '0', 'def_top' => 'DOKUMENTASI', 'def_top_bold' => '0', 'def_bottom' => 'GALERI',      'def_bottom_bold' => '1', 'def_side' => 'right'],
-        ['key' => 'articles', 'route' => 'articles', 'def_show' => '0', 'def_top' => 'INFO',        'def_top_bold' => '0', 'def_bottom' => 'ARTIKEL (LAMA)','def_bottom_bold' => '1', 'def_side' => 'right'],
-        ['key' => 'contact',  'route' => 'contact',  'def_show' => '0', 'def_top' => 'INFORMASI',   'def_top_bold' => '0', 'def_bottom' => 'KONTAK (LAMA)','def_bottom_bold' => '1', 'def_side' => 'right'],
+        // Menu LAMA (Bisa diaktifkan kapan saja di /admin/header)
+        ['key' => 'home',     'route' => 'home',     'def_order' => 5, 'def_show' => '0', 'def_top' => '',            'def_top_bold' => '0', 'def_bottom' => 'BERANDA',     'def_bottom_bold' => '1', 'def_side' => 'left'],
+        ['key' => 'about',    'route' => 'about',    'def_order' => 6, 'def_show' => '0', 'def_top' => 'TENTANG',     'def_top_bold' => '0', 'def_bottom' => 'KAMI',        'def_bottom_bold' => '1', 'def_side' => 'left'],
+        ['key' => 'products', 'route' => 'products', 'def_order' => 7, 'def_show' => '0', 'def_top' => 'DAFTAR',      'def_top_bold' => '0', 'def_bottom' => 'PRODUK',      'def_bottom_bold' => '1', 'def_side' => 'left'],
+        ['key' => 'gallery',  'route' => 'gallery',  'def_order' => 8, 'def_show' => '0', 'def_top' => 'DOKUMENTASI', 'def_top_bold' => '0', 'def_bottom' => 'GALERI',      'def_bottom_bold' => '1', 'def_side' => 'right'],
+        ['key' => 'articles', 'route' => 'articles', 'def_order' => 9, 'def_show' => '0', 'def_top' => 'INFO',        'def_top_bold' => '0', 'def_bottom' => 'ARTIKEL',     'def_bottom_bold' => '1', 'def_side' => 'right'],
+        ['key' => 'contact',  'route' => 'contact',  'def_order' => 10,'def_show' => '0', 'def_top' => 'INFORMASI',   'def_top_bold' => '0', 'def_bottom' => 'KONTAK',      'def_bottom_bold' => '1', 'def_side' => 'right'],
     ];
 
     $leftNavLinks  = [];
@@ -50,13 +51,16 @@
             $topBold     = \App\Models\Setting::get('nav_top_bold_' . $key, $item['def_top_bold']) == '1';
             $bottomBold  = \App\Models\Setting::get('nav_bottom_bold_' . $key, $item['def_bottom_bold']) == '1';
             $side        = \App\Models\Setting::get('nav_side_' . $key, $item['def_side']);
+            $order       = (int)\App\Models\Setting::get('nav_order_' . $key, $item['def_order']);
 
             $linkData = [
+                'key'         => $key,
                 'url'         => route($item['route']),
                 'top_label'   => $topLabel,
                 'bottom_label'=> $bottomLabel,
                 'top_bold'    => $topBold,
                 'bottom_bold' => $bottomBold,
+                'order'       => $order,
             ];
 
             $allNavLinks[] = $linkData;
@@ -68,6 +72,11 @@
             }
         }
     }
+
+    // Sort links by order number
+    usort($leftNavLinks,  fn($a, $b) => $a['order'] <=> $b['order']);
+    usort($rightNavLinks, fn($a, $b) => $a['order'] <=> $b['order']);
+    usort($allNavLinks,   fn($a, $b) => $a['order'] <=> $b['order']);
 
     // Resolve CTA href
     if ($ctaType === 'wa' && $waNav) {
@@ -88,7 +97,7 @@
 
 <style>
     /* ═══════════════════════════════════
-       HEADER SPLIT CENTER DESIGN
+       HEADER SPLIT CENTER DESIGN (MATCHING REFERENCE IMAGE)
     ═══════════════════════════════════ */
     .custom-header-wrapper {
         position: sticky;
@@ -96,26 +105,26 @@
         z-index: 999;
         background-color: {{ $headerBg }};
         border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
         width: 100%;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        transition: background-color 0.3s ease;
     }
 
     .custom-header-inner {
-        max-width: 1320px;
+        max-width: 1380px;
         margin: 0 auto;
-        padding: 0.85rem 1.5rem;
+        padding: 0.65rem 2rem;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        gap: 2rem;
+        gap: 3rem;
     }
 
     /* ── Nav Links Container (Left & Right) ── */
     .custom-header-nav {
         display: flex;
         align-items: center;
-        gap: 2.5rem;
+        gap: 3.2rem;
     }
     .custom-header-nav-left {
         justify-self: end;
@@ -126,7 +135,7 @@
         justify-content: flex-start;
     }
 
-    /* ── Nav Link Item (No Color Change on Click/Active) ── */
+    /* ── Nav Link Item (Identical Typography & No Color Change on Click) ── */
     .custom-nav-item {
         display: inline-flex;
         flex-direction: column;
@@ -136,35 +145,34 @@
         color: {{ $headerText }};
         text-align: center;
         transition: opacity 0.2s ease, transform 0.2s ease;
-        padding: 0.2rem 0.4rem;
+        padding: 0.15rem 0.25rem;
         user-select: none;
     }
     .custom-nav-item:hover {
         opacity: 0.75;
-        transform: translateY(-1px);
-        color: {{ $headerText }}; /* Strictly no color change on hover/click */
+        color: {{ $headerText }};
     }
     .custom-nav-item:active,
     .custom-nav-item:focus {
-        color: {{ $headerText }} !important; /* Strictly no color change on click */
+        color: {{ $headerText }} !important;
         outline: none;
     }
 
     /* Text Lines */
     .custom-nav-top {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.72rem;
-        line-height: 1.15;
-        letter-spacing: 0.05em;
+        font-family: var(--font-primary, 'Outfit', 'Montserrat', sans-serif);
+        font-size: 0.68rem;
+        line-height: 1.1;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         margin-bottom: 2px;
         display: block;
     }
     .custom-nav-bottom {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.95rem;
-        line-height: 1.15;
-        letter-spacing: 0.04em;
+        font-family: var(--font-primary, 'Outfit', 'Montserrat', sans-serif);
+        font-size: 0.85rem;
+        line-height: 1.1;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         display: block;
     }
@@ -176,7 +184,7 @@
         font-weight: 500 !important;
     }
 
-    /* ── Center Logo ── */
+    /* ── Center Logo (Larger than Text Menu) ── */
     .custom-logo-wrap {
         justify-self: center;
         display: flex;
@@ -185,7 +193,8 @@
         text-decoration: none;
     }
     .custom-logo-img {
-        max-height: 52px;
+        max-height: {{ (int)$logoHeight }}px;
+        height: {{ (int)$logoHeight }}px;
         width: auto;
         object-fit: contain;
     }
