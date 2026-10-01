@@ -960,7 +960,7 @@
     </section>
     @endif
 
-    {{-- ════ LANDING PAGE FULL IMAGE SHOWCASE ════ --}}
+    {{-- ════ LANDING PAGE FULL IMAGE SHOWCASE WITH ELEGANT SKELETON ════ --}}
     @if(\App\Models\Setting::get('page_home_show_landing_page','1') == '1')
         @php
             $lpBg = \App\Models\Setting::get('page_home_bg_landing_page', '#FFFFFF');
@@ -970,6 +970,59 @@
             $lpImgsRaw = \App\Models\Setting::get('page_home_landing_images_landing_page');
             $lpImgs = $lpImgsRaw ? json_decode($lpImgsRaw, true) : [];
         @endphp
+
+        <style>
+            .cv-landing-img-wrap {
+                width: 100%;
+                position: relative;
+                margin: 0;
+                padding: 0;
+                background: #F1F5F9;
+                overflow: hidden;
+            }
+
+            .lp-img-skeleton {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, #E2E8F0 0%, #F8FAFC 50%, #E2E8F0 100%);
+                background-size: 200% 100%;
+                animation: lpShimmer 1.5s infinite linear;
+                z-index: 2;
+                transition: opacity 0.5s ease;
+                min-height: 250px;
+            }
+
+            .lp-skeleton-hidden {
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+
+            @keyframes lpShimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+
+            .lp-img-element {
+                width: 100%;
+                height: auto;
+                display: block;
+                object-fit: contain;
+                max-width: 100%;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+                -webkit-user-drag: none;
+                -khtml-user-drag: none;
+                -moz-user-drag: none;
+                -o-user-drag: none;
+                user-drag: none;
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                pointer-events: none;
+            }
+        </style>
+
         <section class="cv-landing-page-section" id="landing" style="background-color: {{ $lpBg }}; width:100%; position:relative; overflow:hidden;">
             @if($lpHd || $lpSub || $lpBd)
                 <div class="container" style="padding: 4rem 1.5rem 2rem; text-align: center; max-width: 900px; margin: 0 auto;">
@@ -990,19 +1043,52 @@
 
             @if(is_array($lpImgs) && count($lpImgs) > 0)
                 <div class="cv-landing-images-track" style="width:100%; display:flex; flex-direction:column; gap:0;">
-                    @foreach($lpImgs as $lpItem)
+                    @foreach($lpImgs as $idx => $lpItem)
                         @if(!empty($lpItem['image']))
-                            <div class="cv-landing-img-wrap" style="width:100%; position:relative; margin:0; padding:0;">
+                            <div class="cv-landing-img-wrap" id="lpWrap-{{ $idx }}">
+                                {{-- Elegant Shimmer Skeleton Overlay --}}
+                                <div class="lp-img-skeleton" id="lpSkel-{{ $idx }}"></div>
+
+                                {{-- Main Full-Width Image (Non-draggable & Non-selectable) --}}
                                 <img src="{{ asset('storage/' . $lpItem['image']) }}" 
                                      alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
-                                     loading="lazy" 
-                                     style="width:100%; height:auto; display:block; object-fit:contain; max-width:100%;">
+                                     class="lp-img-element"
+                                     draggable="false"
+                                     ondragstart="return false;"
+                                     oncontextmenu="return false;"
+                                     loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                                     onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
+                                     onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
                             </div>
                         @endif
                     @endforeach
                 </div>
             @endif
         </section>
+
+        <script>
+            function dismissLpSkeleton(skelId, imgEl) {
+                const skel = document.getElementById(skelId);
+                if (skel) {
+                    skel.classList.add('lp-skeleton-hidden');
+                }
+                if (imgEl) {
+                    imgEl.style.opacity = '1';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Safety fallback to ensure all skeletons dismiss even if cached / delayed onload
+                setTimeout(function() {
+                    document.querySelectorAll('.lp-img-skeleton').forEach(function(skel) {
+                        skel.classList.add('lp-skeleton-hidden');
+                    });
+                    document.querySelectorAll('.lp-img-element').forEach(function(img) {
+                        img.style.opacity = '1';
+                    });
+                }, 800);
+            });
+        </script>
     @endif
 
     @if(\App\Models\Setting::get('page_home_show_clients','1') == '1')
@@ -1665,7 +1751,9 @@
         })();
     </script>
 
-    @include('components.keunggulan')
+    @if(\App\Models\Setting::get('page_home_show_clients','1') == '1')
+        @include('components.keunggulan')
+    @endif
 
     <style>
         /* ── APLIKASI ─────────────────────────────── */
