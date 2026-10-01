@@ -17,25 +17,33 @@
         /* ── HERO BANNER SLIDER (REFERENCE MATCH 100%) ───────────────────── */
         .cv-hero-modern {
             background-color: #F3F4F6;
+        /* ── HERO BANNER SLIDER (PREMIUM BALANCED & MOBILE FRIENDLY) ── */
+        .cv-hero-modern {
             padding-top: calc(80px + 1.75rem);
-            padding-bottom: 2rem;
+            padding-bottom: 1.75rem;
             position: relative;
             overflow: hidden;
             font-family: var(--font);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .hero-swiper {
             width: 100%;
-            padding-bottom: 2rem;
-            overflow: visible !important;
+            padding-bottom: 0 !important;
+            position: relative;
+            overflow: hidden !important;
         }
 
         .hero-swiper .swiper-slide {
-            width: 82%;
+            width: 84%;
             max-width: 1140px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.65;
+            opacity: 0.6;
             transform: scale(0.96);
+            display: flex;
+            justify-content: center;
         }
 
         .hero-swiper .swiper-slide-active {
@@ -48,7 +56,7 @@
             width: 100%;
             border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
             background: #ffffff;
             text-decoration: none;
             position: relative;
@@ -61,11 +69,12 @@
             object-fit: cover;
             border-radius: 22px;
             display: block;
+            margin: 0 auto;
         }
 
         /* Hero Banner Skeleton Loading */
         .as-hero-skeleton {
-            width: 82%;
+            width: 84%;
             max-width: 1140px;
             height: 460px;
             margin: 0 auto;
@@ -93,59 +102,93 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Swiper Pagination Track Pill (Matches Screenshot 2) */
+        /* Swiper Pagination Track Pill INSIDE Banner at Bottom Center (Image 2) */
         .as-hero-pagination-wrap {
-            max-width: 1200px;
-            margin: 0.5rem auto 0;
-            padding: 0 1.5rem;
+            position: absolute;
+            bottom: 1.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
+            pointer-events: auto;
+            margin: 0;
+            padding: 0;
         }
 
         .hero-swiper-pagination.swiper-pagination-bullets {
             position: relative;
-            bottom: 0;
+            bottom: 0 !important;
+            left: 0 !important;
+            transform: none !important;
             width: auto !important;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #3F3F46;
-            padding: 6px 14px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 5px 12px;
             border-radius: 50px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
         .hero-swiper-pagination .swiper-pagination-bullet {
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.45);
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.5);
             opacity: 1;
             margin: 0 !important;
             border-radius: 50%;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
         .hero-swiper-pagination .swiper-pagination-bullet-active {
-            width: 26px;
+            width: 20px;
+            height: 6px;
             background: #ffffff;
             border-radius: 10px;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
+        /* Mobile Friendly & Proportional Spacing */
         @media (max-width: 768px) {
             .cv-hero-modern {
-                padding-top: calc(70px + 1rem);
-                padding-bottom: 1.5rem;
+                padding-top: calc(70px + 1.25rem); /* Equal 1.25rem spacing under fixed header */
+                padding-bottom: 1.25rem;            /* Equal 1.25rem spacing above next section */
             }
             .hero-swiper .swiper-slide {
-                width: 92%;
+                width: 90%;
+            }
+            .as-banner-card {
+                border-radius: 16px;
             }
             .as-banner-img {
-                max-height: 260px;
-                border-radius: 14px;
+                max-height: 220px;
+                border-radius: 16px;
+            }
+            .as-hero-skeleton {
+                width: 90%;
+                height: 220px;
+                border-radius: 16px;
             }
             .as-hero-pagination-wrap {
-                justify-content: center;
+                bottom: 0.75rem;
+            }
+            .hero-swiper-pagination.swiper-pagination-bullets {
+                padding: 4px 10px;
+                gap: 5px;
+            }
+            .hero-swiper-pagination .swiper-pagination-bullet {
+                width: 5px;
+                height: 5px;
+            }
+            .hero-swiper-pagination .swiper-pagination-bullet-active {
+                width: 16px;
+                height: 5px;
             }
         }
 
