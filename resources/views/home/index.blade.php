@@ -1763,6 +1763,10 @@
         $appShowBg = \App\Models\Setting::get('page_home_bg_aplikasi', '#0A1930');
         $appHeadline = \App\Models\Setting::get('page_home_headline_aplikasi', 'Cocok untuk<br>Berbagai Industri');
         $appSubline  = \App\Models\Setting::get('page_home_subline_aplikasi', 'Produk pelapis dan cat '.\App\Models\Setting::get('company_name', config('app.name')).' dirancang untuk melindungi beragam aset strategis di berbagai sektor.');
+        
+        $dynCardsRaw = \App\Models\Setting::get('page_home_cards_aplikasi');
+        $dynCards = $dynCardsRaw ? json_decode($dynCardsRaw, true) : null;
+
         $iconSvgMap  = [
             'ship'    => '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3-9L9 3l-3 9H2v6h20v-6z"/></svg>',
             'factory' => '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/></svg>',
@@ -1774,6 +1778,26 @@
             'sun'     => '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>',
             'tool'    => '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
         ];
+
+        if ($dynCards && is_array($dynCards) && count($dynCards) > 0) {
+            $apps = [];
+            foreach($dynCards as $dc) {
+                $iconKey = $dc['icon'] ?? 'ship';
+                $apps[] = [
+                    'title' => $dc['title'] ?? 'Item Aplikasi',
+                    'desc'  => $dc['desc'] ?? '',
+                    'icon'  => $iconSvgMap[$iconKey] ?? $iconSvgMap['ship'],
+                    'img'   => !empty($dc['image']) ? asset('storage/'.$dc['image']) : asset('images/placeholder-app.jpg')
+                ];
+            }
+        } else {
+            $apps = [
+                ['title' => \App\Models\Setting::get('app_card_1_title','Maritim & Perkapalan'), 'desc' => \App\Models\Setting::get('app_card_1_desc','Perlindungan maksimal lambung kapal dan struktur laut dari korosi air asin yang ekstrem.'), 'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_1_icon','ship')] ?? $iconSvgMap['ship'], 'img' => !empty($settings['app_img_restoran']) ? asset('storage/'.$settings['app_img_restoran']) : asset('images/placeholder-app.jpg')],
+                ['title' => \App\Models\Setting::get('app_card_2_title','Pabrik & Gudang'),     'desc' => \App\Models\Setting::get('app_card_2_desc','Melindungi lantai pabrik, struktur baja, dan alat berat dengan coating khusus tahan lama.'),  'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_2_icon','factory')] ?? $iconSvgMap['factory'], 'img' => !empty($settings['app_img_pabrik']) ? asset('storage/'.$settings['app_img_pabrik']) : asset('images/placeholder-app.jpg')],
+                ['title' => \App\Models\Setting::get('app_card_3_title','Struktur Baja'),       'desc' => \App\Models\Setting::get('app_card_3_desc','Cat anti karat terbaik untuk menjaga integritas rangka jembatan dan struktur baja terbuka.'),  'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_3_icon','zap')] ?? $iconSvgMap['zap'],     'img' => !empty($settings['app_img_gor']) ? asset('storage/'.$settings['app_img_gor']) : asset('images/placeholder-app.jpg')],
+                ['title' => \App\Models\Setting::get('app_card_4_title','Fasilitas Komersial'), 'desc' => \App\Models\Setting::get('app_card_4_desc','Lapisan pelindung yang estetik dan awet untuk pusat perbelanjaan dan gedung komersial.'),    'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_4_icon','home')] ?? $iconSvgMap['home'],   'img' => !empty($settings['app_img_dapur']) ? asset('storage/'.$settings['app_img_dapur']) : asset('images/placeholder-app.jpg')],
+            ];
+        }
     @endphp
     @if(\App\Models\Setting::get('page_home_show_aplikasi','1') == '1')
     <section class="cv-apps-premium" id="aplikasi" style="{{ $appShowBg && $appShowBg !== '#0A1930' ? 'background:'.$appShowBg.';' : '' }}">
@@ -1785,14 +1809,6 @@
             </div>
 
             <div class="cv-apps-grid-v2">
-                @php
-                    $apps = [
-                        ['title' => \App\Models\Setting::get('app_card_1_title','Maritim & Perkapalan'), 'desc' => \App\Models\Setting::get('app_card_1_desc','Perlindungan maksimal lambung kapal dan struktur laut dari korosi air asin yang ekstrem.'), 'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_1_icon','ship')] ?? $iconSvgMap['ship'], 'img' => !empty($settings['app_img_restoran']) ? asset('storage/'.$settings['app_img_restoran']) : asset('images/placeholder-app.jpg')],
-                        ['title' => \App\Models\Setting::get('app_card_2_title','Pabrik & Gudang'),     'desc' => \App\Models\Setting::get('app_card_2_desc','Melindungi lantai pabrik, struktur baja, dan alat berat dengan coating khusus tahan lama.'),  'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_2_icon','factory')] ?? $iconSvgMap['factory'], 'img' => !empty($settings['app_img_pabrik']) ? asset('storage/'.$settings['app_img_pabrik']) : asset('images/placeholder-app.jpg')],
-                        ['title' => \App\Models\Setting::get('app_card_3_title','Struktur Baja'),       'desc' => \App\Models\Setting::get('app_card_3_desc','Cat anti karat terbaik untuk menjaga integritas rangka jembatan dan struktur baja terbuka.'),  'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_3_icon','zap')] ?? $iconSvgMap['zap'],     'img' => !empty($settings['app_img_gor']) ? asset('storage/'.$settings['app_img_gor']) : asset('images/placeholder-app.jpg')],
-                        ['title' => \App\Models\Setting::get('app_card_4_title','Fasilitas Komersial'), 'desc' => \App\Models\Setting::get('app_card_4_desc','Lapisan pelindung yang estetik dan awet untuk pusat perbelanjaan dan gedung komersial.'),    'icon' => $iconSvgMap[\App\Models\Setting::get('app_card_4_icon','home')] ?? $iconSvgMap['home'],   'img' => !empty($settings['app_img_dapur']) ? asset('storage/'.$settings['app_img_dapur']) : asset('images/placeholder-app.jpg')],
-                    ];
-                @endphp
                 @foreach($apps as $i => $app)
                     <div class="cv-app-card-v2" data-aos="fade-up" data-aos-delay="{{ $i * 50 }}">
                         <div class="cv-app-img-wrapper-v2">
