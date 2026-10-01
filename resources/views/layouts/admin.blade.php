@@ -298,6 +298,10 @@ body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M3 18h9"/><circle cx="19" cy="18" r="3"/></svg>
       Pengaturan Header
     </a>
+    <a href="{{ route('admin.pages.homepage') }}" class="sb-link {{ request()->routeIs('admin.pages*') ? 'active' : '' }}">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Page Management
+    </a>
 
     <div class="sb-sec">Aksi</div>
     <a href="{{ route('home') }}" target="_blank" class="sb-link">

@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\AdminLeadController;
 use App\Http\Controllers\Admin\AdminServiceCategoryController;
 use App\Http\Controllers\Admin\AdminHeroSlideController;
 use App\Http\Controllers\Admin\AdminHeaderController;
+use App\Http\Controllers\Admin\AdminPageController;
 
 
 
@@ -278,5 +279,9 @@ Route::prefix('admin')->group(function () {
         // Header & Navigation Settings
         Route::get('/header', [AdminHeaderController::class, 'index'])->name('admin.header.index');
         Route::post('/header', [AdminHeaderController::class, 'update'])->name('admin.header.update');
+
+        // Page Management
+        Route::get('/pages/homepage', [AdminPageController::class, 'index'])->name('admin.pages.homepage');
+        Route::post('/pages/homepage', [AdminPageController::class, 'update'])->name('admin.pages.homepage.update');
     });
 });
