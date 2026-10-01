@@ -972,6 +972,21 @@
         @endphp
 
         <style>
+            .cv-landing-page-section,
+            .cv-landing-page-section * {
+                -webkit-touch-callout: none !important;
+                -webkit-user-select: none !important;
+                -khtml-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+                -webkit-user-drag: none !important;
+                -khtml-user-drag: none !important;
+                -moz-user-drag: none !important;
+                -o-user-drag: none !important;
+                user-drag: none !important;
+            }
+
             .cv-landing-img-wrap {
                 width: 100%;
                 position: relative;
@@ -979,6 +994,17 @@
                 padding: 0;
                 background: #F1F5F9;
                 overflow: hidden;
+            }
+
+            .lp-transparent-shield {
+                position: absolute;
+                inset: 0;
+                z-index: 5;
+                background: transparent;
+                cursor: default;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+                -webkit-user-drag: none !important;
             }
 
             .lp-img-skeleton {
@@ -1010,16 +1036,16 @@
                 max-width: 100%;
                 opacity: 0;
                 transition: opacity 0.5s ease-in-out;
-                -webkit-user-drag: none;
-                -khtml-user-drag: none;
-                -moz-user-drag: none;
-                -o-user-drag: none;
-                user-drag: none;
-                user-select: none;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                pointer-events: none;
+                -webkit-user-drag: none !important;
+                -khtml-user-drag: none !important;
+                -moz-user-drag: none !important;
+                -o-user-drag: none !important;
+                user-drag: none !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                pointer-events: none !important;
             }
         </style>
 
@@ -1045,9 +1071,12 @@
                 <div class="cv-landing-images-track" style="width:100%; display:flex; flex-direction:column; gap:0;">
                     @foreach($lpImgs as $idx => $lpItem)
                         @if(!empty($lpItem['image']))
-                            <div class="cv-landing-img-wrap" id="lpWrap-{{ $idx }}">
+                            <div class="cv-landing-img-wrap" id="lpWrap-{{ $idx }}" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
                                 {{-- Elegant Shimmer Skeleton Overlay --}}
                                 <div class="lp-img-skeleton" id="lpSkel-{{ $idx }}"></div>
+
+                                {{-- Transparent Shield Overlay to prevent ANY mouse click, drag, double click, selection, or touch gesture --}}
+                                <div class="lp-transparent-shield" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;"></div>
 
                                 {{-- Main Full-Width Image (Non-draggable & Non-selectable) --}}
                                 <img src="{{ asset('storage/' . $lpItem['image']) }}" 
@@ -1056,6 +1085,7 @@
                                      draggable="false"
                                      ondragstart="return false;"
                                      oncontextmenu="return false;"
+                                     onselectstart="return false;"
                                      loading="{{ $loop->first ? 'eager' : 'lazy' }}"
                                      onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
                                      onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
@@ -1155,22 +1185,35 @@
 
     @if(\App\Models\Setting::get('page_home_show_about','1') == '1')
     {{-- ABOUT SECTION --}}
+    @php
+        $aboutBg  = \App\Models\Setting::get('page_home_bg_about', '#ffffff');
+        $aboutTxt = \App\Models\Setting::get('page_home_text_color_about', '#0f172a');
+        $aboutAcc = \App\Models\Setting::get('page_home_accent_color_about', '#DC2626');
+        $aboutHd  = \App\Models\Setting::get('page_home_headline_about');
+        $aboutSub = \App\Models\Setting::get('page_home_subline_about');
+        $aboutBd  = \App\Models\Setting::get('page_home_badge_about', 'ABOUT US');
+    @endphp
     <section class="cv-about-premium section-pad" id="tentang"
-        style="background:#ffffff; color:#0f172a; position:relative; z-index:2;">
+        style="background:{{ $aboutBg }}; color:{{ $aboutTxt }}; position:relative; z-index:2;">
         <div class="container">
             {{-- Section Header --}}
             <div style="text-align:center; max-width:800px; margin:0 auto 4rem;">
+                @if($aboutBd)
                 <div
-                    style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#64748b; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
-                    <span style="width:4px; height:4px; background:#0A1930; border-radius:50%;"></span>
-                    ABOUT US
+                    style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:{{ $aboutTxt }}; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                    <span style="width:4px; height:4px; background:{{ $aboutAcc }}; border-radius:50%;"></span>
+                    {{ $aboutBd }}
                 </div>
+                @endif
 
-                {{-- Dynamic Heading with Icons --}}
-                <h2 style="font-size:clamp(1.75rem, 3.5vw, 3rem); font-weight:500; line-height:1.15; letter-spacing:-0.02em; color:#0A1930;"
+                {{-- Dynamic Heading --}}
+                <h2 style="font-size:clamp(1.75rem, 3.5vw, 3rem); font-weight:500; line-height:1.15; letter-spacing:-0.02em; color:{{ $aboutTxt }};"
                     class="about-premium-heading">
-                    {!! !empty($settings['about_heading']) ? $settings['about_heading'] : 'Solusi Cat <span class="ab-icon-dark-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></span> Berkualitas Tinggi untuk <span class="ab-icon-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 3.18 1.66 6.02 4.14 7.69.41.27.68.73.68 1.22V22h8.36v-1.09c0-.49.27-.95.68-1.22 2.48-1.67 4.14-4.51 4.14-7.69 0-4.97-4.03-9-9-9zM12 18h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></span> Industri & Maritim' !!}
+                    {!! $aboutHd ?: (!empty($settings['about_heading']) ? $settings['about_heading'] : 'Solusi Cat <span class="ab-icon-dark-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></span> Berkualitas Tinggi untuk <span class="ab-icon-red"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 3.18 1.66 6.02 4.14 7.69.41.27.68.73.68 1.22V22h8.36v-1.09c0-.49.27-.95.68-1.22 2.48-1.67 4.14-4.51 4.14-7.69 0-4.97-4.03-9-9-9zM12 18h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></span> Industri & Maritim') !!}
                 </h2>
+                @if($aboutSub)
+                    <p style="font-size:1rem; color:{{ $aboutTxt }}; margin-top:0.75rem; opacity:0.75;">{{ $aboutSub }}</p>
+                @endif
             </div>
 
 
@@ -1650,14 +1693,20 @@
     </style>
 
     @if(\App\Models\Setting::get('page_home_show_catalog','1') == '1')
-    <section class="cv-catalog-section" id="produk">
+    @php
+        $catBg  = \App\Models\Setting::get('page_home_bg_catalog', '#0F172A');
+        $catTxt = \App\Models\Setting::get('page_home_text_color_catalog', '#ffffff');
+        $catHd  = \App\Models\Setting::get('page_home_headline_catalog', 'Katalog Produk<br>Kami');
+        $catSub = \App\Models\Setting::get('page_home_subline_catalog', 'Solusi cat dan coating premium terpercaya untuk berbagai skala industri di Indonesia.');
+    @endphp
+    <section class="cv-catalog-section" id="produk" style="background:{{ $catBg }};">
 
         {{-- Header: Title left, description right --}}
         <div class="cv-catalog-header">
-            <h2 class="cv-catalog-title">Katalog Produk<br>Kami</h2>
+            <h2 class="cv-catalog-title" style="color:{{ $catTxt }}">{!! $catHd !!}</h2>
             <div class="cv-catalog-right-info">
-                <p>Solusi cat dan coating premium terpercaya untuk berbagai skala industri di Indonesia.</p>
-                <small>Tersedia berbagai varian dan spesifikasi</small>
+                <p style="color:{{ $catTxt }}; opacity:0.7;">{{ $catSub }}</p>
+                <small style="color:{{ $catTxt }}; opacity:0.5;">Tersedia berbagai varian dan spesifikasi</small>
             </div>
         </div>
 
@@ -1751,6 +1800,7 @@
         })();
     </script>
 
+    {{-- Keunggulan (Why Choose) uses the 'clients' section toggle in admin --}}
     @if(\App\Models\Setting::get('page_home_show_clients','1') == '1')
         @include('components.keunggulan')
     @endif
@@ -1933,7 +1983,12 @@
         }
     @endphp
     @if(\App\Models\Setting::get('page_home_show_aplikasi','1') == '1')
-    <section class="cv-apps-premium" id="aplikasi" style="{{ $appShowBg && $appShowBg !== '#0A1930' ? 'background:'.$appShowBg.';' : '' }}">
+    @php
+        $appTxtColor = \App\Models\Setting::get('page_home_text_color_aplikasi', '#ffffff');
+        $appHdline = \App\Models\Setting::get('page_home_headline_aplikasi', $appHeadline);
+        $appAccColor = \App\Models\Setting::get('page_home_accent_color_aplikasi', '#DC2626');
+    @endphp
+    <section class="cv-apps-premium" id="aplikasi" style="background:{{ $appShowBg }}; color:{{ $appTxtColor }};">
         <div class="cv-apps-inner">
             <div class="cv-apps-header">
                 <div class="cv-adv-section-label">APLIKASI</div>
@@ -2201,12 +2256,19 @@
 
     {{-- ════ GALLERY PREVIEW (PREMIUM) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_galeri','1') == '1' && $gallery->count())
-        <section class="cv-gallery-premium" id="galeri">
+        @php
+            $galBg  = \App\Models\Setting::get('page_home_bg_galeri', '#ffffff');
+            $galTxt = \App\Models\Setting::get('page_home_text_color_galeri', '#0F172A');
+            $galAcc = \App\Models\Setting::get('page_home_accent_color_galeri', '#1B6FE8');
+            $galHd  = \App\Models\Setting::get('page_home_headline_galeri', 'Bukti Nyata<br>di Lapangan');
+            $galBd  = \App\Models\Setting::get('page_home_badge_galeri', 'GALERI INSTALASI');
+        @endphp
+        <section class="cv-gallery-premium" id="galeri" style="background:{{ $galBg }};">
             <div class="cv-gallery-inner">
                 <div class="cv-gallery-header">
                     <div>
-                        <div class="cv-adv-section-label">GALERI INSTALASI</div>
-                        <h2 class="cv-adv-section-title" style="margin-top:0.75rem;">Bukti Nyata<br>di Lapangan</h2>
+                        <div class="cv-adv-section-label" style="color:{{ $galTxt }}; opacity:0.65;">{{ $galBd }}</div>
+                        <h2 class="cv-adv-section-title" style="margin-top:0.75rem; color:{{ $galTxt }}">{!! $galHd !!}</h2>
                     </div>
                     <a href="{{ route('gallery') }}" class="btn-ghost"
                         style="color:#0F172A; border-color:#E2E8F0; background:#F8FAFC;">
@@ -2484,8 +2546,12 @@
 
     {{-- ════ COVERAGE (PREMIUM REDESIGN) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_coverage','1') == '1')
+    @php
+        $covBg  = \App\Models\Setting::get('page_home_bg_coverage', '#0F172A');
+        $covTxt = \App\Models\Setting::get('page_home_text_color_coverage', '#ffffff');
+    @endphp
     <section class="cv-coverage-premium" id="jangkauan"
-        style="background-color: #0F172A; padding: 6rem 0 2rem 0; color: #fff; overflow: hidden; position: relative;">
+        style="background-color:{{ $covBg }}; padding: 6rem 0 2rem 0; color:{{ $covTxt }}; overflow: hidden; position: relative;">
         <div class="cv-coverage-inner"
             style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 2;">
 
@@ -2819,10 +2885,11 @@
         }
 
         .cv-article-read-v2 {
-            color: #DC2626;
+            color: var(--art-acc, #1B6FE8);
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            font-weight: 700;
         }
 
         .cv-article-read-v2 svg {
@@ -2877,27 +2944,47 @@
 
     {{-- ════ ARTICLES (PREMIUM) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_articles','1') == '1' && $articles->count())
-        <section class="cv-articles-premium" id="artikel">
+        @php
+            $artBg = \App\Models\Setting::get('page_home_bg_articles', '#ffffff');
+            $artTxt = \App\Models\Setting::get('page_home_text_color_articles', '#0F172A');
+            $artAcc = \App\Models\Setting::get('page_home_accent_color_articles', '#1B6FE8');
+            $artHd = \App\Models\Setting::get('page_home_headline_articles', 'Artikel & Insight');
+            $artSub = \App\Models\Setting::get('page_home_subline_articles');
+            $artBd = \App\Models\Setting::get('page_home_badge_articles', 'ARTIKEL & TIPS');
+            $artBtnShow = \App\Models\Setting::get('page_home_btn_show_articles', '1') == '1';
+            $artBtnTxt = \App\Models\Setting::get('page_home_btn_text_articles', 'Semua Artikel');
+            $artBtnUrl = \App\Models\Setting::get('page_home_btn_url_articles', route('articles'));
+        @endphp
+        {{-- Set CSS var for article read button accent color --}}
+        <style>:root { --art-acc: {{ $artAcc ?: '#1B6FE8' }}; }</style>
+        <section class="cv-articles-premium" id="artikel" style="background:{{ $artBg ?: '#ffffff' }}; color:{{ $artTxt ?: '#0F172A' }};">
             <div class="cv-articles-inner">
                 <div class="cv-articles-header">
                     <div>
-                        <div
-                            style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#64748b; margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem;">
-                            <span style="width:4px; height:4px; background:#DC2626; border-radius:50%;"></span>
-                            ARTIKEL &amp; TIPS
-                        </div>
+                        @if($artBd)
+                            <div
+                                style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:{{ $artTxt }}; opacity:0.65; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+                                <span style="width:6px; height:6px; background:{{ $artAcc }}; border-radius:50%;"></span>
+                                {{ $artBd }}
+                            </div>
+                        @endif
                         <h2
-                            style="font-size:clamp(2rem, 4vw, 3.5rem); font-weight:500; line-height:1.15; letter-spacing:-0.03em; color:#0f172a !important; margin-top:0; margin-bottom:0;">
-                            Artikel & Insight
+                            style="font-size:clamp(2rem, 4vw, 3.5rem); font-weight:500; line-height:1.15; letter-spacing:-0.03em; color:{{ $artTxt }} !important; margin-top:0; margin-bottom:0;">
+                            {!! $artHd !!}
                         </h2>
+                        @if($artSub)
+                            <p style="font-size:1rem; color:{{ $artTxt }}; opacity:0.7; margin-top:0.5rem; margin-bottom:0;">{{ $artSub }}</p>
+                        @endif
                     </div>
-                    <a href="{{ route('articles') }}" class="btn-ghost"
-                        style="color:#0F172A !important; border-color:#E2E8F0; background:#F8FAFC; text-decoration:none !important;">
-                        Semua Artikel
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </a>
+                    @if($artBtnShow)
+                        <a href="{{ $artBtnUrl ?: route('articles') }}" class="btn-ghost"
+                            style="color:{{ $artTxt }} !important; border-color:{{ $artAcc }}; background:transparent; text-decoration:none !important;">
+                            {{ $artBtnTxt ?: 'Semua Artikel' }}
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </a>
+                    @endif
                 </div>
 
                 <div class="cv-articles-grid-v2">

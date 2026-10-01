@@ -283,5 +283,6 @@ Route::prefix('admin')->group(function () {
         // Page Management
         Route::get('/pages/homepage', [AdminPageController::class, 'index'])->name('admin.pages.homepage');
         Route::post('/pages/homepage', [AdminPageController::class, 'update'])->name('admin.pages.homepage.update');
+        Route::delete('/pages/homepage/landing-image', [AdminPageController::class, 'deleteLandingImage'])->name('admin.pages.homepage.landing_image.delete');
     });
 });

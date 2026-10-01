@@ -527,7 +527,8 @@
                                             <button type="button" class="hp-btn-add" style="padding:0.35rem 0.75rem;font-size:0.75rem;background:#475569;" onclick="moveLandingItem('landing-img-item-{{ $k }}-{{ $lIdx }}', 'down')">
                                                 ▼ Turun
                                             </button>
-                                            <button type="button" class="hp-btn-del" onclick="removeCardItem('landing-img-item-{{ $k }}-{{ $lIdx }}')">
+                                            <button type="button" class="hp-btn-del"
+                                                onclick="deleteLandingImageAjax('landing-img-item-{{ $k }}-{{ $lIdx }}', '{{ $k }}', {{ $lIdx }}, this)">
                                                 Hapus Gambar
                                             </button>
                                         </div>
@@ -687,6 +688,65 @@ function reindexLandingOrders() {
 }
 
 let landingCounters = 100;
+
+// Delete existing landing image via AJAX (immediate save to DB)
+function deleteLandingImageAjax(itemId, secKey, imgIndex, btn) {
+    if (!confirm('Hapus gambar ini dari landing page? Gambar akan langsung dihapus dari server.')) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Menghapus...';
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]') ?.
+        getAttribute('content') || '';
+
+    fetch('{{ route("admin.pages.homepage.landing_image.delete") }}', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ section: secKey, index: imgIndex })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            const el = document.getElementById(itemId);
+            if (el) {
+                el.style.transition = 'opacity 0.3s, transform 0.3s';
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(20px)';
+                setTimeout(() => el.remove(), 300);
+            }
+            // Show success toast
+            showAdminToast(data.message || 'Gambar berhasil dihapus.');
+        } else {
+            alert('Gagal: ' + (data.message || 'Terjadi kesalahan.'));
+            btn.disabled = false;
+            btn.textContent = 'Hapus Gambar';
+        }
+    })
+    .catch(() => {
+        alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+        btn.disabled = false;
+        btn.textContent = 'Hapus Gambar';
+    });
+}
+
+// Simple toast notification for admin
+function showAdminToast(msg) {
+    let toast = document.getElementById('admin-ajax-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'admin-ajax-toast';
+        toast.style.cssText = 'position:fixed;bottom:2rem;right:2rem;z-index:9999;background:#16a34a;color:#fff;padding:0.875rem 1.5rem;border-radius:12px;font-size:0.875rem;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transition:opacity 0.3s;font-family:Montserrat,sans-serif;';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    clearTimeout(toast._to);
+    toast._to = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+}
 
 function addLandingImgItem(secKey) {
     const container = document.getElementById('landing-imgs-container-' + secKey);

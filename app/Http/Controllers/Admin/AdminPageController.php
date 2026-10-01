@@ -335,4 +335,40 @@ class AdminPageController extends Controller
             ->with('success', "Pengaturan Section " . ($this->homeSections[$section]['label'] ?? ucfirst($section)) . " berhasil disimpan.")
             ->withFragment("sec-{$section}");
     }
+
+    // ─── DELETE SINGLE LANDING IMAGE (AJAX) ────────────────────────────────────
+    public function deleteLandingImage(Request $request)
+    {
+        $section = $request->input('section', 'landing_page');
+        $index   = (int) $request->input('index', -1);
+
+        if (!array_key_exists($section, $this->homeSections)) {
+            return response()->json(['success' => false, 'message' => 'Section tidak valid.'], 422);
+        }
+
+        $key = "page_home_landing_images_{$section}";
+        $existing = json_decode(Setting::get($key, '[]'), true) ?: [];
+
+        if ($index < 0 || $index >= count($existing)) {
+            return response()->json(['success' => false, 'message' => 'Index gambar tidak ditemukan.'], 404);
+        }
+
+        // Optionally delete the file from storage
+        $imgPath = $existing[$index]['image'] ?? null;
+        if ($imgPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($imgPath)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($imgPath);
+        }
+
+        array_splice($existing, $index, 1);
+
+        // Re-index order fields
+        foreach ($existing as $i => &$item) {
+            $item['order'] = $i;
+        }
+
+        Setting::set($key, json_encode(array_values($existing)));
+        Setting::clearCache();
+
+        return response()->json(['success' => true, 'message' => 'Gambar berhasil dihapus.', 'remaining' => count($existing)]);
+    }
 }
