@@ -1,10 +1,10 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('content')
 
 <style>
-/* ═══════════════════════════════════════
-   DESIGN TOKENS — seragam dengan /about /products /gallery /articles
-═══════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   DESIGN TOKENS â€” seragam dengan /about /products /gallery /articles
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 :root {
     --c-bg:      #ffffff;
     --c-surface: #F8FAFC;
@@ -23,7 +23,7 @@ body { background: var(--c-bg); font-family: var(--font); color: var(--c-text); 
 img { display: block; }
 a { text-decoration: none; color: inherit; }
 
-/* ════ HERO — identik dengan semua page lain ════ */
+/* â•â•â•â• HERO â€” identik dengan semua page lain â•â•â•â• */
 .sv-hero-premium {
     position: relative;
     padding: 9rem 1.5rem 4rem;
@@ -50,7 +50,7 @@ a { text-decoration: none; color: inherit; }
     z-index: 2;
 }
 
-/* Breadcrumb — 100% identik */
+/* Breadcrumb â€” 100% identik */
 .sv-breadcrumb {
     display:flex; align-items:center; gap:0.5rem;
     font-size:0.75rem; font-weight:500;
@@ -117,7 +117,7 @@ a { text-decoration: none; color: inherit; }
     font-size:0.75rem; color:var(--c-muted); font-family:var(--font);
 }
 
-/* ════ FEATURED IMAGE ════ */
+/* â•â•â•â• FEATURED IMAGE â•â•â•â• */
 .ar-featured-img {
     max-width: 960px;
     margin: 0 auto;
@@ -131,14 +131,14 @@ a { text-decoration: none; color: inherit; }
     margin-top: 2.5rem;
 }
 
-/* ════ BODY LAYOUT ════ */
+/* â•â•â•â• BODY LAYOUT â•â•â•â• */
 .ar-body-section {
     padding: 3.5rem 1.5rem 5rem;
     max-width: 860px;
     margin: 0 auto;
 }
 
-/* ════ TOC — elegant like FAQ ════ */
+/* â•â•â•â• TOC â€” elegant like FAQ â•â•â•â• */
 .ar-toc {
     background: var(--c-surface);
     border: 1.5px solid var(--c-border);
@@ -177,7 +177,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ar-toc a:hover { color:var(--c-accent); }
 
-/* ════ ARTICLE CONTENT ════ */
+/* â•â•â•â• ARTICLE CONTENT â•â•â•â• */
 .ar-content {
     font-size:0.9625rem; line-height:1.9;
     color:#334155; font-family:var(--font);
@@ -217,7 +217,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ar-content strong { color:var(--c-text); font-weight:700; }
 
-/* ════ FAQ ════ */
+/* â•â•â•â• FAQ â•â•â•â• */
 .ar-faq { margin-top:3rem; padding-top:2.5rem; border-top:1px solid var(--c-border); }
 .ar-faq-title {
     font-size:1.125rem; font-weight:700; color:var(--c-text);
@@ -250,7 +250,7 @@ a { text-decoration: none; color: inherit; }
     line-height:1.75; font-family:var(--font);
 }
 
-/* ════ CTA INLINE ════ */
+/* â•â•â•â• CTA INLINE â•â•â•â• */
 .ar-cta-box {
     margin-top:3rem;
     background:linear-gradient(135deg,#DC2626,#B91C1C);
@@ -284,7 +284,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ar-cta-btn:hover { transform:translateY(-2px); box-shadow:0 12px 25px rgba(0,0,0,0.2); }
 
-/* ════ TAGS & SHARE ════ */
+/* â•â•â•â• TAGS & SHARE â•â•â•â• */
 .ar-tags {
     margin-top:2.5rem; padding-top:2rem;
     border-top:1px solid var(--c-border);
@@ -319,7 +319,7 @@ a { text-decoration: none; color: inherit; }
 }
 .ar-share-btn:hover { opacity:0.8; transform:translateY(-1px); }
 
-/* ════ RELATED ARTICLES ════ */
+/* â•â•â•â• RELATED ARTICLES â•â•â•â• */
 .ar-related {
     padding:4.5rem 1.5rem;
     background:var(--c-surface);
@@ -383,7 +383,7 @@ a { text-decoration: none; color: inherit; }
     -webkit-box-orient:vertical; overflow:hidden;
 }
 
-/* ════ RESPONSIVE ════ */
+/* â•â•â•â• RESPONSIVE â•â•â•â• */
 @media (max-width:860px) {
     .ar-related-grid { grid-template-columns:repeat(2,1fr); }
 }
@@ -398,11 +398,11 @@ a { text-decoration: none; color: inherit; }
 }
 </style>
 
-{{-- ════ HERO ════ --}}
+{{-- â•â•â•â• HERO â•â•â•â• --}}
 <section class="sv-hero-premium">
     <div class="sv-hero-inner">
 
-        {{-- Breadcrumb — identik dengan /products /about /gallery ════ --}}
+        {{-- Breadcrumb â€” identik dengan /products /about /gallery â•â•â•â• --}}
         <nav class="sv-breadcrumb" aria-label="Breadcrumb">
             <a href="{{ route('home') }}">Beranda</a>
             <span class="sv-breadcrumb-sep">/</span>
@@ -417,9 +417,9 @@ a { text-decoration: none; color: inherit; }
 
         <div class="ar-meta-row">
             <span>{{ $article->formatted_date }}</span>
-            <span class="ar-meta-sep">·</span>
+            <span class="ar-meta-sep">Â·</span>
             <span>{{ $readTime ?? $article->read_time }} menit baca</span>
-            <span class="ar-meta-sep">·</span>
+            <span class="ar-meta-sep">Â·</span>
             <span>{{ number_format($article->views) }} views</span>
         </div>
 
@@ -436,13 +436,13 @@ a { text-decoration: none; color: inherit; }
         </div>
             <div>
                 <div class="ar-author-name">{{ $article->author ?? ('Tim ' . \App\Models\Setting::get('company_name', config('app.name'))) }}</div>
-                <div class="ar-author-company">{{ \App\Models\Setting::get('company_name', config('app.name')) }} — Cat Industri Indonesia</div>
+                <div class="ar-author-company">{{ \App\Models\Setting::get('company_name', config('app.name')) }} â€” Cat Industri Indonesia</div>
             </div>
         </div>
     </div>
 </section>
 
-{{-- ════ FEATURED IMAGE ════ --}}
+{{-- â•â•â•â• FEATURED IMAGE â•â•â•â• --}}
 @if($article->image)
 <div class="ar-featured-img">
     <img src="{{ asset('storage/' . $article->image) }}"
@@ -451,10 +451,10 @@ a { text-decoration: none; color: inherit; }
 </div>
 @endif
 
-{{-- ════ ARTICLE BODY ════ --}}
+{{-- â•â•â•â• ARTICLE BODY â•â•â•â• --}}
 <section class="ar-body-section">
 
-    {{-- TOC — elegant premium style ════ --}}
+    {{-- TOC â€” elegant premium style â•â•â•â• --}}
     @if($article->show_toc && count($article->toc) > 0)
     <details class="ar-toc" open>
         <summary class="ar-toc-header" style="list-style:none; outline:none;">
@@ -557,7 +557,7 @@ a { text-decoration: none; color: inherit; }
     </div>
     @endif
 
-    {{-- Share — all social media --}}
+    {{-- Share â€” all social media --}}
     <div class="ar-share">
         <span class="ar-share-label">Bagikan:</span>
 
@@ -602,19 +602,8 @@ a { text-decoration: none; color: inherit; }
 
 </section>
 
-{{-- ════ KEUNGGULAN + APLIKASI + COVERAGE — from homepage ════ --}}
-@php
-    // Reuse the CSS & HTML classes already defined in home/index
-    // We include the styles inline here for standalone use
-@endphp
-<style>
-/* ─── shared section styles (same as homepage) ─── */
-.cv-adv-premium { background:#ffffff; padding:5rem 0; position:relative; overflow:hidden; }
-.cv-adv-premium::before { content:''; position:absolute; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle,rgba(14,165,233,0.04) 0%,transparent 70%); pointer-events:none; }
-.cv-adv-inner { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
-.cv-adv-header { display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; margin-bottom:3.5rem; flex-wrap:wrap; }
-.cv-adv-section-label { font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#64748B; display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; }
-.cv-adv-section-label::before { content:''; width:4px; height:4px; border-radius:50%; background:#DC2626; }
+
+
 .cv-adv-section-title { font-size:clamp(2rem,3.5vw,3rem); font-weight:500; color:#0F172A; line-height:1.15; letter-spacing:-0.025em; }
 .cv-adv-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
 .cv-adv-card-v2 { background:#F1F5F9; border-radius:22px; padding:2rem; position:relative; overflow:hidden; display:flex; flex-direction:column; min-height:240px; transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s; }
@@ -745,38 +734,154 @@ a { text-decoration: none; color: inherit; }
     </div>
 </section>
 
-{{-- ════ RELATED ARTICLES ════ --}}
+{{-- â•â•â•â• RELATED ARTICLES (same card design as homepage) â•â•â•â• --}}
 @if($related->count())
-<section class="ar-related">
-    <div class="ar-related-inner">
-        <div class="ar-related-header">
+@php
+    $artBg  = \App\Models\Setting::get('page_home_bg_articles', '#ffffff');
+    $artTxt = \App\Models\Setting::get('page_home_text_color_articles', '#0F172A');
+    $artAcc = \App\Models\Setting::get('page_home_accent_color_articles', '#1B6FE8');
+    $relCount = $related->count();
+    if ($relCount === 1) {
+        $relGridStyle = '--art-grid-cols: minmax(0, 520px); justify-content: center;';
+    } elseif ($relCount === 2) {
+        $relGridStyle = '--art-grid-cols: repeat(2, 1fr);';
+    } elseif ($relCount === 3) {
+        $relGridStyle = '--art-grid-cols: repeat(3, 1fr);';
+    } elseif ($relCount === 4) {
+        $relGridStyle = '--art-grid-cols: repeat(4, 1fr);';
+    } else {
+        $relGridStyle = '--art-grid-cols: repeat(auto-fill, minmax(280px, 1fr));';
+    }
+@endphp
+<style>
+/* â”€â”€ Related Articles (same as homepage cv-article-card-v2) â”€â”€ */
+.ar-rel-section { padding: 4.5rem 1.5rem; background: {{ $artBg }}; border-top: 1px solid rgba(0,0,0,0.06); }
+.ar-rel-inner { max-width: 1200px; margin: 0 auto; }
+.ar-rel-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;
+}
+.ar-rel-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: {{ $artAcc }};
+    display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;
+    font-family: var(--font);
+}
+.ar-rel-label::before { content:''; width:4px; height:4px; background: {{ $artAcc }}; border-radius:50%; }
+.ar-rel-title {
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 500;
+    color: {{ $artTxt }}; letter-spacing: -0.025em; font-family: var(--font);
+    margin: 0;
+}
+.ar-rel-link {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    font-size: 0.875rem; font-weight: 600; color: {{ $artTxt }};
+    border: 1.5px solid rgba(0,0,0,0.15); border-radius: 50px;
+    padding: 0.625rem 1.25rem; transition: all 0.25s;
+    font-family: var(--font); white-space: nowrap; text-decoration: none !important;
+}
+.ar-rel-link:hover { border-color: {{ $artAcc }}; color: {{ $artAcc }}; }
+
+/* Grid uses CSS custom property so dynamic inline style works */
+.ar-rel-grid {
+    display: grid;
+    grid-template-columns: var(--art-grid-cols, repeat(3, 1fr));
+    gap: 2rem;
+}
+.ar-rel-card {
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    text-decoration: none !important;
+}
+.ar-rel-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(15,23,42,0.1); }
+.ar-rel-img-wrap { width: 100%; aspect-ratio: 16/10; overflow: hidden; position: relative; }
+.ar-rel-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+.ar-rel-card:hover .ar-rel-img { transform: scale(1.08); }
+.ar-rel-cat-badge {
+    position: absolute; top: 1.25rem; left: 1.25rem;
+    background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);
+    color: #fff; font-size: 0.75rem; font-weight: 600;
+    padding: 0.4rem 1rem; border-radius: 50px;
+}
+.ar-rel-content { padding: 1.75rem; display: flex; flex-direction: column; flex-grow: 1; }
+.ar-rel-card-title {
+    font-size: 1.15rem; font-weight: 700; color: #0F172A !important;
+    line-height: 1.4; margin-bottom: 0.6rem;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ar-rel-excerpt {
+    font-size: 0.9rem; color: #64748B !important; line-height: 1.6;
+    margin-bottom: 1.25rem;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    flex-grow: 1;
+}
+.ar-rel-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #E2E8F0; padding-top: 1rem;
+    font-size: 0.8rem; font-weight: 600;
+}
+.ar-rel-date { color: #94A3B8; }
+.ar-rel-read {
+    color: {{ $artAcc }}; display: flex; align-items: center; gap: 0.4rem; font-weight: 700;
+}
+.ar-rel-read svg { transition: transform 0.3s; }
+.ar-rel-card:hover .ar-rel-read svg { transform: translateX(4px); }
+
+@media (max-width: 1024px) {
+    .ar-rel-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .ar-rel-section { padding: 3rem 1rem; }
+    .ar-rel-grid { grid-template-columns: none !important; grid-auto-flow: column; grid-auto-columns: 78vw; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1.5rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 1rem; }
+    .ar-rel-grid::-webkit-scrollbar { display: none; }
+    .ar-rel-grid > * { scroll-snap-align: start; }
+    .ar-rel-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+<section class="ar-rel-section">
+    <div class="ar-rel-inner">
+        <div class="ar-rel-header">
             <div>
-                <div class="ar-related-label">Baca Juga</div>
-                <h2 class="ar-related-title">Artikel Terkait</h2>
+                <div class="ar-rel-label">Baca Juga</div>
+                <h2 class="ar-rel-title">Artikel Terkait</h2>
             </div>
-            <a href="{{ route('articles') }}" class="ar-related-link">
+            <a href="{{ route('articles') }}" class="ar-rel-link">
                 Semua Artikel
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
         </div>
 
-        <div class="ar-related-grid">
-            @foreach($related as $r)
-            <a href="{{ route('articles.show', $r->slug) }}" class="ar-related-card" data-aos="fade-up">
-                <div class="ar-related-card-img">
+        <div class="ar-rel-grid" style="{{ $relGridStyle }}">
+            @foreach($related as $i => $r)
+            <a href="{{ route('articles.show', $r->slug) }}" class="ar-rel-card" data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
+                <div class="ar-rel-img-wrap">
                     @if($r->image)
-                        <img src="{{ asset('storage/' . $r->image) }}" alt="{{ $r->title }}" loading="lazy">
+                        <img src="{{ asset('storage/' . $r->image) }}" alt="{{ $r->title }}" class="ar-rel-img" loading="lazy">
                     @else
-                        <div style="width:100%;height:100%;min-height:160px;background:linear-gradient(135deg,#E2E8F0,#CBD5E1);display:flex;align-items:center;justify-content:center;">
-                            <svg width="28" height="28" fill="none" stroke="#94A3B8" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <div style="width:100%;height:100%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#94A3B8;">
+                            <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         </div>
                     @endif
+                    <div class="ar-rel-cat-badge">{{ $r->category ?? 'Artikel' }}</div>
                 </div>
-                <div class="ar-related-card-body">
-                    @if($r->category)
-                    <div class="ar-related-cat">{{ $r->category }}</div>
+                <div class="ar-rel-content">
+                    <h3 class="ar-rel-card-title">{{ $r->title }}</h3>
+                    @if($r->excerpt)
+                    <p class="ar-rel-excerpt">{{ $r->excerpt }}</p>
                     @endif
-                    <h3 class="ar-related-card-title">{{ $r->title }}</h3>
+                    <div class="ar-rel-meta">
+                        <span class="ar-rel-date">{{ \Carbon\Carbon::parse($r->published_at)->format('d M Y') }}</span>
+                        <span class="ar-rel-read">
+                            Baca
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                        </span>
+                    </div>
                 </div>
             </a>
             @endforeach

@@ -37,10 +37,12 @@ class ArticleController extends Controller
         $article = Article::published()->where('slug', $slug)->firstOrFail();
         $article->incrementViews();
 
+        $artLimit = max(1, (int)(Setting::get('page_home_limit_articles', 3)));
+
         $related = Article::published()->where('id','!=',$article->id)
-            ->where('category', $article->category)->latest()->limit(3)->get();
-        if ($related->count() < 3) {
-            $related = Article::published()->where('id','!=',$article->id)->latest()->limit(3)->get();
+            ->where('category', $article->category)->latest()->limit($artLimit)->get();
+        if ($related->count() < $artLimit) {
+            $related = Article::published()->where('id','!=',$article->id)->latest()->limit($artLimit)->get();
         }
 
         $settings   = Setting::getAllAsArray();
