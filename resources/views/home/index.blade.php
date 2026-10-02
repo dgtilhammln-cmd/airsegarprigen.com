@@ -26,14 +26,14 @@
 
         .hero-swiper {
             width: 100%;
-            max-width: 1440px;
-            margin: 0 auto;
             padding-bottom: 0 !important;
             position: relative;
             overflow: hidden !important;
         }
 
         .hero-swiper .swiper-slide {
+            width: 100%;
+            max-width: 1400px;
             height: auto;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0.65;
