@@ -124,6 +124,52 @@ Route::get('/deploy-hostinger', function () {
     }
 });
 
+// TEMP: Seed 2 dummy articles (DELETE after running!)
+Route::get('/run-article-seed', function (\Illuminate\Http\Request $req) {
+    if ($req->query('token') !== 'airsegar2024') return response('Forbidden', 403);
+    $articles = [
+        [
+            'title'        => 'Tips Menjaga Kualitas Air Minum di Rumah agar Tetap Sehat',
+            'slug'         => 'tips-menjaga-kualitas-air-minum-di-rumah',
+            'category'     => 'Tips & Info',
+            'author'       => 'Tim Air Segar Prigen',
+            'excerpt'      => 'Kualitas air minum yang baik sangat penting untuk kesehatan keluarga. Pelajari cara mudah menjaga kejernihan dan kebersihan air di rumah Anda.',
+            'content'      => '<p>Air minum yang bersih dan berkualitas adalah kebutuhan dasar setiap keluarga. Sayangnya, tidak semua orang mengetahui cara menjaga kualitas air agar tetap aman dikonsumsi sehari-hari.</p><h2>1. Gunakan Wadah Penyimpanan yang Tepat</h2><p>Simpan air minum dalam wadah berbahan food-grade seperti galon plastik BPA-free atau kendi keramik. Hindari wadah yang terpapar sinar matahari langsung karena dapat memicu pertumbuhan bakteri dan alga.</p><h2>2. Pastikan Sumber Air Terpercaya</h2><p>Gunakan air dari sumber terpercaya seperti air isi ulang dari depot berstandar SNI atau air kemasan bermerk. Air dari sumber Air Segar Prigen telah melalui proses filtrasi multi-tahap dan uji laboratorium berkala untuk memastikan kemurniannya.</p><h2>3. Jaga Kebersihan Galon dan Dispenser</h2><p>Bersihkan galon dan dispenser air secara rutin minimal setiap 2 minggu sekali. Gunakan sikat khusus dan sabun food-safe untuk membersihkan bagian dalam galon. Bilas bersih sebelum digunakan kembali.</p><h2>4. Perhatikan Batas Waktu Penggunaan</h2><p>Air dalam galon yang sudah dibuka sebaiknya habis dalam waktu 1-2 minggu. Air yang dibiarkan terlalu lama berisiko terkontaminasi bakteri dari udara dan tangan yang tidak bersih. Simpan galon di tempat sejuk dan terhindar dari polusi.</p><p>Dengan menerapkan tips di atas, Anda dapat menjaga kualitas air minum keluarga tetap bersih, segar, dan menyehatkan setiap harinya.</p>',
+            'meta_title'   => 'Tips Menjaga Kualitas Air Minum di Rumah | Air Segar Prigen',
+            'meta_desc'    => 'Pelajari cara mudah menjaga kualitas air minum di rumah agar tetap bersih, segar, dan aman dikonsumsi oleh seluruh keluarga setiap hari.',
+            'is_published' => true,
+            'published_at' => now()->subDays(2),
+        ],
+        [
+            'title'        => 'Manfaat Air Bersih bagi Kesehatan Keluarga dan Produktivitas Harian',
+            'slug'         => 'manfaat-air-bersih-bagi-kesehatan-keluarga',
+            'category'     => 'Kesehatan',
+            'author'       => 'Tim Air Segar Prigen',
+            'excerpt'      => 'Air bersih bukan sekadar kebutuhan fisik, tapi investasi kesehatan jangka panjang. Temukan manfaat luar biasa air bersih untuk tubuh dan produktivitas Anda.',
+            'content'      => '<p>Tubuh manusia terdiri dari sekitar 60-70% air. Tidak mengherankan jika konsumsi air bersih yang cukup menjadi fondasi utama kesehatan dan produktivitas sehari-hari.</p><h2>Manfaat Air Bersih untuk Kesehatan</h2><p>Air bersih yang dikonsumsi secara rutin membantu melancarkan sistem pencernaan, membuang racun melalui urin dan keringat, serta menjaga kelembapan organ-organ vital dalam tubuh. Kekurangan air atau mengonsumsi air yang tidak bersih dapat menyebabkan diare, infeksi saluran kemih, hingga gangguan ginjal jangka panjang.</p><h2>Pengaruh Air terhadap Fokus dan Produktivitas</h2><p>Dehidrasi ringan sebesar 1-2% saja sudah terbukti menurunkan kemampuan konsentrasi, membuat mudah lelah, dan mengurangi performa kerja. Dengan menjaga asupan air bersih minimal 8 gelas per hari, otak bekerja lebih optimal dan tubuh lebih berenergi sepanjang hari.</p><h2>Air Bersih untuk Tumbuh Kembang Anak</h2><p>Bagi anak-anak, air bersih sangat penting untuk mendukung tumbuh kembang yang optimal. Air yang terkontaminasi bakteri atau logam berat dapat mengganggu penyerapan nutrisi dan berdampak negatif pada perkembangan kognitif anak.</p><h2>Pilih Sumber Air yang Terpercaya</h2><p>Air Segar Prigen hadir sebagai solusi air minum berkualitas tinggi yang telah melalui proses filtrasi modern. Dengan menggunakan air dari sumber terpercaya, Anda berinvestasi dalam kesehatan keluarga untuk jangka panjang.</p>',
+            'meta_title'   => 'Manfaat Air Bersih bagi Kesehatan & Produktivitas | Air Segar Prigen',
+            'meta_desc'    => 'Temukan manfaat penting air bersih untuk kesehatan keluarga, tumbuh kembang anak, dan produktivitas harian. Pilih sumber air terpercaya untuk hidup sehat.',
+            'is_published' => true,
+            'published_at' => now()->subDays(1),
+        ],
+    ];
+    $created = [];
+    foreach ($articles as $data) {
+        if (!\App\Models\Article::where('slug', $data['slug'])->exists()) {
+            \App\Models\Article::create($data);
+            $created[] = $data['title'];
+        } else {
+            $created[] = '[SKIP - sudah ada] ' . $data['title'];
+        }
+    }
+    $total = \App\Models\Article::published()->count();
+    return '<pre style="font-family:monospace;padding:2rem;font-size:14px;">'
+        . "✅ SELESAI!\n\n"
+        . implode("\n", array_map(fn($t) => "• $t", $created))
+        . "\n\nTotal artikel published sekarang: <strong>$total</strong>\n\n"
+        . '⚠️ Hapus route /run-article-seed dari routes/web.php setelah ini!</pre>';
+});
+
 // TEMP: Seed categories & fix product order numbers (DELETE after running!)
 Route::get('/run-category-seed', function () {
     try {
