@@ -217,8 +217,12 @@ class AdminPageController extends Controller
         $show = $request->boolean("page_home_show_{$section}") ? '1' : '0';
         Setting::set("page_home_show_{$section}", $show);
 
-        // Save text & color fields
-        $fields = ['bg_color', 'text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url'];
+        // Save text & color fields — handle bg_color separately (key format differs)
+        if ($request->has("page_home_bg_{$section}")) {
+            Setting::set("page_home_bg_{$section}", $request->input("page_home_bg_{$section}", ''));
+        }
+
+        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url'];
         foreach ($fields as $field) {
             $param = "page_home_{$field}_{$section}";
             if ($request->has($param)) {

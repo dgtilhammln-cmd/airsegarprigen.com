@@ -442,8 +442,8 @@
                     <div class="hp-field-group">
                         <label class="hp-label">Warna Background Section</label>
                         <div class="hp-color-wrap">
-                            <input type="color" class="hp-color-picker" value="{{ $sec['bg_color'] ?: '#0A1930' }}" onchange="document.getElementById('hex_bg_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_bg_{{ $k }}" id="hex_bg_{{ $k }}" class="hp-input" value="{{ $sec['bg_color'] }}" placeholder="#0A1930">
+                            <input type="color" id="picker_bg_{{ $k }}" class="hp-color-picker" value="{{ $sec['bg_color'] ?: '#0A1930' }}" oninput="document.getElementById('hex_bg_{{ $k }}').value = this.value" onchange="document.getElementById('hex_bg_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_bg_{{ $k }}" id="hex_bg_{{ $k }}" class="hp-input" value="{{ $sec['bg_color'] }}" placeholder="#0A1930" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_bg_{{ $k }}').value = this.value">
                         </div>
                     </div>
 
@@ -451,8 +451,8 @@
                     <div class="hp-field-group">
                         <label class="hp-label">Warna Text / Font Utama</label>
                         <div class="hp-color-wrap">
-                            <input type="color" class="hp-color-picker" value="{{ $sec['text_color'] ?: '#0F172A' }}" onchange="document.getElementById('hex_txt_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_text_color_{{ $k }}" id="hex_txt_{{ $k }}" class="hp-input" value="{{ $sec['text_color'] }}" placeholder="#0F172A">
+                            <input type="color" id="picker_txt_{{ $k }}" class="hp-color-picker" value="{{ $sec['text_color'] ?: '#0F172A' }}" oninput="document.getElementById('hex_txt_{{ $k }}').value = this.value" onchange="document.getElementById('hex_txt_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_text_color_{{ $k }}" id="hex_txt_{{ $k }}" class="hp-input" value="{{ $sec['text_color'] }}" placeholder="#0F172A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_txt_{{ $k }}').value = this.value">
                         </div>
                     </div>
 
@@ -460,8 +460,8 @@
                     <div class="hp-field-group">
                         <label class="hp-label">Warna Accent / Highlight</label>
                         <div class="hp-color-wrap">
-                            <input type="color" class="hp-color-picker" value="{{ $sec['accent_color'] ?: '#1B6FE8' }}" onchange="document.getElementById('hex_acc_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_accent_color_{{ $k }}" id="hex_acc_{{ $k }}" class="hp-input" value="{{ $sec['accent_color'] }}" placeholder="#1B6FE8">
+                            <input type="color" id="picker_acc_{{ $k }}" class="hp-color-picker" value="{{ $sec['accent_color'] ?: '#1B6FE8' }}" oninput="document.getElementById('hex_acc_{{ $k }}').value = this.value" onchange="document.getElementById('hex_acc_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_accent_color_{{ $k }}" id="hex_acc_{{ $k }}" class="hp-input" value="{{ $sec['accent_color'] }}" placeholder="#1B6FE8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_acc_{{ $k }}').value = this.value">
                         </div>
                     </div>
 

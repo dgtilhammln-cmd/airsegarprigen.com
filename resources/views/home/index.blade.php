@@ -26,6 +26,8 @@
 
         .hero-swiper {
             width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
             padding-bottom: 0 !important;
             position: relative;
             overflow: hidden !important;
@@ -60,8 +62,6 @@
         .as-banner-img {
             width: 100%;
             height: auto;
-            max-height: 460px;
-            object-fit: cover;
             border-radius: 22px;
             display: block;
             margin: 0 auto;
@@ -71,7 +71,8 @@
         .as-hero-skeleton {
             width: 84%;
             max-width: 1140px;
-            height: 460px;
+            aspect-ratio: 1920 / 700;
+            height: auto;
             margin: 0 auto;
             border-radius: 22px;
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.6) 25%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.6) 75%);
@@ -162,12 +163,12 @@
                 border-radius: 16px;
             }
             .as-banner-img {
-                max-height: 220px;
                 border-radius: 16px;
             }
             .as-hero-skeleton {
                 width: 90%;
-                height: 220px;
+                aspect-ratio: 1920 / 700;
+                height: auto;
                 border-radius: 16px;
             }
             .as-hero-pagination-wrap {
@@ -597,9 +598,8 @@
         }
 
         .cv-article-card:hover {
-            border-color: var(--accent);
             transform: translateY(-6px);
-            box-shadow: 0 20px 56px rgba(56, 189, 248, 0.12);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
         }
 
         .cv-article-thumb {
@@ -2803,9 +2803,8 @@
         }
 
         .cv-article-card-v2:hover {
-            border-color: #DC2626;
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.08);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
         }
 
         .cv-article-img-wrap {

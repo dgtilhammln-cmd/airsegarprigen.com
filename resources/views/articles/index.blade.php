@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('content')
 
 <style>
@@ -101,9 +101,8 @@ body { background: var(--c-bg); font-family: var(--font); color: var(--c-text); 
 }
 .ar-card * { text-decoration:none !important; }
 .ar-card:hover {
-    border-color:var(--c-accent);
     transform:translateY(-6px);
-    box-shadow:0 20px 40px rgba(14,165,233,0.09);
+    box-shadow:0 16px 36px rgba(15,23,42,0.1);
 }
 .ar-card-img {
     width:100%; aspect-ratio:16/10;
