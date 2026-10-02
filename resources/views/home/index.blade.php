@@ -2955,6 +2955,7 @@
             $artBtnShow = \App\Models\Setting::get('page_home_btn_show_articles', '1') == '1';
             $artBtnTxt = \App\Models\Setting::get('page_home_btn_text_articles', 'Semua Artikel');
             $artBtnUrl = \App\Models\Setting::get('page_home_btn_url_articles', route('articles'));
+            $artSectionImg = \App\Models\Setting::get('page_home_image_articles'); // Gambar default/fallback kartu artikel
         @endphp
         {{-- Set CSS var for article read button accent color --}}
         <style>:root { --art-acc: {{ $artAcc ?: '#1B6FE8' }}; }</style>
@@ -2990,16 +2991,14 @@
 
                 @php
                     $artCount = $articles->count();
+                    // Always use exact column count — single row, same as article show page
                     if ($artCount === 1) {
                         $artGridStyle = '--art-grid-cols: minmax(0, 520px); --art-grid-cols-tablet: minmax(0, 520px); justify-content: center;';
                     } elseif ($artCount === 2) {
                         $artGridStyle = '--art-grid-cols: repeat(2, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
-                    } elseif ($artCount === 3) {
-                        $artGridStyle = '--art-grid-cols: repeat(3, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
-                    } elseif ($artCount === 4) {
-                        $artGridStyle = '--art-grid-cols: repeat(4, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
                     } else {
-                        $artGridStyle = '--art-grid-cols: repeat(auto-fill, minmax(280px, 1fr)); --art-grid-cols-tablet: repeat(auto-fill, minmax(260px, 1fr));';
+                        // 3, 4, 5, 6, … → always $artCount columns in one row
+                        $artGridStyle = "--art-grid-cols: repeat({$artCount}, 1fr); --art-grid-cols-tablet: repeat(" . min($artCount, 3) . ", 1fr);";
                     }
                 @endphp
                 <div class="cv-articles-grid-v2" style="{{ $artGridStyle }}">
@@ -3009,6 +3008,9 @@
                             <div class="cv-article-img-wrap">
                                 @if($article->image)
                                     <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
+                                        class="cv-article-img-v2" loading="lazy">
+                                @elseif($artSectionImg)
+                                    <img src="{{ asset('storage/' . $artSectionImg) }}" alt="{{ $article->title }}"
                                         class="cv-article-img-v2" loading="lazy">
                                 @else
                                     <div
@@ -3021,8 +3023,7 @@
                                             <line x1="16" y1="17" x2="8" y2="17" />
                                             <polyline points="10 9 9 9 8 9" />
                                         </svg>
-                                        <span style="font-size:0.75rem;margin-top:0.5rem;font-weight:600;">Artikel {{ \App\Models\Setting::get('company_name', config('app.name')) }}
-                                            Surabaya</span>
+                                        <span style="font-size:0.75rem;margin-top:0.5rem;font-weight:600;">{{ \App\Models\Setting::get('company_name', config('app.name')) }}</span>
                                     </div>
                                 @endif
                                 <div class="cv-article-cat-badge">{{ $article->category ?? 'Cat & Coating' }}</div>

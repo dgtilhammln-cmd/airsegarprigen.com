@@ -495,17 +495,41 @@
                     {{-- Upload Foto / Image Banner --}}
                     <div class="hp-field-group full" style="background:#F8FAFC;padding:1.25rem;border-radius:14px;border:1px solid #E2E8F0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                            <label class="hp-label" style="font-size:0.9rem;margin:0;">Foto / Media Section Utama</label>
+                            <label class="hp-label" style="font-size:0.9rem;margin:0;">
+                                @if($k === 'articles')
+                                    <span style="display:flex;align-items:center;gap:0.5rem;">
+                                        <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                        Gambar Default / Fallback Card Artikel
+                                    </span>
+                                @else
+                                    Foto / Media Section Utama
+                                @endif
+                            </label>
                             <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:#16a34a;cursor:pointer;font-weight:600;">
                                 <input type="checkbox" name="page_home_compress_{{ $k }}" value="1" checked style="accent-color:#16a34a;">
                                 Auto Compress Foto (Optimalkan Ukuran WebP)
                             </label>
                         </div>
 
+                        @if($k === 'articles')
+                        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.8rem;color:#1D4ED8;line-height:1.5;">
+                            📸 <strong>Gambar ini akan digunakan sebagai foto default</strong> pada card artikel yang belum memiliki gambar cover sendiri.<br>
+                            Rasio ideal: <strong>16:10</strong> (contoh: 1600×1000px). Gambar akan di-crop otomatis ke proporsi yang sama dengan card artikel di homepage.
+                        </div>
+                        @endif
+
                         @if(!empty($sec['image']))
-                            <div style="margin-bottom:0.75rem;display:flex;align-items:center;gap:1rem;">
-                                <img src="{{ asset('storage/' . $sec['image']) }}" style="max-height:80px;border-radius:8px;border:1px solid #CBD5E1;">
-                                <span style="font-size:0.75rem;color:#64748B;">Foto Saat Ini: {{ $sec['image'] }}</span>
+                            <div style="margin-bottom:0.75rem;">
+                                @if($k === 'articles')
+                                    {{-- Preview with 16/10 aspect ratio — same as article card --}}
+                                    <div style="aspect-ratio:16/10;max-width:320px;border-radius:12px;overflow:hidden;border:1px solid #CBD5E1;position:relative;">
+                                        <img src="{{ asset('storage/' . $sec['image']) }}" style="width:100%;height:100%;object-fit:cover;">
+                                        <div style="position:absolute;top:8px;left:8px;background:rgba(15,23,42,0.75);color:#fff;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;">Preview Card</div>
+                                    </div>
+                                @else
+                                    <img src="{{ asset('storage/' . $sec['image']) }}" style="max-height:80px;border-radius:8px;border:1px solid #CBD5E1;">
+                                @endif
+                                <span style="font-size:0.75rem;color:#64748B;display:block;margin-top:4px;">File saat ini: {{ $sec['image'] }}</span>
                             </div>
                         @endif
 
@@ -513,6 +537,7 @@
                     </div>
 
                 </div>
+
 
                 {{-- MULTIPLE LANDING PAGE IMAGES & REORDER MANAGER (For Landing Page section) --}}
                 @if($k === 'landing_page')
