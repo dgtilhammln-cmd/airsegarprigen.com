@@ -2989,7 +2989,7 @@
             .cv-bento-wrapper-section {
                 padding: 4rem 1.5rem;
                 background: {{ $layOuterBg }};
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
             .cv-bento-container {
                 max-width: 1240px;
@@ -3022,21 +3022,21 @@
             }
             .cv-bento-thin-headline {
                 font-size: clamp(2.2rem, 3.8vw, 3.6rem);
-                font-weight: 300; /* KURUS / THIN FONT */
-                line-height: 1.12;
-                letter-spacing: -0.025em;
+                font-weight: 600;
+                line-height: 1.15;
+                letter-spacing: -0.02em;
                 color: {{ $layTxt }};
                 margin: 0;
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
             .cv-bento-thin-subline {
                 font-size: 0.98rem;
-                font-weight: 300; /* KURUS / THIN FONT */
+                font-weight: 400;
                 line-height: 1.6;
                 color: {{ $layAcc }};
                 margin: 2rem 0 0 0;
                 max-width: 440px;
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
 
             /* RIGHT TOP BLOCK: Main Hero Image */
@@ -3101,10 +3101,10 @@
             }
             .cv-bento-card-text {
                 font-size: 0.88rem;
-                font-weight: 300; /* KURUS / THIN FONT */
+                font-weight: 400;
                 line-height: 1.55;
                 margin: 0;
-                font-family: 'Montserrat', 'Inter', sans-serif;
+                font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
 
             @media (max-width: 992px) {
