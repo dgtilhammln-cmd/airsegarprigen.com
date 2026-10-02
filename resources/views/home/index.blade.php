@@ -2763,7 +2763,7 @@
         /* ── ARTIKEL PREMIUM ────────────────────── */
         .cv-articles-premium {
             background: #ffffff;
-            padding: 6rem 0;
+            padding: 3rem 0;
         }
 
         .cv-articles-inner {
@@ -2777,7 +2777,7 @@
             align-items: flex-end;
             justify-content: space-between;
             gap: 2rem;
-            margin-bottom: 3.5rem;
+            margin-bottom: 1.75rem;
             flex-wrap: wrap;
         }
 
@@ -2908,9 +2908,11 @@
 
         @media (max-width: 768px) {
 
-            .cv-cta-premium,
-            .cv-articles-premium {
+            .cv-cta-premium {
                 padding: 4rem 0;
+            }
+            .cv-articles-premium {
+                padding: 2.25rem 0;
             }
 
             .cv-cta-info {
