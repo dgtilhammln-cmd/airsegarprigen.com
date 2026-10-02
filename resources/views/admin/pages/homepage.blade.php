@@ -512,9 +512,12 @@
                         </div>
 
                         @if($k === 'articles')
-                        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.8rem;color:#1D4ED8;line-height:1.5;">
-                            📸 <strong>Gambar ini akan digunakan sebagai foto default</strong> pada card artikel yang belum memiliki gambar cover sendiri.<br>
-                            Rasio ideal: <strong>16:10</strong> (contoh: 1600×1000px). Gambar akan di-crop otomatis ke proporsi yang sama dengan card artikel di homepage.
+                        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.8rem;color:#1D4ED8;line-height:1.5;display:flex;align-items:flex-start;gap:0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            <div>
+                                <strong>Gambar ini akan digunakan sebagai foto default</strong> pada card artikel yang belum memiliki gambar cover sendiri.<br>
+                                Rasio ideal: <strong>16:10</strong> (contoh: 1600×1000px). Gambar akan di-crop otomatis ke proporsi yang sama dengan card artikel di homepage.
+                            </div>
                         </div>
                         @endif
 
@@ -639,32 +642,96 @@
                                 </div>
                                 <div class="hp-form-grid" style="margin-bottom:0;">
                                     <div class="hp-field-group">
-                                        <label class="hp-label">Judul Card</label>
+                                        <label class="hp-label">Judul Card / Layanan</label>
                                         <input type="text" name="cards_{{ $k }}[{{ $idx }}][title]" class="hp-input" value="{{ $card['title'] ?? '' }}" oninput="document.getElementById('card-title-text-{{ $k }}-{{ $idx }}').innerText = this.value || 'Item Baru'">
                                     </div>
 
-                                    <div class="hp-field-group">
-                                        <label class="hp-label">Pilih Icon SVG</label>
-                                        <select name="cards_{{ $k }}[{{ $idx }}][icon]" class="hp-select">
-                                            @php
-                                                $iconOpts = ['ship'=>'Perkapalan / Ship','factory'=>'Pabrik / Building','zap'=>'Struktur / Zap','home'=>'Gedung / Home','truck'=>'Logistik / Truck','droplet'=>'Coating / Droplet','shield'=>'Proteksi / Shield','sun'=>'Outdoors / Sun','tool'=>'Maintenance / Tool','star'=>'Bintang / Star','award'=>'Award / Quality'];
-                                                $curIcon = $card['icon'] ?? 'ship';
-                                            @endphp
-                                            @foreach($iconOpts as $optVal => $optLabel)
-                                                <option value="{{ $optVal }}" {{ $curIcon === $optVal ? 'selected' : '' }}>{{ $optLabel }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    @if($k === 'layanan')
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Badge / Tag (Opsional)</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][badge]" class="hp-input" value="{{ $card['badge'] ?? '' }}" placeholder="Contoh: TERPOPULER / PROMO">
+                                        </div>
 
-                                    <div class="hp-field-group full">
-                                        <label class="hp-label">Deskripsi Card</label>
-                                        <textarea name="cards_{{ $k }}[{{ $idx }}][desc]" class="hp-textarea" rows="2">{{ $card['desc'] ?? '' }}</textarea>
-                                    </div>
+                                        <div class="hp-field-group full">
+                                            <label class="hp-label">Deskripsi Hover Card</label>
+                                            <textarea name="cards_{{ $k }}[{{ $idx }}][desc]" class="hp-textarea" rows="2" placeholder="Teks penjelas saat card di-hover...">{{ $card['desc'] ?? '' }}</textarea>
+                                        </div>
 
-                                    <div class="hp-field-group">
-                                        <label class="hp-label">Warna Background Card</label>
-                                        <input type="text" name="cards_{{ $k }}[{{ $idx }}][color]" class="hp-input" value="{{ $card['color'] ?? '#F8FAFC' }}" placeholder="#F8FAFC">
-                                    </div>
+                                        {{-- 1. Thumbnail Image (State 1 Normal) --}}
+                                        <div class="hp-field-group" style="background:#F8FAFC;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                                            <label class="hp-label" style="color:#1B6FE8;display:flex;align-items:center;gap:0.4rem;">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                                Foto Thumbnail Cut-out (State 1 Normal)
+                                            </label>
+                                            @if(!empty($card['image']))
+                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem;">
+                                                    <img src="{{ asset('storage/' . $card['image']) }}" style="max-height:60px;border-radius:6px;border:1px solid #CBD5E1;">
+                                                    <span style="font-size:0.75rem;color:#64748B;">Foto saat ini</span>
+                                                    <input type="hidden" name="cards_{{ $k }}[{{ $idx }}][image]" value="{{ $card['image'] }}">
+                                                </div>
+                                            @endif
+                                            <input type="file" name="cards_{{ $k }}[{{ $idx }}][image_file]" class="hp-input" accept="image/*">
+                                        </div>
+
+                                        {{-- 2. Hover Background Image (State 2 Hover) --}}
+                                        <div class="hp-field-group" style="background:#F8FAFC;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                                            <label class="hp-label" style="color:#E65100;display:flex;align-items:center;gap:0.4rem;">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                                Foto Background Lifestyle (State 2 Hover)
+                                            </label>
+                                            @if(!empty($card['hover_image']))
+                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem;">
+                                                    <img src="{{ asset('storage/' . $card['hover_image']) }}" style="max-height:60px;border-radius:6px;border:1px solid #CBD5E1;">
+                                                    <span style="font-size:0.75rem;color:#64748B;">Foto hover saat ini</span>
+                                                    <input type="hidden" name="cards_{{ $k }}[{{ $idx }}][hover_image]" value="{{ $card['hover_image'] }}">
+                                                </div>
+                                            @endif
+                                            <input type="file" name="cards_{{ $k }}[{{ $idx }}][hover_image_file]" class="hp-input" accept="image/*">
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Teks Tombol CTA</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_text]" class="hp-input" value="{{ $card['btn_text'] ?? 'BELI SEKARANG' }}" placeholder="BELI SEKARANG">
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Link CTA (URL / WA)</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_url]" class="hp-input" value="{{ $card['btn_url'] ?? 'https://wa.me/628113526618' }}" placeholder="https://wa.me/...">
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Card Normal</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][bg_color]" class="hp-input" value="{{ $card['bg_color'] ?? '#F0F7FF' }}" placeholder="#F0F7FF">
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Tombol CTA</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_color]" class="hp-input" value="{{ $card['btn_color'] ?? '#E65100' }}" placeholder="#E65100">
+                                        </div>
+                                    @else
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Pilih Icon SVG</label>
+                                            <select name="cards_{{ $k }}[{{ $idx }}][icon]" class="hp-select">
+                                                @php
+                                                    $iconOpts = ['ship'=>'Perkapalan / Ship','factory'=>'Pabrik / Building','zap'=>'Struktur / Zap','home'=>'Gedung / Home','truck'=>'Logistik / Truck','droplet'=>'Coating / Droplet','shield'=>'Proteksi / Shield','sun'=>'Outdoors / Sun','tool'=>'Maintenance / Tool','star'=>'Bintang / Star','award'=>'Award / Quality'];
+                                                    $curIcon = $card['icon'] ?? 'ship';
+                                                @endphp
+                                                @foreach($iconOpts as $optVal => $optLabel)
+                                                    <option value="{{ $optVal }}" {{ $curIcon === $optVal ? 'selected' : '' }}>{{ $optLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="hp-field-group full">
+                                            <label class="hp-label">Deskripsi Card</label>
+                                            <textarea name="cards_{{ $k }}[{{ $idx }}][desc]" class="hp-textarea" rows="2">{{ $card['desc'] ?? '' }}</textarea>
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Background Card</label>
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][color]" class="hp-input" value="{{ $card['color'] ?? '#F8FAFC' }}" placeholder="#F8FAFC">
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @empty
@@ -858,6 +925,94 @@ function addCardItem(secKey) {
     const idx = cardCounters[secKey];
     const cardId = `card-${secKey}-${idx}`;
 
+    let formFields = '';
+    if (secKey === 'layanan') {
+        formFields = `
+            <div class="hp-field-group">
+                <label class="hp-label">Judul Card / Layanan</label>
+                <input type="text" name="cards_${secKey}[${idx}][title]" class="hp-input" value="Layanan Baru" oninput="document.getElementById('card-title-text-${secKey}-${idx}').innerText = this.value || 'Layanan Baru'">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Badge / Tag (Opsional)</label>
+                <input type="text" name="cards_${secKey}[${idx}][badge]" class="hp-input" value="" placeholder="Contoh: TERPOPULER / PROMO">
+            </div>
+
+            <div class="hp-field-group full">
+                <label class="hp-label">Deskripsi Hover Card</label>
+                <textarea name="cards_${secKey}[${idx}][desc]" class="hp-textarea" rows="2" placeholder="Teks penjelas saat card di-hover..."></textarea>
+            </div>
+
+            <div class="hp-field-group" style="background:#F8FAFC;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                <label class="hp-label" style="color:#1B6FE8;display:flex;align-items:center;gap:0.4rem;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Foto Thumbnail Cut-out (State 1 Normal)
+                </label>
+                <input type="file" name="cards_${secKey}[${idx}][image_file]" class="hp-input" accept="image/*">
+            </div>
+
+            <div class="hp-field-group" style="background:#F8FAFC;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                <label class="hp-label" style="color:#E65100;display:flex;align-items:center;gap:0.4rem;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    Foto Background Lifestyle (State 2 Hover)
+                </label>
+                <input type="file" name="cards_${secKey}[${idx}][hover_image_file]" class="hp-input" accept="image/*">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Teks Tombol CTA</label>
+                <input type="text" name="cards_${secKey}[${idx}][btn_text]" class="hp-input" value="BELI SEKARANG" placeholder="BELI SEKARANG">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Link CTA (URL / WA)</label>
+                <input type="text" name="cards_${secKey}[${idx}][btn_url]" class="hp-input" value="https://wa.me/628113526618" placeholder="https://wa.me/...">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Card Normal</label>
+                <input type="text" name="cards_${secKey}[${idx}][bg_color]" class="hp-input" value="#F0F7FF" placeholder="#F0F7FF">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Tombol CTA</label>
+                <input type="text" name="cards_${secKey}[${idx}][btn_color]" class="hp-input" value="#E65100" placeholder="#E65100">
+            </div>
+        `;
+    } else {
+        formFields = `
+            <div class="hp-field-group">
+                <label class="hp-label">Judul Card</label>
+                <input type="text" name="cards_${secKey}[${idx}][title]" class="hp-input" value="Card Baru" oninput="document.getElementById('card-title-text-${secKey}-${idx}').innerText = this.value || 'Card Baru'">
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Pilih Icon SVG</label>
+                <select name="cards_${secKey}[${idx}][icon]" class="hp-select">
+                    <option value="ship">Perkapalan / Ship</option>
+                    <option value="factory">Pabrik / Building</option>
+                    <option value="zap">Struktur / Zap</option>
+                    <option value="home">Gedung / Home</option>
+                    <option value="truck">Logistik / Truck</option>
+                    <option value="droplet">Coating / Droplet</option>
+                    <option value="shield">Proteksi / Shield</option>
+                    <option value="sun">Outdoors / Sun</option>
+                    <option value="tool">Maintenance / Tool</option>
+                </select>
+            </div>
+
+            <div class="hp-field-group full">
+                <label class="hp-label">Deskripsi Card</label>
+                <textarea name="cards_${secKey}[${idx}][desc]" class="hp-textarea" rows="2" placeholder="Tuliskan penjelasan card..."></textarea>
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Background Card</label>
+                <input type="text" name="cards_${secKey}[${idx}][color]" class="hp-input" value="#F8FAFC" placeholder="#F8FAFC">
+            </div>
+        `;
+    }
+
     const html = `
         <div class="hp-card-item" id="${cardId}">
             <div class="hp-card-item-head">
@@ -871,35 +1026,7 @@ function addCardItem(secKey) {
                 </button>
             </div>
             <div class="hp-form-grid" style="margin-bottom:0;">
-                <div class="hp-field-group">
-                    <label class="hp-label">Judul Card</label>
-                    <input type="text" name="cards_${secKey}[${idx}][title]" class="hp-input" value="Card Baru" oninput="document.getElementById('card-title-text-${secKey}-${idx}').innerText = this.value || 'Card Baru'">
-                </div>
-
-                <div class="hp-field-group">
-                    <label class="hp-label">Pilih Icon SVG</label>
-                    <select name="cards_${secKey}[${idx}][icon]" class="hp-select">
-                        <option value="ship">Perkapalan / Ship</option>
-                        <option value="factory">Pabrik / Building</option>
-                        <option value="zap">Struktur / Zap</option>
-                        <option value="home">Gedung / Home</option>
-                        <option value="truck">Logistik / Truck</option>
-                        <option value="droplet">Coating / Droplet</option>
-                        <option value="shield">Proteksi / Shield</option>
-                        <option value="sun">Outdoors / Sun</option>
-                        <option value="tool">Maintenance / Tool</option>
-                    </select>
-                </div>
-
-                <div class="hp-field-group full">
-                    <label class="hp-label">Deskripsi Card</label>
-                    <textarea name="cards_${secKey}[${idx}][desc]" class="hp-textarea" rows="2" placeholder="Tuliskan penjelasan card..."></textarea>
-                </div>
-
-                <div class="hp-field-group">
-                    <label class="hp-label">Warna Background Card</label>
-                    <input type="text" name="cards_${secKey}[${idx}][color]" class="hp-input" value="#F8FAFC" placeholder="#F8FAFC">
-                </div>
+                ${formFields}
             </div>
         </div>
     `;

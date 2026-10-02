@@ -147,6 +147,42 @@ class AdminPageController extends Controller
             'btn_url'      => '#jangkauan',
             'cards'        => []
         ],
+        'layanan' => [
+            'label'        => 'Layanan Utama (Hover Card Style)',
+            'icon'         => 'grid',
+            'headline'     => 'Air Segar Prigen Sejukkan Setiap Momen dan Aktivitasmu',
+            'subline'      => 'Solusi pasokan air tangki dan maklon AMDK berkualitas tinggi.',
+            'badge'        => 'LAYANAN UTAMA',
+            'bg_color'     => '#FFFFFF',
+            'text_color'   => '#0F172A',
+            'accent_color' => '#E65100',
+            'btn_text'     => 'LIHAT PRODUK KAMI →',
+            'btn_url'      => '#layanan',
+            'cards'        => [
+                [
+                    'title'       => 'Air Tangki Mineral & Demineral',
+                    'desc'        => 'Pasokan air tangki berkualitas tinggi untuk kebutuhan industri, depo air isi ulang, dan kolam renang.',
+                    'badge'       => 'TERPOPULER',
+                    'image'       => '',
+                    'hover_image' => '',
+                    'btn_text'    => 'BELI SEKARANG',
+                    'btn_url'     => 'https://wa.me/628113526618',
+                    'bg_color'    => '#F0F7FF',
+                    'btn_color'   => '#E65100'
+                ],
+                [
+                    'title'       => 'AMDK & Maklon',
+                    'desc'        => 'Layanan maklon Air Minum Dalam Kemasan (AMDK) custom merk sesuai standar kesehatan tertinggi.',
+                    'badge'       => 'PROMO',
+                    'image'       => '',
+                    'hover_image' => '',
+                    'btn_text'    => 'BELI SEKARANG',
+                    'btn_url'     => 'https://wa.me/628113526618',
+                    'bg_color'    => '#F0F7FF',
+                    'btn_color'   => '#E65100'
+                ],
+            ]
+        ],
         'articles' => [
             'label'        => 'Articles Section',
             'icon'         => 'file-text',
@@ -323,6 +359,7 @@ class AdminPageController extends Controller
         if (is_array($cardsInput)) {
             $processedCards = [];
             foreach ($cardsInput as $idx => $card) {
+                // Normal Image Upload
                 $cFileParam = "cards_{$section}.{$idx}.image_file";
                 if ($request->hasFile($cFileParam)) {
                     $cFile = $request->file($cFileParam);
@@ -330,6 +367,16 @@ class AdminPageController extends Controller
                     $card['image'] = $cPath;
                 }
                 unset($card['image_file']);
+
+                // Hover Image Upload
+                $cHoverFileParam = "cards_{$section}.{$idx}.hover_image_file";
+                if ($request->hasFile($cHoverFileParam)) {
+                    $cHoverFile = $request->file($cHoverFileParam);
+                    $cHoverPath = $cHoverFile->store("homepage/cards", 'public');
+                    $card['hover_image'] = $cHoverPath;
+                }
+                unset($card['hover_image_file']);
+
                 $processedCards[] = $card;
             }
             Setting::set("page_home_cards_{$section}", json_encode(array_values($processedCards)));

@@ -2943,6 +2943,356 @@
         }
     </style>
 
+    {{-- ════ LAYANAN UTAMA (HOVER CARD STYLE) ════ --}}
+    @if(\App\Models\Setting::get('page_home_show_layanan','1') == '1')
+        @php
+            $layBg = \App\Models\Setting::get('page_home_bg_layanan', '#ffffff');
+            $layTxt = \App\Models\Setting::get('page_home_text_color_layanan', '#0F172A');
+            $layAcc = \App\Models\Setting::get('page_home_accent_color_layanan', '#E65100');
+            $layHd = \App\Models\Setting::get('page_home_headline_layanan', 'Air Segar Prigen Sejukkan Setiap Momen dan Aktivitasmu');
+            $laySub = \App\Models\Setting::get('page_home_subline_layanan');
+            $layBd = \App\Models\Setting::get('page_home_badge_layanan', 'LAYANAN UTAMA');
+            $layBtnShow = \App\Models\Setting::get('page_home_btn_show_layanan', '1') == '1';
+            $layBtnTxt = \App\Models\Setting::get('page_home_btn_text_layanan', 'LIHAT PRODUK KAMI →');
+            $layBtnUrl = \App\Models\Setting::get('page_home_btn_url_layanan', '#layanan');
+            
+            $rawLayCards = \App\Models\Setting::get('page_home_cards_layanan');
+            $layCards = $rawLayCards ? json_decode($rawLayCards, true) : null;
+            if (!is_array($layCards) || empty($layCards)) {
+                $layCards = [
+                    [
+                        'title' => 'Air Tangki Mineral & Demineral',
+                        'desc' => 'Pasokan air tangki berkualitas tinggi untuk industri, depo air isi ulang, kolam renang, dan komersial.',
+                        'badge' => 'TERPOPULER',
+                        'image' => '',
+                        'hover_image' => '',
+                        'btn_text' => 'BELI SEKARANG',
+                        'btn_url' => 'https://wa.me/628113526618',
+                        'bg_color' => '#F0F7FF',
+                        'btn_color' => '#E65100'
+                    ],
+                    [
+                        'title' => 'AMDK & Maklon',
+                        'desc' => 'Layanan maklon Air Minum Dalam Kemasan (AMDK) custom merk sesuai standar kesehatan tertinggi.',
+                        'badge' => 'PROMO',
+                        'image' => '',
+                        'hover_image' => '',
+                        'btn_text' => 'BELI SEKARANG',
+                        'btn_url' => 'https://wa.me/628113526618',
+                        'bg_color' => '#F0F7FF',
+                        'btn_color' => '#E65100'
+                    ]
+                ];
+            }
+        @endphp
+        <style>
+            .cv-layanan-section {
+                padding: 4.5rem 1.5rem;
+                background: {{ $layBg ?: '#ffffff' }};
+                color: {{ $layTxt ?: '#0F172A' }};
+                font-family: 'Montserrat', 'Inter', sans-serif;
+            }
+            .cv-layanan-inner {
+                max-width: 1240px;
+                margin: 0 auto;
+            }
+            .cv-layanan-header {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                margin-bottom: 2.5rem;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            .cv-layanan-badge {
+                font-size: 0.8rem;
+                font-weight: 800;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #94A3B8;
+                margin-bottom: 0.5rem;
+            }
+            .cv-layanan-headline {
+                font-size: clamp(1.6rem, 3vw, 2.3rem);
+                font-weight: 800;
+                line-height: 1.25;
+                color: {{ $layTxt ?: '#0F172A' }};
+                max-width: 680px;
+                margin: 0 0 0.75rem 0;
+            }
+            .cv-layanan-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 0.85rem;
+                font-weight: 800;
+                color: {{ $layAcc ?: '#E65100' }};
+                text-decoration: none;
+                letter-spacing: 0.03em;
+                transition: gap 0.2s ease;
+            }
+            .cv-layanan-link:hover {
+                gap: 0.75rem;
+            }
+            .cv-layanan-nav-btns {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .cv-layanan-nav-btn {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 1px solid #CBD5E1;
+                background: #FFFFFF;
+                color: #475569;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            .cv-layanan-nav-btn:hover {
+                background: {{ $layAcc ?: '#E65100' }};
+                color: #FFFFFF;
+                border-color: {{ $layAcc ?: '#E65100' }};
+                transform: scale(1.05);
+            }
+            .cv-layanan-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 1.75rem;
+            }
+            .cv-layanan-card {
+                position: relative;
+                border-radius: 24px;
+                min-height: 440px;
+                overflow: hidden;
+                background: #F0F7FF;
+                transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.03);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 2.25rem 2rem;
+                cursor: pointer;
+                border: 1px solid #E2E8F0;
+            }
+            .cv-layanan-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+                border-color: transparent;
+            }
+            /* Default State Layer (State 1) */
+            .cv-layanan-card-default {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                padding: 2.5rem 2rem 2rem;
+                z-index: 2;
+                transition: opacity 0.4s ease, transform 0.4s ease;
+            }
+            .cv-layanan-card-img-wrap {
+                width: 100%;
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 1.5rem;
+            }
+            .cv-layanan-card-img-wrap img {
+                max-height: 250px;
+                max-width: 85%;
+                object-fit: contain;
+                filter: drop-shadow(0 12px 24px rgba(0,0,0,0.08));
+                transition: transform 0.4s ease;
+            }
+            .cv-layanan-card:hover .cv-layanan-card-img-wrap img {
+                transform: scale(1.08);
+            }
+            .cv-layanan-card-title-default {
+                font-size: 1.4rem;
+                font-weight: 800;
+                color: #2B3674;
+                text-align: center;
+            }
+
+            /* Hover State Layer (State 2) */
+            .cv-layanan-card-hover {
+                position: absolute;
+                inset: 0;
+                z-index: 3;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.45s ease, visibility 0.45s ease;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                padding: 2.25rem 2rem;
+            }
+            .cv-layanan-card-hover-bg {
+                position: absolute;
+                inset: 0;
+                background-size: cover;
+                background-position: center;
+                transition: transform 0.6s ease;
+                transform: scale(1);
+            }
+            .cv-layanan-card-hover-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.65) 50%, rgba(15,23,42,0.95) 100%);
+            }
+            .cv-layanan-card-hover-content {
+                position: relative;
+                z-index: 4;
+                transform: translateY(15px);
+                transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .cv-layanan-card-title-hover {
+                font-size: 1.65rem;
+                font-weight: 800;
+                color: #FFFFFF;
+                margin-bottom: 0.6rem;
+                line-height: 1.25;
+            }
+            .cv-layanan-card-desc-hover {
+                font-size: 0.88rem;
+                line-height: 1.55;
+                color: rgba(255, 255, 255, 0.88);
+                margin-bottom: 1.5rem;
+                font-weight: 500;
+            }
+            .cv-layanan-card-btn-hover {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                padding: 0.95rem 1.5rem;
+                border-radius: 12px;
+                background: {{ $layAcc ?: '#E65100' }};
+                color: #FFFFFF;
+                font-size: 0.85rem;
+                font-weight: 800;
+                letter-spacing: 0.05em;
+                text-decoration: none;
+                text-transform: uppercase;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+                transition: all 0.25s ease;
+            }
+            .cv-layanan-card-btn-hover:hover {
+                filter: brightness(1.15);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+            }
+
+            /* Activate Hover State on Card Hover */
+            .cv-layanan-card:hover .cv-layanan-card-default {
+                opacity: 0;
+            }
+            .cv-layanan-card:hover .cv-layanan-card-hover {
+                opacity: 1;
+                visibility: visible;
+            }
+            .cv-layanan-card:hover .cv-layanan-card-hover-bg {
+                transform: scale(1.08);
+            }
+            .cv-layanan-card:hover .cv-layanan-card-hover-content {
+                transform: translateY(0);
+            }
+
+            @media (max-width: 768px) {
+                .cv-layanan-section { padding: 3rem 1rem; }
+                .cv-layanan-grid { grid-template-columns: 1fr; }
+                .cv-layanan-card { min-height: 380px; }
+            }
+        </style>
+
+        <section class="cv-layanan-section" id="layanan">
+            <div class="cv-layanan-inner">
+                <div class="cv-layanan-header">
+                    <div>
+                        @if($layBd)
+                            <div class="cv-layanan-badge">{{ $layBd }}</div>
+                        @endif
+                        <h2 class="cv-layanan-headline">{{ $layHd }}</h2>
+                        @if($layBtnShow && $layBtnTxt)
+                            <a href="{{ $layBtnUrl }}" class="cv-layanan-link">
+                                {{ $layBtnTxt }}
+                            </a>
+                        @endif
+                    </div>
+                    <div class="cv-layanan-nav-btns">
+                        <button type="button" class="cv-layanan-nav-btn" onclick="document.getElementById('layananGrid').scrollBy({left: -350, behavior: 'smooth'})" aria-label="Previous">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                        </button>
+                        <button type="button" class="cv-layanan-nav-btn" onclick="document.getElementById('layananGrid').scrollBy({left: 350, behavior: 'smooth'})" aria-label="Next">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cv-layanan-grid" id="layananGrid">
+                    @foreach($layCards as $cIdx => $c)
+                        @php
+                            $cBg = $c['bg_color'] ?? '#F0F7FF';
+                            $cBtnColor = $c['btn_color'] ?? ($layAcc ?: '#E65100');
+                            $cImg = !empty($c['image']) ? asset('storage/' . $c['image']) : null;
+                            $cHoverImg = !empty($c['hover_image']) ? asset('storage/' . $c['hover_image']) : null;
+                        @endphp
+                        <div class="cv-layanan-card" style="background: {{ $cBg }};">
+                            
+                            {{-- State 1: Thumbnail Normal --}}
+                            <div class="cv-layanan-card-default">
+                                <div class="cv-layanan-card-img-wrap">
+                                    @if($cImg)
+                                        <img src="{{ $cImg }}" alt="{{ $c['title'] ?? 'Layanan' }}">
+                                    @else
+                                        {{-- SVG Droplet Fallback Icon --}}
+                                        <div style="text-align:center;color:#64748B;">
+                                            <svg width="80" height="80" fill="none" stroke="{{ $layAcc ?: '#E65100' }}" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="cv-layanan-card-title-default">
+                                    {{ $c['title'] ?? 'Layanan ' . ($cIdx + 1) }}
+                                </div>
+                            </div>
+
+                            {{-- State 2: Hover State --}}
+                            <div class="cv-layanan-card-hover">
+                                @if($cHoverImg)
+                                    <div class="cv-layanan-card-hover-bg" style="background-image: url('{{ $cHoverImg }}');"></div>
+                                @else
+                                    <div class="cv-layanan-card-hover-bg" style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);"></div>
+                                @endif
+                                <div class="cv-layanan-card-hover-overlay"></div>
+                                <div class="cv-layanan-card-hover-content">
+                                    <div class="cv-layanan-card-title-hover">
+                                        {{ $c['title'] ?? 'Layanan' }}
+                                    </div>
+                                    @if(!empty($c['desc']))
+                                        <div class="cv-layanan-card-desc-hover">
+                                            {{ $c['desc'] }}
+                                        </div>
+                                    @endif
+                                    <a href="{{ $c['btn_url'] ?? 'https://wa.me/628113526618' }}" class="cv-layanan-card-btn-hover" style="background: {{ $cBtnColor }};" target="_blank">
+                                        {{ $c['btn_text'] ?? 'BELI SEKARANG' }}
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- ════ ARTICLES (PREMIUM) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_articles','1') == '1' && $articles->count())
         @php
