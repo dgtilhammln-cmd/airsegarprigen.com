@@ -465,6 +465,16 @@
                         </div>
                     </div>
 
+                    {{-- Header Text Alignment --}}
+                    <div class="hp-field-group">
+                        <label class="hp-label">Alignment Posisi Header Text</label>
+                        <select name="page_home_align_{{ $k }}" class="hp-select">
+                            <option value="left" {{ ($sec['align'] ?? 'left') === 'left' ? 'selected' : '' }}>Rata Kiri (Left)</option>
+                            <option value="center" {{ ($sec['align'] ?? '') === 'center' ? 'selected' : '' }}>Rata Tengah (Center)</option>
+                            <option value="right" {{ ($sec['align'] ?? '') === 'right' ? 'selected' : '' }}>Rata Kanan (Right)</option>
+                        </select>
+                    </div>
+
                     {{-- Tombol Utama --}}
                     <div class="hp-field-group">
                         <label class="hp-label">Teks Tombol Utama</label>

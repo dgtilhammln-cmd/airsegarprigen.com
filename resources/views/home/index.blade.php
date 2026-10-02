@@ -2952,6 +2952,7 @@
             $layHd = \App\Models\Setting::get('page_home_headline_layanan', 'Air Segar Prigen Sejukkan Setiap Momen dan Aktivitasmu');
             $laySub = \App\Models\Setting::get('page_home_subline_layanan');
             $layBd = \App\Models\Setting::get('page_home_badge_layanan', 'LAYANAN UTAMA');
+            $layAlign = \App\Models\Setting::get('page_home_align_layanan', 'left');
             $layBtnShow = \App\Models\Setting::get('page_home_btn_show_layanan', '1') == '1';
             $layBtnTxt = \App\Models\Setting::get('page_home_btn_text_layanan', 'LIHAT PRODUK KAMI →');
             $layBtnUrl = \App\Models\Setting::get('page_home_btn_url_layanan', '#layanan');
@@ -2999,10 +3000,25 @@
             .cv-layanan-header {
                 display: flex;
                 align-items: flex-end;
-                justify-content: space-between;
+                justify-content: {{ $layAlign === 'center' ? 'center' : ($layAlign === 'right' ? 'flex-end' : 'space-between') }};
                 margin-bottom: 2.5rem;
                 gap: 1.5rem;
                 flex-wrap: wrap;
+                text-align: {{ $layAlign }};
+            }
+            .cv-layanan-header-content {
+                text-align: {{ $layAlign }};
+                @if($layAlign === 'center')
+                    margin: 0 auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                @elseif($layAlign === 'right')
+                    margin-left: auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                @endif
             }
             .cv-layanan-badge {
                 font-size: 0.8rem;
@@ -3119,6 +3135,7 @@
                 font-weight: 800;
                 color: #2B3674;
                 text-align: center;
+                font-family: 'Montserrat', sans-serif;
             }
 
             /* Hover State Layer (State 2) */
@@ -3159,6 +3176,7 @@
                 color: #FFFFFF;
                 margin-bottom: 0.6rem;
                 line-height: 1.25;
+                font-family: 'Montserrat', sans-serif;
             }
             .cv-layanan-card-desc-hover {
                 font-size: 0.88rem;
@@ -3166,6 +3184,7 @@
                 color: rgba(255, 255, 255, 0.88);
                 margin-bottom: 1.5rem;
                 font-weight: 500;
+                font-family: 'Montserrat', sans-serif;
             }
             .cv-layanan-card-btn-hover {
                 display: inline-flex;
@@ -3178,6 +3197,7 @@
                 color: #FFFFFF;
                 font-size: 0.85rem;
                 font-weight: 800;
+                font-family: 'Montserrat', sans-serif;
                 letter-spacing: 0.05em;
                 text-decoration: none;
                 text-transform: uppercase;
@@ -3215,7 +3235,7 @@
         <section class="cv-layanan-section" id="layanan">
             <div class="cv-layanan-inner">
                 <div class="cv-layanan-header">
-                    <div>
+                    <div class="cv-layanan-header-content">
                         @if($layBd)
                             <div class="cv-layanan-badge">{{ $layBd }}</div>
                         @endif
@@ -3226,6 +3246,7 @@
                             </a>
                         @endif
                     </div>
+                    @if($layAlign !== 'center')
                     <div class="cv-layanan-nav-btns">
                         <button type="button" class="cv-layanan-nav-btn" onclick="document.getElementById('layananGrid').scrollBy({left: -350, behavior: 'smooth'})" aria-label="Previous">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -3234,6 +3255,7 @@
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
+                    @endif
                 </div>
 
                 <div class="cv-layanan-grid" id="layananGrid">
