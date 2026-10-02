@@ -224,6 +224,8 @@ class AdminPageController extends Controller
                 'icon'           => $cfg['icon'],
                 'show'           => ($settings["page_home_show_{$key}"] ?? '1') === '1',
                 'bg_color'       => $settings["page_home_bg_{$key}"] ?? $cfg['bg_color'],
+                'bg_end_color'   => $settings["page_home_bg_end_{$key}"] ?? '#0D107A',
+                'outer_bg_color' => $settings["page_home_outer_bg_{$key}"] ?? '#FFFFFF',
                 'text_color'     => $settings["page_home_text_color_{$key}"] ?? $cfg['text_color'],
                 'accent_color'   => $settings["page_home_accent_color_{$key}"] ?? $cfg['accent_color'],
                 'headline'       => $settings["page_home_headline_{$key}"] ?? $cfg['headline'],
@@ -261,7 +263,7 @@ class AdminPageController extends Controller
             Setting::set("page_home_bg_{$section}", $request->input("page_home_bg_{$section}", ''));
         }
 
-        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit', 'align'];
+        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit', 'align', 'bg_end_color', 'outer_bg_color'];
         foreach ($fields as $field) {
             $param = "page_home_{$field}_{$section}";
             if ($request->has($param)) {

@@ -2943,18 +2943,17 @@
         }
     </style>
 
-    {{-- ════ LAYANAN UTAMA (BENTO HERO SPLIT STYLE) ════ --}}
+    {{-- ════ LAYANAN UTAMA (SEAMLESS BENTO HERO STYLE) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_layanan','1') == '1')
         @php
-            $layBg = \App\Models\Setting::get('page_home_bg_layanan', '#020617');
+            $layBg = \App\Models\Setting::get('page_home_bg_layanan', '#1823D6');
+            $layBgEnd = \App\Models\Setting::get('page_home_bg_end_layanan', '#0D107A');
+            $layOuterBg = \App\Models\Setting::get('page_home_outer_bg_layanan', '#FFFFFF');
             $layTxt = \App\Models\Setting::get('page_home_text_color_layanan', '#FFFFFF');
-            $layAcc = \App\Models\Setting::get('page_home_accent_color_layanan', '#2563EB');
-            $layHd = \App\Models\Setting::get('page_home_headline_layanan', 'Say goodbye to hidden fees – say hello to Air Segar Prigen!');
-            $laySub = \App\Models\Setting::get('page_home_subline_layanan', 'Pasokan air tangki bersih & layanan maklon AMDK terpercaya untuk industri, depo, dan bisnis Anda.');
-            $layBd = \App\Models\Setting::get('page_home_badge_layanan', 'AIR SEGAR PRIGEN');
-            $layBtnShow = \App\Models\Setting::get('page_home_btn_show_layanan', '1') == '1';
-            $layBtnTxt = \App\Models\Setting::get('page_home_btn_text_layanan', 'View Detail');
-            $layBtnUrl = \App\Models\Setting::get('page_home_btn_url_layanan', '#layanan');
+            $layAcc = \App\Models\Setting::get('page_home_accent_color_layanan', 'rgba(255, 255, 255, 0.75)');
+            $layHd = \App\Models\Setting::get('page_home_headline_layanan', 'Air Segar Prigen Sejukkan Setiap Momen dan Aktivitasmu');
+            $laySub = \App\Models\Setting::get('page_home_subline_layanan', 'Solusi pasokan air tangki dan maklon AMDK berkualitas tinggi.');
+            $layBd = \App\Models\Setting::get('page_home_badge_layanan', 'LAYANAN UTAMA');
             $laySectionImg = \App\Models\Setting::get('page_home_image_layanan'); // Main image top-right
             
             $rawLayCards = \App\Models\Setting::get('page_home_cards_layanan');
@@ -2963,267 +2962,236 @@
                 $layCards = [
                     [
                         'title' => 'Air Tangki Mineral & Demineral',
-                        'desc' => 'Pasokan air tangki berkualitas tinggi untuk industri, depo air isi ulang, kolam renang, dan komersial.',
-                        'badge' => 'TERPOPULER',
+                        'desc' => 'Pasokan air tangki berkualitas tinggi untuk industri, depo air isi ulang, dan kolam renang.',
                         'btn_text' => 'View Detail',
                         'btn_url' => 'https://wa.me/628113526618',
-                        'bg_color' => 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-                        'btn_color' => '#2563EB'
+                        'bg_color' => '#0B092B',
+                        'bg_end_color' => '#0B092B',
+                        'text_color' => '#FFFFFF',
+                        'icon_bg' => '#FFFFFF',
+                        'icon_color' => '#0F172A'
                     ],
                     [
                         'title' => 'AMDK & Maklon',
                         'desc' => 'Layanan maklon Air Minum Dalam Kemasan (AMDK) custom merk sesuai standar kesehatan tertinggi.',
-                        'badge' => 'PROMO',
                         'btn_text' => 'View Detail',
                         'btn_url' => 'https://wa.me/628113526618',
-                        'bg_color' => 'linear-gradient(180deg, #1E3A8A 0%, #172554 100%)',
-                        'btn_color' => '#2563EB'
+                        'bg_color' => '#090B38',
+                        'bg_end_color' => '#1532A6',
+                        'text_color' => '#FFFFFF',
+                        'icon_bg' => '#FFFFFF',
+                        'icon_color' => '#0F172A'
                     ]
                 ];
             }
         @endphp
         <style>
-            .cv-layanan-bento-section {
-                padding: 4.5rem 1.5rem;
-                background: {{ $layBg ?: '#020617' }};
-                color: {{ $layTxt ?: '#FFFFFF' }};
+            .cv-bento-wrapper-section {
+                padding: 4rem 1.5rem;
+                background: {{ $layOuterBg }};
                 font-family: 'Montserrat', 'Inter', sans-serif;
             }
-            .cv-layanan-bento-inner {
-                max-width: 1280px;
+            .cv-bento-container {
+                max-width: 1240px;
                 margin: 0 auto;
+                border-radius: 28px;
+                overflow: hidden;
+                box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+                background: #080424;
             }
 
-            /* ── BENTO GRID LAYOUT ── */
-            .cv-bento-grid {
+            /* ── SEAMLESS BENTO GRID ── */
+            .cv-seamless-bento {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-                align-items: stretch;
+                grid-template-rows: 320px 240px;
+                gap: 0; /* ZERO GAP for seamless tight fit! */
+                width: 100%;
             }
 
-            /* LEFT COLUMN: Full Height (Headline + Subheadline) */
-            .cv-bento-left {
-                background: linear-gradient(135deg, #1D4ED8 0%, #1E3A8A 50%, #0F172A 100%);
-                border-radius: 28px;
+            /* LEFT BLOCK: Spans full height of left column */
+            .cv-bento-left-box {
+                grid-column: 1 / 2;
+                grid-row: 1 / 3;
+                background: linear-gradient(135deg, {{ $layBg }} 0%, {{ $layBgEnd }} 100%);
                 padding: 3.5rem 3rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                min-height: 560px;
-                box-shadow: 0 12px 36px rgba(0,0,0,0.18);
                 position: relative;
-                overflow: hidden;
-                border: 1px solid rgba(255, 255, 255, 0.1);
             }
-            .cv-bento-headline {
+            .cv-bento-thin-headline {
                 font-size: clamp(2.2rem, 3.8vw, 3.6rem);
-                font-weight: 700;
+                font-weight: 300; /* KURUS / THIN FONT */
                 line-height: 1.12;
-                letter-spacing: -0.03em;
-                color: #FFFFFF;
-                margin: 0 0 2rem 0;
-                font-family: 'Montserrat', sans-serif;
-            }
-            .cv-bento-subline {
-                font-size: 1.05rem;
-                line-height: 1.65;
-                color: rgba(255, 255, 255, 0.82);
-                font-weight: 400;
-                max-width: 480px;
+                letter-spacing: -0.025em;
+                color: {{ $layTxt }};
                 margin: 0;
-                font-family: 'Montserrat', sans-serif;
+                font-family: 'Montserrat', 'Inter', sans-serif;
+            }
+            .cv-bento-thin-subline {
+                font-size: 0.98rem;
+                font-weight: 300; /* KURUS / THIN FONT */
+                line-height: 1.6;
+                color: {{ $layAcc }};
+                margin: 2rem 0 0 0;
+                max-width: 440px;
+                font-family: 'Montserrat', 'Inter', sans-serif;
             }
 
-            /* RIGHT COLUMN (Split into Top Main Image & Bottom 2 Cards) */
-            .cv-bento-right {
-                display: flex;
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            /* Right Top: Main Hero Image */
-            .cv-bento-main-img-box {
-                height: 300px;
-                border-radius: 28px;
-                overflow: hidden;
+            /* RIGHT TOP BLOCK: Main Hero Image */
+            .cv-bento-right-top-box {
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
                 position: relative;
-                background: #0F172A;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+                overflow: hidden;
+                background: #0B082D;
             }
-            .cv-bento-main-img-box img {
+            .cv-bento-right-top-box img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 transition: transform 0.6s ease;
             }
-            .cv-bento-main-img-box:hover img {
-                transform: scale(1.05);
+            .cv-bento-right-top-box:hover img {
+                transform: scale(1.04);
             }
-            .cv-bento-logo-badge {
+            .cv-bento-top-logo {
                 position: absolute;
-                top: 1.25rem;
-                right: 1.5rem;
-                font-size: 0.75rem;
-                font-weight: 800;
+                top: 2rem;
+                right: 2rem;
+                font-size: 0.85rem;
+                font-weight: 400;
                 letter-spacing: 0.15em;
                 color: rgba(255, 255, 255, 0.85);
                 text-transform: uppercase;
-                background: rgba(15, 23, 42, 0.6);
-                backdrop-filter: blur(8px);
-                padding: 0.4rem 0.85rem;
-                border-radius: 20px;
-                border: 1px solid rgba(255, 255, 255, 0.15);
             }
 
-            /* Right Bottom: 2 Cards Side-by-Side */
-            .cv-bento-cards-row {
+            /* RIGHT BOTTOM BLOCK: 2 Cards Side-by-Side */
+            .cv-bento-right-bottom-box {
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 1.5rem;
-                flex: 1;
+                gap: 0; /* ZERO GAP */
             }
-            .cv-bento-card {
-                border-radius: 24px;
-                padding: 2rem 1.75rem;
+            .cv-bento-sub-card {
+                padding: 2.25rem 2rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                min-height: 240px;
                 position: relative;
-                overflow: hidden;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                transition: all 0.35s ease;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                border-left: 1px solid rgba(255, 255, 255, 0.08);
                 text-decoration: none !important;
+                transition: transform 0.3s ease, filter 0.3s ease;
             }
-            .cv-bento-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 16px 36px rgba(0,0,0,0.3);
-                border-color: rgba(255, 255, 255, 0.25);
+            .cv-bento-sub-card:hover {
+                filter: brightness(1.08);
             }
-            .cv-bento-card-header {
+            .cv-bento-check-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
                 margin-bottom: 1.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
-            .cv-bento-btn-view {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.4rem;
-                padding: 0.5rem 0.95rem;
-                border-radius: 12px;
-                background: rgba(255, 255, 255, 0.15);
-                backdrop-filter: blur(10px);
-                color: #FFFFFF;
-                font-size: 0.78rem;
-                font-weight: 700;
-                font-family: 'Montserrat', sans-serif;
-                text-decoration: none !important;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                transition: all 0.2s ease;
-            }
-            .cv-bento-btn-view:hover {
-                background: #FFFFFF;
-                color: #0F172A;
-                transform: translateX(2px);
-            }
-            .cv-bento-card-title {
-                font-size: 1.25rem;
-                font-weight: 700;
-                color: #FFFFFF;
-                margin-bottom: 0.6rem;
-                line-height: 1.3;
-                font-family: 'Montserrat', sans-serif;
-            }
-            .cv-bento-card-desc {
+            .cv-bento-card-text {
                 font-size: 0.88rem;
+                font-weight: 300; /* KURUS / THIN FONT */
                 line-height: 1.55;
-                color: rgba(255, 255, 255, 0.78);
                 margin: 0;
-                font-weight: 400;
-                font-family: 'Montserrat', sans-serif;
+                font-family: 'Montserrat', 'Inter', sans-serif;
             }
 
             @media (max-width: 992px) {
-                .cv-bento-grid {
+                .cv-seamless-bento {
                     grid-template-columns: 1fr;
+                    grid-template-rows: auto;
                 }
-                .cv-bento-left {
-                    min-height: auto;
+                .cv-bento-left-box {
+                    grid-column: 1 / 2;
+                    grid-row: 1 / 2;
                     padding: 2.5rem 1.75rem;
                 }
-                .cv-bento-main-img-box {
-                    height: 240px;
+                .cv-bento-right-top-box {
+                    grid-column: 1 / 2;
+                    grid-row: 2 / 3;
+                    height: 250px;
                 }
-                .cv-bento-cards-row {
+                .cv-bento-right-bottom-box {
+                    grid-column: 1 / 2;
+                    grid-row: 3 / 4;
                     grid-template-columns: 1fr;
                 }
             }
         </style>
 
-        <section class="cv-layanan-bento-section" id="layanan">
-            <div class="cv-layanan-bento-inner">
-                <div class="cv-bento-grid">
+        <section class="cv-bento-wrapper-section" id="layanan">
+            <div class="cv-bento-container">
+                <div class="cv-seamless-bento">
                     
-                    {{-- LEFT COLUMN: Headline & Subheadline --}}
-                    <div class="cv-bento-left">
-                        <h2 class="cv-bento-headline">
+                    {{-- LEFT COLUMN: Headline (Top) & Subheadline (Bottom) --}}
+                    <div class="cv-bento-left-box">
+                        <h2 class="cv-bento-thin-headline">
                             {!! $layHd !!}
                         </h2>
                         @if($laySub)
-                            <p class="cv-bento-subline">
+                            <p class="cv-bento-thin-subline">
                                 {{ $laySub }}
                             </p>
                         @endif
                     </div>
 
-                    {{-- RIGHT COLUMN: Main Hero Image + 2 Cards --}}
-                    <div class="cv-bento-right">
-                        
-                        {{-- Right Top: Main Hero Image --}}
-                        <div class="cv-bento-main-img-box">
-                            @if($laySectionImg)
-                                <img src="{{ asset('storage/' . $laySectionImg) }}" alt="{{ $layHd }}">
-                            @else
-                                {{-- High Quality Abstract / Factory Hero Background Fallback --}}
-                                <div style="width:100%;height:100%;background:linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #0284C7 100%);display:flex;align-items:center;justify-content:center;position:relative;">
-                                    <svg width="120" height="120" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                                </div>
-                            @endif
-                            @if($layBd)
-                                <div class="cv-bento-logo-badge">{{ $layBd }}</div>
-                            @endif
-                        </div>
+                    {{-- RIGHT TOP BLOCK: Main Hero Image --}}
+                    <div class="cv-bento-right-top-box">
+                        @if($laySectionImg)
+                            <img src="{{ asset('storage/' . $laySectionImg) }}" alt="{{ $layHd }}">
+                        @else
+                            {{-- Electric Blue Fluid Abstract Banner (Persis Gambar Referensi 2) --}}
+                            <div style="width:100%;height:100%;background:linear-gradient(135deg, #090B38 0%, #1722D4 50%, #2563EB 100%);display:flex;align-items:center;justify-content:center;position:relative;">
+                                <svg width="100%" height="100%" viewBox="0 0 400 300" preserveAspectRatio="none" style="position:absolute;inset:0;opacity:0.6;">
+                                    <path d="M0,100 C150,200 250,0 400,150 L400,300 L0,300 Z" fill="rgba(37,99,235,0.4)"/>
+                                    <path d="M0,180 C120,80 280,220 400,80 L400,300 L0,300 Z" fill="rgba(29,78,216,0.3)"/>
+                                </svg>
+                            </div>
+                        @endif
+                        @if($layBd)
+                            <div class="cv-bento-top-logo">{{ $layBd }}</div>
+                        @endif
+                    </div>
 
-                        {{-- Right Bottom: 2 Dynamic Cards Side-by-Side --}}
-                        <div class="cv-bento-cards-row">
-                            @foreach(array_slice($layCards, 0, 2) as $cIdx => $c)
-                                @php
-                                    $cBg = $c['bg_color'] ?? ($cIdx === 0 ? 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)' : 'linear-gradient(180deg, #1E3A8A 0%, #172554 100%)');
-                                    $cBtnText = $c['btn_text'] ?? 'View Detail';
-                                    $cBtnUrl = $c['btn_url'] ?? 'https://wa.me/628113526618';
-                                @endphp
-                                <div class="cv-bento-card" style="background: {{ $cBg }};">
-                                    <div class="cv-bento-card-header">
-                                        {{-- Minimalist View Detail Button (replacing checkmark icon) --}}
-                                        <a href="{{ $cBtnUrl }}" class="cv-bento-btn-view" target="_blank">
-                                            {{ $cBtnText }}
-                                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                                        </a>
-                                    </div>
-                                    <div>
-                                        <h3 class="cv-bento-card-title">{{ $c['title'] ?? 'Layanan ' . ($cIdx + 1) }}</h3>
-                                        @if(!empty($c['desc']))
-                                            <p class="cv-bento-card-desc">{{ $c['desc'] }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                    {{-- RIGHT BOTTOM BLOCK: 2 Cards Side-by-Side --}}
+                    <div class="cv-bento-right-bottom-box">
+                        @foreach(array_slice($layCards, 0, 2) as $cIdx => $c)
+                            @php
+                                $cBgStart = $c['bg_color'] ?? ($cIdx === 0 ? '#0B092B' : '#090B38');
+                                $cBgEnd   = $c['bg_end_color'] ?? ($c['bg_end'] ?? ($cIdx === 0 ? '#0B092B' : '#1532A6'));
+                                $cTxtColor = $c['text_color'] ?? '#FFFFFF';
+                                $cIconBg   = $c['icon_bg'] ?? '#FFFFFF';
+                                $cIconClr  = $c['icon_color'] ?? '#0F172A';
+                                $cBtnUrl   = $c['btn_url'] ?? 'https://wa.me/628113526618';
 
+                                if (str_contains($cBgStart, 'gradient')) {
+                                    $cardBgStyle = $cBgStart;
+                                } elseif ($cBgStart !== $cBgEnd) {
+                                    $cardBgStyle = "linear-gradient(135deg, {$cBgStart} 0%, {$cBgEnd} 100%)";
+                                } else {
+                                    $cardBgStyle = $cBgStart;
+                                }
+                            @endphp
+                            <a href="{{ $cBtnUrl }}" class="cv-bento-sub-card" style="background: {{ $cardBgStyle }};" target="_blank">
+                                <div class="cv-bento-check-icon" style="background: {{ $cIconBg }}; color: {{ $cIconClr }};">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <p class="cv-bento-card-text" style="color: {{ $cTxtColor }};">
+                                    <strong>{{ $c['title'] ?? 'Layanan' }}:</strong> {{ $c['desc'] ?? '' }}
+                                </p>
+                            </a>
+                        @endforeach
                     </div>
 
                 </div>

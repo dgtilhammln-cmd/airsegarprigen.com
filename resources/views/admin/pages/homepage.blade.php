@@ -438,12 +438,44 @@
                         <input type="text" name="page_home_badge_{{ $k }}" class="hp-input" value="{{ $sec['badge'] }}" placeholder="Contoh: ABOUT US / GALERI INSTALASI">
                     </div>
 
-                    {{-- Background Color --}}
+                    {{-- Background / Gradient Start Color --}}
                     <div class="hp-field-group">
-                        <label class="hp-label">Warna Background Section</label>
+                        <label class="hp-label">Warna Background (Awal Gradasi Kiri / Left Box)</label>
                         <div class="hp-color-wrap">
-                            <input type="color" id="picker_bg_{{ $k }}" class="hp-color-picker" value="{{ $sec['bg_color'] ?: '#0A1930' }}" oninput="document.getElementById('hex_bg_{{ $k }}').value = this.value" onchange="document.getElementById('hex_bg_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_bg_{{ $k }}" id="hex_bg_{{ $k }}" class="hp-input" value="{{ $sec['bg_color'] }}" placeholder="#0A1930" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_bg_{{ $k }}').value = this.value">
+                            <input type="color" id="picker_bg_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($sec['bg_color'] ?? '', '#') ? $sec['bg_color'] : '#1823D6' }}" oninput="document.getElementById('hex_bg_{{ $k }}').value = this.value" onchange="document.getElementById('hex_bg_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_bg_{{ $k }}" id="hex_bg_{{ $k }}" class="hp-input" value="{{ $sec['bg_color'] }}" placeholder="#1823D6" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_bg_{{ $k }}').value = this.value" style="flex:1;">
+                            <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_bg_{{ $k }}', 'hex_bg_{{ $k }}')">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Pipet
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Gradient End Color (for Left Box / Section background) --}}
+                    <div class="hp-field-group">
+                        <label class="hp-label">Warna Akhir Gradasi Kiri (Akhir Gradasi / Left Box)</label>
+                        <div class="hp-color-wrap">
+                            @php $bgEndVal = $settings["page_home_bg_end_{$k}"] ?? '#0D107A'; @endphp
+                            <input type="color" id="picker_bg_end_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($bgEndVal, '#') ? $bgEndVal : '#0D107A' }}" oninput="document.getElementById('hex_bg_end_{{ $k }}').value = this.value" onchange="document.getElementById('hex_bg_end_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_bg_end_{{ $k }}" id="hex_bg_end_{{ $k }}" class="hp-input" value="{{ $bgEndVal }}" placeholder="#0D107A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_bg_end_{{ $k }}').value = this.value" style="flex:1;">
+                            <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_bg_end_{{ $k }}', 'hex_bg_end_{{ $k }}')">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Pipet
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Background Wrapper Outer (Luar Card Section) --}}
+                    <div class="hp-field-group">
+                        <label class="hp-label">Warna Background Wrapper Outer (Luar Bento)</label>
+                        <div class="hp-color-wrap">
+                            @php $outerBgVal = $settings["page_home_outer_bg_{$k}"] ?? '#FFFFFF'; @endphp
+                            <input type="color" id="picker_outer_bg_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($outerBgVal, '#') ? $outerBgVal : '#FFFFFF' }}" oninput="document.getElementById('hex_outer_bg_{{ $k }}').value = this.value" onchange="document.getElementById('hex_outer_bg_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_outer_bg_{{ $k }}" id="hex_outer_bg_{{ $k }}" class="hp-input" value="{{ $outerBgVal }}" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_outer_bg_{{ $k }}').value = this.value" style="flex:1;">
+                            <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_outer_bg_{{ $k }}', 'hex_outer_bg_{{ $k }}')">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Pipet
+                            </button>
                         </div>
                     </div>
 
@@ -451,8 +483,12 @@
                     <div class="hp-field-group">
                         <label class="hp-label">Warna Text / Font Utama</label>
                         <div class="hp-color-wrap">
-                            <input type="color" id="picker_txt_{{ $k }}" class="hp-color-picker" value="{{ $sec['text_color'] ?: '#0F172A' }}" oninput="document.getElementById('hex_txt_{{ $k }}').value = this.value" onchange="document.getElementById('hex_txt_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_text_color_{{ $k }}" id="hex_txt_{{ $k }}" class="hp-input" value="{{ $sec['text_color'] }}" placeholder="#0F172A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_txt_{{ $k }}').value = this.value">
+                            <input type="color" id="picker_txt_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($sec['text_color'] ?? '', '#') ? $sec['text_color'] : '#FFFFFF' }}" oninput="document.getElementById('hex_txt_{{ $k }}').value = this.value" onchange="document.getElementById('hex_txt_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_text_color_{{ $k }}" id="hex_txt_{{ $k }}" class="hp-input" value="{{ $sec['text_color'] }}" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_txt_{{ $k }}').value = this.value" style="flex:1;">
+                            <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_txt_{{ $k }}', 'hex_txt_{{ $k }}')">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Pipet
+                            </button>
                         </div>
                     </div>
 
@@ -460,8 +496,12 @@
                     <div class="hp-field-group">
                         <label class="hp-label">Warna Accent / Highlight</label>
                         <div class="hp-color-wrap">
-                            <input type="color" id="picker_acc_{{ $k }}" class="hp-color-picker" value="{{ $sec['accent_color'] ?: '#1B6FE8' }}" oninput="document.getElementById('hex_acc_{{ $k }}').value = this.value" onchange="document.getElementById('hex_acc_{{ $k }}').value = this.value">
-                            <input type="text" name="page_home_accent_color_{{ $k }}" id="hex_acc_{{ $k }}" class="hp-input" value="{{ $sec['accent_color'] }}" placeholder="#1B6FE8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_acc_{{ $k }}').value = this.value">
+                            <input type="color" id="picker_acc_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($sec['accent_color'] ?? '', '#') ? $sec['accent_color'] : '#1B6FE8' }}" oninput="document.getElementById('hex_acc_{{ $k }}').value = this.value" onchange="document.getElementById('hex_acc_{{ $k }}').value = this.value">
+                            <input type="text" name="page_home_accent_color_{{ $k }}" id="hex_acc_{{ $k }}" class="hp-input" value="{{ $sec['accent_color'] }}" placeholder="#1B6FE8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_acc_{{ $k }}').value = this.value" style="flex:1;">
+                            <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_acc_{{ $k }}', 'hex_acc_{{ $k }}')">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Pipet
+                            </button>
                         </div>
                     </div>
 
@@ -710,13 +750,79 @@
                                         </div>
 
                                         <div class="hp-field-group">
-                                            <label class="hp-label">Warna Card Normal</label>
-                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][bg_color]" class="hp-input" value="{{ $card['bg_color'] ?? '#F0F7FF' }}" placeholder="#F0F7FF">
+                                            <label class="hp-label">Warna Background (Awal Gradasi Card)</label>
+                                            <div class="hp-color-wrap">
+                                                <input type="color" id="picker_cbg_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($card['bg_color'] ?? '', '#') ? $card['bg_color'] : '#0B092B' }}" oninput="document.getElementById('hex_cbg_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][bg_color]" id="hex_cbg_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $card['bg_color'] ?? '#0B092B' }}" placeholder="#0B092B" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbg_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbg_{{ $k }}_{{ $idx }}', 'hex_cbg_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Background (Akhir Gradasi Card)</label>
+                                            <div class="hp-color-wrap">
+                                                @php $cBgEnd = $card['bg_end_color'] ?? ($card['bg_end'] ?? '#0B092B'); @endphp
+                                                <input type="color" id="picker_cbge_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($cBgEnd, '#') ? $cBgEnd : '#0B092B' }}" oninput="document.getElementById('hex_cbge_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][bg_end_color]" id="hex_cbge_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $cBgEnd }}" placeholder="#0B092B" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbge_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbge_{{ $k }}_{{ $idx }}', 'hex_cbge_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Teks Card</label>
+                                            <div class="hp-color-wrap">
+                                                @php $cTxtColor = $card['text_color'] ?? '#FFFFFF'; @endphp
+                                                <input type="color" id="picker_ctxt_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($cTxtColor, '#') ? $cTxtColor : '#FFFFFF' }}" oninput="document.getElementById('hex_ctxt_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][text_color]" id="hex_ctxt_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $cTxtColor }}" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ctxt_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_ctxt_{{ $k }}_{{ $idx }}', 'hex_ctxt_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Box Icon Checkmark</label>
+                                            <div class="hp-color-wrap">
+                                                @php $cIconBg = $card['icon_bg'] ?? '#FFFFFF'; @endphp
+                                                <input type="color" id="picker_cibg_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($cIconBg, '#') ? $cIconBg : '#FFFFFF' }}" oninput="document.getElementById('hex_cibg_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][icon_bg]" id="hex_cibg_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $cIconBg }}" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cibg_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cibg_{{ $k }}_{{ $idx }}', 'hex_cibg_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="hp-field-group">
+                                            <label class="hp-label">Warna Icon Checkmark</label>
+                                            <div class="hp-color-wrap">
+                                                @php $cIconClr = $card['icon_color'] ?? '#0F172A'; @endphp
+                                                <input type="color" id="picker_ciclr_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($cIconClr, '#') ? $cIconClr : '#0F172A' }}" oninput="document.getElementById('hex_ciclr_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][icon_color]" id="hex_ciclr_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $cIconClr }}" placeholder="#0F172A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ciclr_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_ciclr_{{ $k }}_{{ $idx }}', 'hex_ciclr_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <div class="hp-field-group">
                                             <label class="hp-label">Warna Tombol CTA</label>
-                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_color]" class="hp-input" value="{{ $card['btn_color'] ?? '#E65100' }}" placeholder="#E65100">
+                                            <div class="hp-color-wrap">
+                                                <input type="color" id="picker_cbtn_{{ $k }}_{{ $idx }}" class="hp-color-picker" value="{{ str_starts_with($card['btn_color'] ?? '', '#') ? $card['btn_color'] : '#1B6FE8' }}" oninput="document.getElementById('hex_cbtn_{{ $k }}_{{ $idx }}').value = this.value">
+                                                <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_color]" id="hex_cbtn_{{ $k }}_{{ $idx }}" class="hp-input" value="{{ $card['btn_color'] ?? '#1B6FE8' }}" placeholder="#1B6FE8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbtn_{{ $k }}_{{ $idx }}').value = this.value" style="flex:1;">
+                                                <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbtn_{{ $k }}_{{ $idx }}', 'hex_cbtn_{{ $k }}_{{ $idx }}')">
+                                                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                                    Pipet
+                                                </button>
+                                            </div>
                                         </div>
                                     @else
                                         <div class="hp-field-group">
@@ -980,13 +1086,75 @@ function addCardItem(secKey) {
             </div>
 
             <div class="hp-field-group">
-                <label class="hp-label">Warna Card Normal</label>
-                <input type="text" name="cards_${secKey}[${idx}][bg_color]" class="hp-input" value="#F0F7FF" placeholder="#F0F7FF">
+                <label class="hp-label">Warna Background (Awal Gradasi Card)</label>
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_cbg_${secKey}_${idx}" class="hp-color-picker" value="#0B092B" oninput="document.getElementById('hex_cbg_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][bg_color]" id="hex_cbg_${secKey}_${idx}" class="hp-input" value="#0B092B" placeholder="#0B092B" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbg_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbg_${secKey}_${idx}', 'hex_cbg_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Background (Akhir Gradasi Card)</label>
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_cbge_${secKey}_${idx}" class="hp-color-picker" value="#1532A6" oninput="document.getElementById('hex_cbge_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][bg_end_color]" id="hex_cbge_${secKey}_${idx}" class="hp-input" value="#1532A6" placeholder="#1532A6" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbge_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbge_${secKey}_${idx}', 'hex_cbge_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Teks Card</label>
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_ctxt_${secKey}_${idx}" class="hp-color-picker" value="#FFFFFF" oninput="document.getElementById('hex_ctxt_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][text_color]" id="hex_ctxt_${secKey}_${idx}" class="hp-input" value="#FFFFFF" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ctxt_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_ctxt_${secKey}_${idx}', 'hex_ctxt_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Box Icon Checkmark</label>
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_cibg_${secKey}_${idx}" class="hp-color-picker" value="#FFFFFF" oninput="document.getElementById('hex_cibg_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][icon_bg]" id="hex_cibg_${secKey}_${idx}" class="hp-input" value="#FFFFFF" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cibg_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cibg_${secKey}_${idx}', 'hex_cibg_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
+            </div>
+
+            <div class="hp-field-group">
+                <label class="hp-label">Warna Icon Checkmark</label>
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_ciclr_${secKey}_${idx}" class="hp-color-picker" value="#0F172A" oninput="document.getElementById('hex_ciclr_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][icon_color]" id="hex_ciclr_${secKey}_${idx}" class="hp-input" value="#0F172A" placeholder="#0F172A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ciclr_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_ciclr_${secKey}_${idx}', 'hex_ciclr_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
             </div>
 
             <div class="hp-field-group">
                 <label class="hp-label">Warna Tombol CTA</label>
-                <input type="text" name="cards_${secKey}[${idx}][btn_color]" class="hp-input" value="#E65100" placeholder="#E65100">
+                <div class="hp-color-wrap">
+                    <input type="color" id="picker_cbtn_${secKey}_${idx}" class="hp-color-picker" value="#1B6FE8" oninput="document.getElementById('hex_cbtn_${secKey}_${idx}').value = this.value">
+                    <input type="text" name="cards_${secKey}[${idx}][btn_color]" id="hex_cbtn_${secKey}_${idx}" class="hp-input" value="#1B6FE8" placeholder="#1B6FE8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_cbtn_${secKey}_${idx}').value = this.value" style="flex:1;">
+                    <button type="button" class="hp-btn-eyedrop" title="Pick color from screen (Eyedropper)" onclick="pickColorEyedropper('picker_cbtn_${secKey}_${idx}', 'hex_cbtn_${secKey}_${idx}')">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                        Pipet
+                    </button>
+                </div>
             </div>
         `;
     } else {
@@ -1042,6 +1210,26 @@ function addCardItem(secKey) {
     `;
 
     container.insertAdjacentHTML('beforeend', html);
+}
+
+async function pickColorEyedropper(pickerId, inputId) {
+    if (!('EyeDropper' in window)) {
+        alert('Fitur Eyedropper / Pipet Warna didukung di Google Chrome, Microsoft Edge, dan Opera.');
+        return;
+    }
+    try {
+        const eyeDropper = new EyeDropper();
+        const result = await eyeDropper.open();
+        if (result && result.sRGBHex) {
+            const hex = result.sRGBHex;
+            const inputEl = document.getElementById(inputId);
+            const pickerEl = document.getElementById(pickerId);
+            if (inputEl) inputEl.value = hex;
+            if (pickerEl) pickerEl.value = hex;
+        }
+    } catch (e) {
+        // User cancelled eyedropper
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
