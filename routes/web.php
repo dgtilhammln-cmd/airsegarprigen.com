@@ -219,6 +219,7 @@ Route::prefix('admin')->group(function () {
         // Products (admin uses "services" internally for backward compat)
         Route::get('services/template', [AdminServiceController::class, 'downloadTemplate'])->name('admin.services.template');
         Route::post('services/import', [AdminServiceController::class, 'importCsv'])->name('admin.services.import');
+        Route::delete('services/destroy-all', [AdminServiceController::class, 'destroyAll'])->name('admin.services.destroyAll');
         Route::resource('services', AdminServiceController::class)->names([
             'index'   => 'admin.services.index',   'create'  => 'admin.services.create',
             'store'   => 'admin.services.store',    'show'    => 'admin.services.show',

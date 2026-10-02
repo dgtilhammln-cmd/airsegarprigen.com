@@ -229,6 +229,26 @@ class AdminServiceController extends Controller
         return back()->with('success', 'Layanan berhasil dihapus.');
     }
 
+    public function destroyAll()
+    {
+        $services = Service::all();
+        foreach ($services as $service) {
+            $this->deleteStorageFile($service->image);
+            $this->deleteStorageFile($service->brochure);
+            $this->deleteStorageFile($service->og_image);
+            if (is_array($service->gallery)) {
+                foreach ($service->gallery as $img) {
+                    $this->deleteStorageFile($img);
+                }
+            }
+            $service->delete();
+        }
+        Cache::forget('home_page_data');
+        Cache::forget('services_page_data');
+        return redirect()->route('admin.services.index')->with('success', 'Semua produk (' . $services->count() . ' produk) berhasil dihapus.');
+    }
+
+
     /* ─────────────────────────────────────────
      | CSV IMPORT  (no extra package needed)
      ───────────────────────────────────────── */

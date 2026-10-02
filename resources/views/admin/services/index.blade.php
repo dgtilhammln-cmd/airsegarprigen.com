@@ -20,6 +20,18 @@
         </svg>
         Import CSV
       </button>
+      @if($services->count() > 0)
+      <button onclick="document.getElementById('deleteAllModal').style.display='flex'"
+        style="display:inline-flex;align-items:center;gap:.5rem;background:#EF4444;color:#fff;font-size:.875rem;font-weight:700;padding:.625rem 1.25rem;border-radius:12px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(239,68,68,0.35);"
+        onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(239,68,68,0.4)'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(239,68,68,0.35)'">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <polyline points="3 6 5 6 21 6" />
+          <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+        </svg>
+        Hapus Semua ({{ $services->count() }})
+      </button>
+      @endif
       <a href="{{ route('admin.services.create') }}"
         style="display:inline-flex;align-items:center;gap:.5rem;background:#3B82F6;color:#fff;font-size:.875rem;font-weight:700;padding:.625rem 1.25rem;border-radius:12px;text-decoration:none;transition:all .2s;box-shadow:0 4px 14px rgba(59,130,246,0.35);"
         onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(59,130,246,0.4)'"
@@ -157,6 +169,69 @@
       </tbody>
     </table>
   </div>
+
+
+  {{-- DELETE ALL CONFIRMATION MODAL --}}
+  <div id="deleteAllModal"
+    style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px);">
+    <div
+      style="background:#fff;width:100%;max-width:460px;border-radius:24px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);overflow:hidden;animation:modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div style="background:linear-gradient(135deg,#EF4444,#DC2626);padding:1.5rem 2rem;">
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+            </svg>
+          </div>
+          <div>
+            <h3 style="margin:0;font-size:1.1rem;font-weight:800;color:#fff;">Hapus Semua Produk?</h3>
+            <p style="margin:.25rem 0 0;font-size:.8rem;color:rgba(255,255,255,0.8);">Tindakan ini TIDAK DAPAT dibatalkan</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:2rem;">
+        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;">
+          <p style="margin:0;font-size:.875rem;color:#991B1B;line-height:1.5;">
+            ⚠️ Ini akan menghapus <strong>{{ $services->count() }} produk</strong> beserta semua foto, file brochure, dan gambar galeri secara permanen dari server.
+          </p>
+        </div>
+        <p style="font-size:.875rem;color:#475569;margin:0 0 1.5rem;">Ketik <strong style="color:#EF4444;">HAPUS SEMUA</strong> untuk konfirmasi:</p>
+        <input type="text" id="deleteAllConfirmInput" placeholder="Ketik: HAPUS SEMUA"
+          oninput="document.getElementById('deleteAllConfirmBtn').disabled = this.value !== 'HAPUS SEMUA'"
+          style="width:100%;padding:.75rem 1rem;border:2px solid #E2E8F0;border-radius:10px;font-size:.875rem;outline:none;box-sizing:border-box;margin-bottom:1.5rem;"
+          onfocus="this.style.borderColor='#EF4444'" onblur="this.style.borderColor='#E2E8F0'">
+        <div style="display:flex;gap:.75rem;justify-content:flex-end;">
+          <button type="button" onclick="document.getElementById('deleteAllModal').style.display='none';document.getElementById('deleteAllConfirmInput').value='';document.getElementById('deleteAllConfirmBtn').disabled=true;"
+            style="padding:.75rem 1.25rem;border:none;background:#F1F5F9;color:#64748B;font-weight:600;border-radius:10px;cursor:pointer;font-size:.875rem;">Batal</button>
+          <form method="POST" action="{{ route('admin.services.destroyAll') }}" style="margin:0;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" id="deleteAllConfirmBtn" disabled
+              style="padding:.75rem 1.5rem;border:none;background:#EF4444;color:#fff;font-weight:700;border-radius:10px;cursor:pointer;font-size:.875rem;box-shadow:0 4px 12px rgba(239,68,68,0.3);opacity:.5;transition:all .2s;"
+              onmouseover="if(!this.disabled)this.style.background='#DC2626'"
+              onmouseout="this.style.background='#EF4444'"
+              onclick="return confirm('Yakin hapus semua {{ $services->count() }} produk? Tidak bisa dikembalikan!')">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px;">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+              </svg>
+              Ya, Hapus Semua
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enable/disable button styling based on disabled attr
+    document.getElementById('deleteAllConfirmInput')?.addEventListener('input', function() {
+      const btn = document.getElementById('deleteAllConfirmBtn');
+      btn.style.opacity = btn.disabled ? '0.5' : '1';
+      btn.style.cursor  = btn.disabled ? 'not-allowed' : 'pointer';
+    });
+  </script>
 
   {{-- CSV IMPORT MODAL --}}
   <div id="importModal"

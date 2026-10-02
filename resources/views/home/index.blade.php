@@ -2783,7 +2783,7 @@
 
         .cv-articles-grid-v2 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: var(--art-grid-cols, repeat(3, 1fr));
             gap: 2rem;
         }
 
@@ -2902,7 +2902,7 @@
         /* Responsive */
         @media (max-width: 1024px) {
             .cv-articles-grid-v2 {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: var(--art-grid-cols-tablet, repeat(2, 1fr));
             }
         }
 
@@ -2988,7 +2988,21 @@
                     @endif
                 </div>
 
-                <div class="cv-articles-grid-v2">
+                @php
+                    $artCount = $articles->count();
+                    if ($artCount === 1) {
+                        $artGridStyle = '--art-grid-cols: minmax(0, 520px); --art-grid-cols-tablet: minmax(0, 520px); justify-content: center;';
+                    } elseif ($artCount === 2) {
+                        $artGridStyle = '--art-grid-cols: repeat(2, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
+                    } elseif ($artCount === 3) {
+                        $artGridStyle = '--art-grid-cols: repeat(3, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
+                    } elseif ($artCount === 4) {
+                        $artGridStyle = '--art-grid-cols: repeat(4, 1fr); --art-grid-cols-tablet: repeat(2, 1fr);';
+                    } else {
+                        $artGridStyle = '--art-grid-cols: repeat(auto-fill, minmax(280px, 1fr)); --art-grid-cols-tablet: repeat(auto-fill, minmax(260px, 1fr));';
+                    }
+                @endphp
+                <div class="cv-articles-grid-v2" style="{{ $artGridStyle }}">
                     @foreach($articles as $i => $article)
                         <a href="{{ route('articles.show', $article->slug) }}" class="cv-article-card-v2" data-aos="fade-up"
                             data-aos-delay="{{ $i * 100 }}">

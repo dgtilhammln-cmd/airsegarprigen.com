@@ -476,6 +476,22 @@
                         <input type="text" name="page_home_btn_url_{{ $k }}" class="hp-input" value="{{ $sec['btn_url'] }}" placeholder="https://wa.me/6281... atau /produk">
                     </div>
 
+                    @if($k === 'articles')
+                    <div class="hp-field-group full" style="background:#EFF6FF; padding:1.25rem; border-radius:14px; border:1px solid #BFDBFE;">
+                        <label class="hp-label" style="color:#1D4ED8; font-weight:700; display:flex; align-items:center; gap:0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            Jumlah Card Artikel Tampil di Homepage
+                        </label>
+                        <div style="display:flex; align-items:center; gap:1rem; margin-top:0.5rem; flex-wrap:wrap;">
+                            <input type="number" name="page_home_limit_articles" class="hp-input" min="1" max="50" value="{{ $sec['limit'] ?? 3 }}" style="max-width:140px; font-weight:700; font-size:1.1rem; text-align:center;">
+                            <div style="font-size:0.82rem; color:#3B82F6; line-height:1.4; flex:1; min-width:240px;">
+                                <strong>Layout Dynamic Auto-Adjust:</strong> Masukkan jumlah artikel yang ingin ditampilkan (default: 3).<br>
+                                Layout & tata letak grid card (1 card center, 2 card split, 3 card grid, 4+ card grid) akan otomatis menyesuaikan secara simetris.
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                     {{-- Upload Foto / Image Banner --}}
                     <div class="hp-field-group full" style="background:#F8FAFC;padding:1.25rem;border-radius:14px;border:1px solid #E2E8F0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
