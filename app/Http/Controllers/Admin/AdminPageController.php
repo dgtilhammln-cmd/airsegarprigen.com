@@ -233,6 +233,7 @@ class AdminPageController extends Controller
                 'btn_show'       => ($settings["page_home_btn_show_{$key}"] ?? '1') === '1',
                 'btn_text'       => $settings["page_home_btn_text_{$key}"] ?? $cfg['btn_text'],
                 'btn_url'        => $settings["page_home_btn_url_{$key}"] ?? $cfg['btn_url'],
+                'align'          => $settings["page_home_align_{$key}"] ?? ($cfg['align'] ?? 'left'),
                 'limit'          => (int)($settings["page_home_limit_{$key}"] ?? ($cfg['limit'] ?? 3)),
                 'cards'          => $cards,
                 'landing_images' => is_array($landingImages) ? $landingImages : [],
@@ -260,7 +261,7 @@ class AdminPageController extends Controller
             Setting::set("page_home_bg_{$section}", $request->input("page_home_bg_{$section}", ''));
         }
 
-        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit'];
+        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit', 'align'];
         foreach ($fields as $field) {
             $param = "page_home_{$field}_{$section}";
             if ($request->has($param)) {
