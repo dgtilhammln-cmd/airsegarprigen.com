@@ -32,8 +32,8 @@
         }
 
         .hero-swiper .swiper-slide {
-            width: 100%;
-            max-width: 1400px;
+            width: 84%;
+            max-width: 1200px;
             height: auto;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0.65;
@@ -3059,7 +3059,7 @@
 
             if (document.querySelector('.hero-swiper')) {
                 const heroSwiper = new Swiper('.hero-swiper', {
-                    slidesPerView: 1.16,
+                    slidesPerView: 'auto',
                     centeredSlides: true,
                     spaceBetween: 12,
                     loop: shouldLoop,
@@ -3075,11 +3075,9 @@
                     },
                     breakpoints: {
                         640: {
-                            slidesPerView: 1.2,
                             spaceBetween: 18,
                         },
                         1024: {
-                            slidesPerView: 1.25,
                             spaceBetween: 24,
                         }
                     },
