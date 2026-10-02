@@ -3020,22 +3020,6 @@
                     align-items: flex-end;
                 @endif
             }
-            .cv-layanan-badge {
-                font-size: 0.8rem;
-                font-weight: 800;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: #94A3B8;
-                margin-bottom: 0.5rem;
-            }
-            .cv-layanan-headline {
-                font-size: clamp(1.6rem, 3vw, 2.3rem);
-                font-weight: 800;
-                line-height: 1.25;
-                color: {{ $layTxt ?: '#0F172A' }};
-                max-width: 680px;
-                margin: 0 0 0.75rem 0;
-            }
             .cv-layanan-link {
                 display: inline-flex;
                 align-items: center;
@@ -3045,6 +3029,7 @@
                 color: {{ $layAcc ?: '#E65100' }};
                 text-decoration: none;
                 letter-spacing: 0.03em;
+                margin-top: 0.75rem;
                 transition: gap 0.2s ease;
             }
             .cv-layanan-link:hover {
@@ -3075,32 +3060,37 @@
                 border-color: {{ $layAcc ?: '#E65100' }};
                 transform: scale(1.05);
             }
+
+            /* ── INTERACTIVE HOVER CARDS (Image 2 Style) ── */
             .cv-layanan-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                display: flex;
                 gap: 1.75rem;
+                align-items: center;
+                justify-content: {{ $layAlign === 'center' ? 'center' : 'flex-start' }};
+                flex-wrap: wrap;
             }
             .cv-layanan-card {
                 position: relative;
                 border-radius: 24px;
-                min-height: 440px;
+                height: 480px;
+                width: 300px;
+                flex: 0 0 300px;
                 overflow: hidden;
-                background: #F0F7FF;
-                transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: 0 8px 30px rgba(0,0,0,0.03);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                padding: 2.25rem 2rem;
+                background: #F4F8FC;
+                transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+                box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
                 cursor: pointer;
-                border: 1px solid #E2E8F0;
+                border: 1.5px solid #E2E8F0;
             }
+            /* Hover State: Expands width to 1:1 Square (480px) */
             .cv-layanan-card:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+                width: 480px;
+                flex: 0 0 480px;
+                box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
                 border-color: transparent;
             }
-            /* Default State Layer (State 1) */
+
+            /* Default Portrait Layer (Card 1) */
             .cv-layanan-card-default {
                 position: absolute;
                 inset: 0;
@@ -3108,9 +3098,10 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: space-between;
-                padding: 2.5rem 2rem 2rem;
+                padding: 2.5rem 1.75rem 2rem;
                 z-index: 2;
                 transition: opacity 0.4s ease, transform 0.4s ease;
+                background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
             }
             .cv-layanan-card-img-wrap {
                 width: 100%;
@@ -3118,27 +3109,27 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-bottom: 1.5rem;
             }
             .cv-layanan-card-img-wrap img {
-                max-height: 250px;
-                max-width: 85%;
+                max-height: 280px;
+                max-width: 90%;
                 object-fit: contain;
-                filter: drop-shadow(0 12px 24px rgba(0,0,0,0.08));
-                transition: transform 0.4s ease;
+                filter: drop-shadow(0 14px 28px rgba(15,23,42,0.08));
+                transition: transform 0.45s ease;
             }
             .cv-layanan-card:hover .cv-layanan-card-img-wrap img {
                 transform: scale(1.08);
             }
             .cv-layanan-card-title-default {
-                font-size: 1.4rem;
-                font-weight: 800;
-                color: #2B3674;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #334155;
                 text-align: center;
                 font-family: 'Montserrat', sans-serif;
+                margin-top: 1rem;
             }
 
-            /* Hover State Layer (State 2) */
+            /* Hover Layer (Card 2 1:1 Square) */
             .cv-layanan-card-hover {
                 position: absolute;
                 inset: 0;
@@ -3162,26 +3153,26 @@
             .cv-layanan-card-hover-overlay {
                 position: absolute;
                 inset: 0;
-                background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.65) 50%, rgba(15,23,42,0.95) 100%);
+                background: linear-gradient(180deg, rgba(255,255,255,0) 25%, rgba(255,255,255,0.75) 65%, rgba(255,255,255,0.98) 100%);
             }
             .cv-layanan-card-hover-content {
                 position: relative;
                 z-index: 4;
                 transform: translateY(15px);
-                transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+                transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
             }
             .cv-layanan-card-title-hover {
-                font-size: 1.65rem;
+                font-size: 1.75rem;
                 font-weight: 800;
-                color: #FFFFFF;
-                margin-bottom: 0.6rem;
-                line-height: 1.25;
+                color: #0F172A;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
                 font-family: 'Montserrat', sans-serif;
             }
             .cv-layanan-card-desc-hover {
-                font-size: 0.88rem;
+                font-size: 0.92rem;
                 line-height: 1.55;
-                color: rgba(255, 255, 255, 0.88);
+                color: #475569;
                 margin-bottom: 1.5rem;
                 font-weight: 500;
                 font-family: 'Montserrat', sans-serif;
@@ -3195,22 +3186,22 @@
                 border-radius: 12px;
                 background: {{ $layAcc ?: '#E65100' }};
                 color: #FFFFFF;
-                font-size: 0.85rem;
+                font-size: 0.88rem;
                 font-weight: 800;
                 font-family: 'Montserrat', sans-serif;
                 letter-spacing: 0.05em;
                 text-decoration: none;
                 text-transform: uppercase;
-                box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+                box-shadow: 0 6px 20px rgba(230, 81, 0, 0.35);
                 transition: all 0.25s ease;
             }
             .cv-layanan-card-btn-hover:hover {
-                filter: brightness(1.15);
+                filter: brightness(1.12);
                 transform: translateY(-2px);
-                box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+                box-shadow: 0 10px 25px rgba(230, 81, 0, 0.45);
             }
 
-            /* Activate Hover State on Card Hover */
+            /* Activate Hover State */
             .cv-layanan-card:hover .cv-layanan-card-default {
                 opacity: 0;
             }
@@ -3219,7 +3210,7 @@
                 visibility: visible;
             }
             .cv-layanan-card:hover .cv-layanan-card-hover-bg {
-                transform: scale(1.08);
+                transform: scale(1.06);
             }
             .cv-layanan-card:hover .cv-layanan-card-hover-content {
                 transform: translateY(0);
@@ -3227,8 +3218,8 @@
 
             @media (max-width: 768px) {
                 .cv-layanan-section { padding: 3rem 1rem; }
-                .cv-layanan-grid { grid-template-columns: 1fr; }
-                .cv-layanan-card { min-height: 380px; }
+                .cv-layanan-grid { flex-direction: column; width: 100%; }
+                .cv-layanan-card, .cv-layanan-card:hover { width: 100%; flex: 1 1 100%; height: 440px; }
             }
         </style>
 
@@ -3237,9 +3228,17 @@
                 <div class="cv-layanan-header">
                     <div class="cv-layanan-header-content">
                         @if($layBd)
-                            <div class="cv-layanan-badge">{{ $layBd }}</div>
+                            <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:{{ $layTxt }}; opacity:0.65; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; justify-content:{{ $layAlign === 'center' ? 'center' : ($layAlign === 'right' ? 'flex-end' : 'flex-start') }};">
+                                <span style="width:6px; height:6px; background:{{ $layAcc ?: '#E65100' }}; border-radius:50%;"></span>
+                                {{ $layBd }}
+                            </div>
                         @endif
-                        <h2 class="cv-layanan-headline">{{ $layHd }}</h2>
+                        <h2 style="font-size:clamp(2rem, 4vw, 3.5rem); font-weight:500; line-height:1.15; letter-spacing:-0.03em; color:{{ $layTxt }} !important; margin-top:0; margin-bottom:0; text-align:{{ $layAlign }};">
+                            {!! $layHd !!}
+                        </h2>
+                        @if($laySub)
+                            <p style="font-size:1rem; color:{{ $layTxt }}; opacity:0.7; margin-top:0.5rem; margin-bottom:0; text-align:{{ $layAlign }};">{{ $laySub }}</p>
+                        @endif
                         @if($layBtnShow && $layBtnTxt)
                             <a href="{{ $layBtnUrl }}" class="cv-layanan-link">
                                 {{ $layBtnTxt }}
