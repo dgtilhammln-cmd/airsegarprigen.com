@@ -28,7 +28,7 @@ Write-Host ""
 
 # 2. Compress archive
 Write-Host "[2/4] Membuat paket deployment (termasuk vendor)..." -ForegroundColor Yellow
-& tar -czf $ARCHIVE --exclude=".git" --exclude="node_modules" --exclude=".trash" --exclude="$ARCHIVE" --exclude="bootstrap/cache/*.php" --exclude="public_html/storage" --exclude="storage/logs/*" --exclude="storage/framework/cache/*" --exclude="storage/framework/sessions/*" --exclude="storage/framework/views/*" app bootstrap config database public_html resources routes storage vendor .env artisan composer.json
+& tar -czf $ARCHIVE --exclude=".git" --exclude="node_modules" --exclude="vendor" --exclude=".trash" --exclude="$ARCHIVE" --exclude="bootstrap/cache/*.php" --exclude="public_html/storage" --exclude="storage/logs/*" --exclude="storage/framework/cache/*" --exclude="storage/framework/sessions/*" --exclude="storage/framework/views/*" app bootstrap config database public_html resources routes storage .env artisan composer.json
 
 if (-not (Test-Path $ARCHIVE)) {
     Write-Host "ERROR: Gagal membuat tar archive!" -ForegroundColor Red
