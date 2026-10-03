@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\LandingPage;
-use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -29,7 +28,6 @@ class AdminLandingPageController extends Controller
     {
         $data = $this->validateData($request);
 
-        // Auto-generate slug if empty
         if (empty($data['slug'])) {
             $data['slug'] = LandingPage::makeSlug($data['title']);
         }
@@ -68,6 +66,12 @@ class AdminLandingPageController extends Controller
     {
         if ($landingPage->og_image)   Storage::disk('public')->delete($landingPage->og_image);
         if ($landingPage->hero_image) Storage::disk('public')->delete($landingPage->hero_image);
+        if (!empty($landingPage->images) && is_array($landingPage->images)) {
+            foreach ($landingPage->images as $img) {
+                $path = is_array($img) ? ($img['image'] ?? '') : $img;
+                if ($path) Storage::disk('public')->delete($path);
+            }
+        }
         $title = $landingPage->title;
         $landingPage->delete();
         return redirect()->route('admin.landing-pages.index')
@@ -120,5 +124,38 @@ class AdminLandingPageController extends Controller
                 $lp->update([$field => $path]);
             }
         }
+
+        // Handle full size landing page images array
+        $existingImages = $request->input('landing_images_existing', []);
+        $titles         = $request->input('landing_images_title', []);
+        $newFiles       = $request->file('landing_images_file', []);
+
+        $finalImages = [];
+        if (is_array($existingImages)) {
+            foreach ($existingImages as $index => $oldPath) {
+                $title = $titles[$index] ?? '';
+                // If replaced by new file at index
+                if (isset($newFiles[$index]) && $newFiles[$index]->isValid()) {
+                    if ($oldPath) Storage::disk('public')->delete($oldPath);
+                    $path = $newFiles[$index]->store('landing-pages', 'public');
+                    $finalImages[] = ['image' => $path, 'title' => $title];
+                } elseif (!empty($oldPath)) {
+                    $finalImages[] = ['image' => $oldPath, 'title' => $title];
+                }
+            }
+        }
+
+        // Additional new uploaded files appended
+        if (is_array($newFiles)) {
+            foreach ($newFiles as $index => $file) {
+                if (!isset($existingImages[$index]) && $file && $file->isValid()) {
+                    $path = $file->store('landing-pages', 'public');
+                    $title = $titles[$index] ?? '';
+                    $finalImages[] = ['image' => $path, 'title' => $title];
+                }
+            }
+        }
+
+        $lp->update(['images' => $finalImages]);
     }
 }

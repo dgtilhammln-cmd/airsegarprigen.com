@@ -10,7 +10,7 @@ class LandingPageController extends Controller
     /**
      * Show the landing page with the given slug.
      * URL: domain.com/{slug}
-     * This is the public-facing landing page view.
+     * Public landing page displaying full size images with site header and footer.
      */
     public function show(string $slug)
     {
@@ -21,6 +21,12 @@ class LandingPageController extends Controller
         // Increment view counter
         $page->incrementViews();
 
-        return view('landing_pages.show', compact('page'));
+        $seo = [
+            'title'       => $page->meta_title ?: $page->title,
+            'description' => $page->meta_description,
+            'og_image'    => $page->og_image ? asset('storage/' . $page->og_image) : null,
+        ];
+
+        return view('landing_pages.show', compact('page', 'seo'));
     }
 }

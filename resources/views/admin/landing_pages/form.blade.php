@@ -7,6 +7,10 @@
   $isEdit = !is_null($page);
   $action = $isEdit ? route('admin.landing-pages.update', $page) : route('admin.landing-pages.store');
   $wa = \App\Models\Setting::get('whatsapp', '6281234567890');
+  $landingImages = $page?->images ?? [];
+  if (!is_array($landingImages)) {
+      $landingImages = [];
+  }
 @endphp
 
 {{-- HEADER --}}
@@ -39,9 +43,10 @@
   {{-- TAB NAVIGATION --}}
   <div style="display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
     @foreach([
+      ['id'=>'tab-images',  'label'=>'Gambar Full Size', 'icon'=>'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
       ['id'=>'tab-seo',     'label'=>'SEO & Dasar',    'icon'=>'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'],
       ['id'=>'tab-hero',    'label'=>'Hero Banner',     'icon'=>'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
-      ['id'=>'tab-content', 'label'=>'Konten',          'icon'=>'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'],
+      ['id'=>'tab-content', 'label'=>'Konten Tekstual',  'icon'=>'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'],
       ['id'=>'tab-wa',      'label'=>'WhatsApp & CTA',  'icon'=>'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'],
     ] as $i => $tab)
       <button type="button" class="lp-tab-btn" data-target="{{ $tab['id'] }}" onclick="switchTab('{{ $tab['id'] }}')"
@@ -53,8 +58,71 @@
     @endforeach
   </div>
 
+  {{-- ═══ TAB 0: GAMBAR FULL SIZE ═══ --}}
+  <div id="tab-images" class="lp-tab-panel">
+    <div style="background:#fff;border-radius:18px;padding:1.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #E2E8F0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <h3 style="font-size:1.1rem;font-weight:800;color:#1B6FE8;margin:0 0 .25rem;">
+            Upload Gambar Landing Page Full Size (Tanpa Terpotong)
+          </h3>
+          <p style="font-size:.78rem;color:#64748B;margin:0;">
+            Upload banyak gambar landing page, atur urutan interaktif. Gambar akan tampil penuh full-width dari atas ke bawah.
+          </p>
+        </div>
+        <button type="button" onclick="addLandingImageRow()" style="display:inline-flex;align-items:center;gap:.5rem;background:#1B6FE8;color:#fff;font-weight:700;font-size:.85rem;padding:.6rem 1.2rem;border-radius:10px;border:none;cursor:pointer;">
+          + Upload Gambar Landing Page
+        </button>
+      </div>
+
+      <div id="landing-images-container" style="display:grid;gap:1.25rem;">
+        @forelse($landingImages as $idx => $img)
+          @php
+            $imgPath  = is_array($img) ? ($img['image'] ?? '') : $img;
+            $imgTitle = is_array($img) ? ($img['title'] ?? '') : '';
+          @endphp
+          <div class="lp-img-card" style="border:1.5px solid #E2E8F0;border-radius:14px;padding:1.25rem;background:#FAFBFF;position:relative;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid #E2E8F0;">
+              <span style="font-size:.85rem;font-weight:700;color:#1B6FE8;">Gambar Landing Page #<span class="lp-img-num">{{ $idx + 1 }}</span></span>
+              <div style="display:flex;gap:.5rem;">
+                <button type="button" onclick="moveRow(this, -1)" style="padding:.3rem .6rem;background:#1E293B;color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">▲ Naik</button>
+                <button type="button" onclick="moveRow(this, 1)" style="padding:.3rem .6rem;background:#1E293B;color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">▼ Turun</button>
+                <button type="button" onclick="removeRow(this)" style="padding:.3rem .6rem;background:#FEE2E2;color:#DC2626;border:1px solid #FECDD3;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">Hapus Gambar</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:220px 1fr;gap:1.25rem;align-items:center;">
+              <div>
+                @if($imgPath)
+                  <img src="{{ asset('storage/' . $imgPath) }}" style="width:100%;max-height:130px;object-fit:cover;border-radius:10px;border:1px solid #CBD5E1;">
+                  <input type="hidden" name="landing_images_existing[]" value="{{ $imgPath }}">
+                @else
+                  <div style="width:100%;height:100px;background:#E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-size:.75rem;">Belum ada gambar</div>
+                  <input type="hidden" name="landing_images_existing[]" value="">
+                @endif
+              </div>
+              <div style="display:grid;gap:.75rem;">
+                <div>
+                  <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Pilih File Foto / Banner Landing Page</label>
+                  <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
+                </div>
+                <div>
+                  <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
+                  <input type="text" name="landing_images_title[]" class="lp-input" value="{{ $imgTitle }}" placeholder="Judul gambar...">
+                </div>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div id="no-images-msg" style="text-align:center;padding:2rem;background:#FAFBFF;border:2px dashed #CBD5E1;border-radius:14px;color:#64748B;font-size:.85rem;">
+            Belum ada gambar landing page. Klik tombol <strong>"+ Upload Gambar Landing Page"</strong> di atas untuk menambahkan gambar full width tanpa terpotong.
+          </div>
+        @endforelse
+      </div>
+    </div>
+  </div>
+
   {{-- ═══ TAB 1: SEO & DASAR ═══ --}}
-  <div id="tab-seo" class="lp-tab-panel">
+  <div id="tab-seo" class="lp-tab-panel" style="display:none;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;">
 
       <div style="grid-column:1/-1;background:#fff;border-radius:18px;padding:1.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #E2E8F0;">
@@ -148,7 +216,7 @@
     <div style="background:#fff;border-radius:18px;padding:1.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #E2E8F0;">
       <h3 style="font-size:1rem;font-weight:800;color:#1B6FE8;margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem;">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        Section Hero Banner Atas
+        Section Hero Banner Atas (Opsional)
       </h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
         <div style="grid-column:1/-1;">
@@ -186,43 +254,18 @@
     </div>
   </div>
 
-  {{-- ═══ TAB 3: KONTEN ═══ --}}
+  {{-- ═══ TAB 3: KONTEN TEKSTUAL ═══ --}}
   <div id="tab-content" class="lp-tab-panel" style="display:none;">
     <div style="background:#fff;border-radius:18px;padding:1.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #E2E8F0;margin-bottom:1.5rem;">
       <h3 style="font-size:1rem;font-weight:800;color:#1B6FE8;margin:0 0 1rem;display:flex;align-items:center;gap:.5rem;">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Konten Utama Halaman
+        Konten Utama Halaman (Opsional Teks / HTML)
       </h3>
       <label style="font-size:.78rem;font-weight:700;color:#475569;display:block;margin-bottom:.5rem;">
-        Deskripsi / Konten Utama <span style="font-weight:400;color:#94A3B8;">(Mendukung HTML dasar)</span>
+        Deskripsi / Konten Tambahan <span style="font-weight:400;color:#94A3B8;">(Mendukung HTML dasar)</span>
       </label>
       <textarea name="content" class="lp-input" rows="12"
-        placeholder="Tuliskan konten lengkap halaman landing page di sini. Bisa berisi deskripsi layanan, daftar keunggulan, tabel harga, cara pemesanan, dll...">{{ old('content', $page?->content) }}</textarea>
-    </div>
-
-    <div style="background:#fff;border-radius:18px;padding:1.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #E2E8F0;">
-      <h3 style="font-size:1rem;font-weight:800;color:#059669;margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem;">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Toggle Komponen Bawaan Web
-      </h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-        @foreach([
-          ['name'=>'show_capacity',     'label'=>'Tampilkan Kapasitas Tangki',       'desc'=>'5000L, 7500L, 8000L, dll'],
-          ['name'=>'show_gallery',      'label'=>'Tampilkan Galeri Armada / Proyek', 'desc'=>'Foto dokumentasi pengerjaan'],
-          ['name'=>'show_testimonials', 'label'=>'Tampilkan Testimoni Pelanggan',    'desc'=>'Review & rating dari pelanggan'],
-          ['name'=>'show_faq',          'label'=>'Tampilkan FAQ',                    'desc'=>'Pertanyaan umum yang sering ditanyakan'],
-        ] as $toggle)
-          <label style="display:flex;align-items:flex-start;gap:.75rem;background:#F8FAFC;padding:1rem 1.25rem;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;">
-            <input type="checkbox" name="{{ $toggle['name'] }}" value="1"
-              {{ old($toggle['name'], $page?->{$toggle['name']} ?? true) ? 'checked' : '' }}
-              style="width:18px;height:18px;margin-top:.1rem;accent-color:#059669;flex-shrink:0;">
-            <div>
-              <div style="font-size:.85rem;font-weight:700;color:#1E293B;">{{ $toggle['label'] }}</div>
-              <div style="font-size:.72rem;color:#94A3B8;margin-top:.1rem;">{{ $toggle['desc'] }}</div>
-            </div>
-          </label>
-        @endforeach
-      </div>
+        placeholder="Tuliskan konten tambahan jika ada...">{{ old('content', $page?->content) }}</textarea>
     </div>
   </div>
 
@@ -238,7 +281,7 @@
       <div style="display:flex;align-items:center;gap:.5rem;background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.78rem;color:#16A34A;">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         Nomor WA diambil otomatis dari <strong style="margin:0 .25rem;">Pengaturan Situs</strong> — seragam untuk seluruh website.
-        &nbsp;<a href="{{ route('admin.settings.index') }}" style="color:#15803D;font-weight:700;text-decoration:underline;">Ubah nomor →</a>
+        &nbsp;<a href="{{ route('admin.settings') }}" style="color:#15803D;font-weight:700;text-decoration:underline;">Ubah nomor →</a>
       </div>
 
       <div style="display:grid;gap:1.25rem;">
@@ -326,9 +369,12 @@ function autoSlug(val) {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 }
-document.getElementById('lp-slug').addEventListener('input', function() {
-  slugEdited = this.value.length > 0;
-});
+const slugInput = document.getElementById('lp-slug');
+if (slugInput) {
+  slugInput.addEventListener('input', function() {
+    slugEdited = this.value.length > 0;
+  });
+}
 
 function countChars(el, countId, max) {
   const len = el.value.length;
@@ -337,6 +383,70 @@ function countChars(el, countId, max) {
     counter.textContent = len;
     counter.style.color = len > max ? '#DC2626' : (len > max * 0.85 ? '#F59E0B' : '#94A3B8');
   }
+}
+
+function addLandingImageRow() {
+  const container = document.getElementById('landing-images-container');
+  const msg = document.getElementById('no-images-msg');
+  if (msg) msg.remove();
+
+  const count = container.querySelectorAll('.lp-img-card').length + 1;
+  const html = `
+    <div class="lp-img-card" style="border:1.5px solid #E2E8F0;border-radius:14px;padding:1.25rem;background:#FAFBFF;position:relative;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid #E2E8F0;">
+        <span style="font-size:.85rem;font-weight:700;color:#1B6FE8;">Gambar Landing Page #<span class="lp-img-num">${count}</span></span>
+        <div style="display:flex;gap:.5rem;">
+          <button type="button" onclick="moveRow(this, -1)" style="padding:.3rem .6rem;background:#1E293B;color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">▲ Naik</button>
+          <button type="button" onclick="moveRow(this, 1)" style="padding:.3rem .6rem;background:#1E293B;color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">▼ Turun</button>
+          <button type="button" onclick="removeRow(this)" style="padding:.3rem .6rem;background:#FEE2E2;color:#DC2626;border:1px solid #FECDD3;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">Hapus Gambar</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:1.25rem;align-items:center;">
+        <div>
+          <div style="width:100%;height:100px;background:#E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-size:.75rem;">Pilih foto baru</div>
+          <input type="hidden" name="landing_images_existing[]" value="">
+        </div>
+        <div style="display:grid;gap:.75rem;">
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Pilih File Foto / Banner Landing Page</label>
+            <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
+          </div>
+          <div>
+            <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
+            <input type="text" name="landing_images_title[]" class="lp-input" placeholder="Judul gambar...">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.insertAdjacentHTML('beforeend', html);
+  updateNumbers();
+}
+
+function removeRow(btn) {
+  const card = btn.closest('.lp-img-card');
+  if (card) {
+    card.remove();
+    updateNumbers();
+  }
+}
+
+function moveRow(btn, dir) {
+  const card = btn.closest('.lp-img-card');
+  if (!card) return;
+  if (dir === -1 && card.previousElementSibling && card.previousElementSibling.classList.contains('lp-img-card')) {
+    card.parentNode.insertBefore(card, card.previousElementSibling);
+  } else if (dir === 1 && card.nextElementSibling && card.nextElementSibling.classList.contains('lp-img-card')) {
+    card.parentNode.insertBefore(card.nextElementSibling, card);
+  }
+  updateNumbers();
+}
+
+function updateNumbers() {
+  document.querySelectorAll('.lp-img-card').forEach((card, idx) => {
+    const num = card.querySelector('.lp-img-num');
+    if (num) num.textContent = idx + 1;
+  });
 }
 </script>
 

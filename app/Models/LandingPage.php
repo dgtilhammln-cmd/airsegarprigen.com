@@ -19,6 +19,7 @@ class LandingPage extends Model
         'hero_headline',
         'hero_subline',
         'hero_image',
+        'images',
         'hero_cta_text',
         'hero_cta_url',
         // Content
@@ -37,6 +38,7 @@ class LandingPage extends Model
     ];
 
     protected $casts = [
+        'images'           => 'array',
         'show_capacity'    => 'boolean',
         'show_gallery'     => 'boolean',
         'show_testimonials'=> 'boolean',
