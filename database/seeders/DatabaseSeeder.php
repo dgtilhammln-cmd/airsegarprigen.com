@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             HeroSlideSeeder::class,
             SeoSeeder::class,
+            LandingPageSeeder::class,
         ]);
 
         // ── Admin user ──────────────────────────────────────────────
