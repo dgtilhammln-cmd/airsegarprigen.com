@@ -3021,20 +3021,20 @@
                 position: relative;
             }
             .cv-bento-thin-headline {
-                font-size: clamp(2.2rem, 3.8vw, 3.6rem);
-                font-weight: 600;
+                font-size: clamp(1.5rem, 4vw, 3.5rem);
+                font-weight: 500;
                 line-height: 1.15;
-                letter-spacing: -0.02em;
+                letter-spacing: -0.03em;
                 color: {{ $layTxt }};
                 margin: 0;
                 font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
             .cv-bento-thin-subline {
-                font-size: 0.98rem;
+                font-size: clamp(0.8rem, 1.8vw, 1rem);
                 font-weight: 400;
                 line-height: 1.6;
                 color: {{ $layAcc }};
-                margin: 2rem 0 0 0;
+                margin: 1.25rem 0 0 0;
                 max-width: 440px;
                 font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
@@ -3100,14 +3100,17 @@
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
             .cv-bento-card-text {
-                font-size: 0.88rem;
+                font-size: clamp(0.72rem, 1.5vw, 0.88rem);
                 font-weight: 400;
-                line-height: 1.55;
+                line-height: 1.5;
                 margin: 0;
                 font-family: "Termina Demi", "Termina", "Montserrat", sans-serif;
             }
 
             @media (max-width: 992px) {
+                .cv-bento-wrapper-section {
+                    padding: 2rem 1rem;
+                }
                 .cv-seamless-bento {
                     grid-template-columns: 1fr;
                     grid-template-rows: auto;
@@ -3115,17 +3118,39 @@
                 .cv-bento-left-box {
                     grid-column: 1 / 2;
                     grid-row: 1 / 2;
-                    padding: 2.5rem 1.75rem;
+                    padding: 2rem 1.5rem;
                 }
                 .cv-bento-right-top-box {
                     grid-column: 1 / 2;
                     grid-row: 2 / 3;
-                    height: 250px;
+                    height: 200px;
                 }
                 .cv-bento-right-bottom-box {
                     grid-column: 1 / 2;
                     grid-row: 3 / 4;
-                    grid-template-columns: 1fr;
+                    grid-template-columns: 1fr 1fr; /* 2 cards per row on mobile */
+                }
+                .cv-bento-sub-card {
+                    padding: 1.25rem 1rem;
+                }
+                .cv-bento-check-icon {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 7px;
+                    margin-bottom: 0.75rem;
+                }
+            }
+            @media (max-width: 480px) {
+                .cv-bento-thin-headline {
+                    font-size: 1.35rem;
+                    letter-spacing: -0.02em;
+                }
+                .cv-bento-thin-subline {
+                    font-size: 0.78rem;
+                    margin-top: 0.75rem;
+                }
+                .cv-bento-card-text {
+                    font-size: 0.7rem;
                 }
             }
         </style>
