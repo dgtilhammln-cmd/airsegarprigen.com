@@ -25,6 +25,8 @@ use App\Http\Controllers\Admin\AdminServiceCategoryController;
 use App\Http\Controllers\Admin\AdminHeroSlideController;
 use App\Http\Controllers\Admin\AdminHeaderController;
 use App\Http\Controllers\Admin\AdminPageController;
+use App\Http\Controllers\Admin\AdminLandingPageController;
+use App\Http\Controllers\LandingPageController;
 
 
 
@@ -53,6 +55,12 @@ Route::middleware(['track.pageview'])->group(function () {
     Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
+    // Dynamic Landing Pages — root domain SEO URLs: domain.com/{slug}
+    // NOTE: Must be LAST to avoid catching other routes
+    Route::get('/{slug}', [LandingPageController::class, 'show'])
+        ->name('landing-page.show')
+        ->where('slug', '^(?!admin|gallery|articles|contact|about|product|products|services|galeri|artikel|sitemap|track|api|storage)[\w\-]+$');
 });
 
 // Lead / Request Order (AJAX - no page tracking)
@@ -331,5 +339,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/pages/homepage', [AdminPageController::class, 'index'])->name('admin.pages.homepage');
         Route::post('/pages/homepage', [AdminPageController::class, 'update'])->name('admin.pages.homepage.update');
         Route::delete('/pages/homepage/landing-image', [AdminPageController::class, 'deleteLandingImage'])->name('admin.pages.homepage.landing_image.delete');
+
+        // Landing Pages (SEO / Ads Campaign)
+        Route::get('/landing-pages', [AdminLandingPageController::class, 'index'])->name('admin.landing-pages.index');
+        Route::get('/landing-pages/create', [AdminLandingPageController::class, 'create'])->name('admin.landing-pages.create');
+        Route::post('/landing-pages', [AdminLandingPageController::class, 'store'])->name('admin.landing-pages.store');
+        Route::get('/landing-pages/{landingPage}/edit', [AdminLandingPageController::class, 'edit'])->name('admin.landing-pages.edit');
+        Route::post('/landing-pages/{landingPage}', [AdminLandingPageController::class, 'update'])->name('admin.landing-pages.update');
+        Route::delete('/landing-pages/{landingPage}', [AdminLandingPageController::class, 'destroy'])->name('admin.landing-pages.destroy');
+        Route::post('/landing-pages/{landingPage}/toggle-status', [AdminLandingPageController::class, 'toggleStatus'])->name('admin.landing-pages.toggle-status');
     });
 });

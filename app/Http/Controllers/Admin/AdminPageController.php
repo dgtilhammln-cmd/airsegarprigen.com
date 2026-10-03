@@ -152,7 +152,7 @@ class AdminPageController extends Controller
             'icon'         => 'grid',
             'headline'     => 'Air Segar Prigen Sejukkan Setiap Momen dan Aktivitasmu',
             'subline'      => 'Solusi pasokan air tangki dan maklon AMDK berkualitas tinggi.',
-            'badge'        => 'LAYANAN UTAMA',
+            'badge'        => ' ',
             'bg_color'     => '#FFFFFF',
             'text_color'   => '#0F172A',
             'accent_color' => '#E65100',
