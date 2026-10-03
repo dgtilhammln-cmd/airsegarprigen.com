@@ -1,12 +1,11 @@
 @php
     $companyName = \App\Models\Setting::get('company_name', config('app.name'));
-    $wa = \App\Models\Setting::get('whatsapp', '');
-    $waNumber = !empty($page->wa_number) ? $page->wa_number : $wa;
+    $waNumber    = preg_replace('/[^0-9]/', '', \App\Models\Setting::get('whatsapp', ''));
     $waMsg = !empty($page->wa_message)
         ? urlencode($page->wa_message)
         : urlencode("Halo Admin {$companyName}, saya tertarik dengan layanan dari halaman {$page->title}. Mohon info lebih lanjut.");
-    $waLink = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $waNumber) . '?text=' . $waMsg;
-    $heroCtaUrl = !empty($page->hero_cta_url) ? $page->hero_cta_url : $waLink;
+    $waLink      = 'https://wa.me/' . $waNumber . '?text=' . $waMsg;
+    $heroCtaUrl  = !empty($page->hero_cta_url) ? $page->hero_cta_url : $waLink;
 @endphp
 <!DOCTYPE html>
 <html lang="id">
