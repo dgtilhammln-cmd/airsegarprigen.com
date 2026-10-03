@@ -931,6 +931,83 @@
                         </div>
                     </div>
 
+                    {{-- Uniform Card Colors (1x Set Seragam Semua Card) --}}
+                    <div class="hp-field-group full" style="background:#F0F9FF; padding:1.25rem; border-radius:14px; border:1px solid #BAE6FD; margin-top:0.75rem;">
+                        <label class="hp-label" style="color:#0369A1; font-weight:800; font-size:0.92rem; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            Warna Card, Icon & Text Seragam (Atur 1x Untuk Semua Card Section Ini)
+                        </label>
+                        <div class="hp-form-grid" style="margin:0;">
+                            @php
+                                $uCardBg = $settings["page_home_card_bg_{$k}"] ?? '';
+                                $uCardBgEnd = $settings["page_home_card_bg_end_{$k}"] ?? '';
+                                $uCardTxt = $settings["page_home_card_text_color_{$k}"] ?? '';
+                                $uCardIconBg = $settings["page_home_card_icon_bg_{$k}"] ?? '';
+                                $uCardIconClr = $settings["page_home_card_icon_color_{$k}"] ?? '';
+                            @endphp
+                            {{-- Card BG Awal --}}
+                            <div class="hp-field-group">
+                                <label class="hp-label">Warna Background Card (Gradasi Awal)</label>
+                                <div class="hp-color-wrap">
+                                    <input type="color" id="picker_ucbg_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($uCardBg, '#') ? $uCardBg : '#0B092B' }}" oninput="document.getElementById('hex_ucbg_{{ $k }}').value = this.value">
+                                    <input type="text" name="page_home_card_bg_{{ $k }}" id="hex_ucbg_{{ $k }}" class="hp-input" value="{{ $uCardBg }}" placeholder="Contoh: #0B092B" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ucbg_{{ $k }}').value = this.value" style="flex:1;">
+                                    <button type="button" class="hp-btn-eyedrop" title="Pipet" onclick="pickColorEyedropper('picker_ucbg_{{ $k }}', 'hex_ucbg_{{ $k }}')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        Pipet
+                                    </button>
+                                </div>
+                            </div>
+                            {{-- Card BG Akhir --}}
+                            <div class="hp-field-group">
+                                <label class="hp-label">Warna Background Card (Gradasi Akhir)</label>
+                                <div class="hp-color-wrap">
+                                    <input type="color" id="picker_ucbge_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($uCardBgEnd, '#') ? $uCardBgEnd : '#1532A6' }}" oninput="document.getElementById('hex_ucbge_{{ $k }}').value = this.value">
+                                    <input type="text" name="page_home_card_bg_end_{{ $k }}" id="hex_ucbge_{{ $k }}" class="hp-input" value="{{ $uCardBgEnd }}" placeholder="Contoh: #1532A6" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ucbge_{{ $k }}').value = this.value" style="flex:1;">
+                                    <button type="button" class="hp-btn-eyedrop" title="Pipet" onclick="pickColorEyedropper('picker_ucbge_{{ $k }}', 'hex_ucbge_{{ $k }}')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        Pipet
+                                    </button>
+                                </div>
+                            </div>
+                            {{-- Card Text Color --}}
+                            <div class="hp-field-group">
+                                <label class="hp-label">Warna Teks Card</label>
+                                <div class="hp-color-wrap">
+                                    <input type="color" id="picker_uctxt_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($uCardTxt, '#') ? $uCardTxt : '#FFFFFF' }}" oninput="document.getElementById('hex_uctxt_{{ $k }}').value = this.value">
+                                    <input type="text" name="page_home_card_text_color_{{ $k }}" id="hex_uctxt_{{ $k }}" class="hp-input" value="{{ $uCardTxt }}" placeholder="Contoh: #FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_uctxt_{{ $k }}').value = this.value" style="flex:1;">
+                                    <button type="button" class="hp-btn-eyedrop" title="Pipet" onclick="pickColorEyedropper('picker_uctxt_{{ $k }}', 'hex_uctxt_{{ $k }}')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        Pipet
+                                    </button>
+                                </div>
+                            </div>
+                            {{-- Icon BG --}}
+                            <div class="hp-field-group">
+                                <label class="hp-label">Warna Background Icon Card</label>
+                                <div class="hp-color-wrap">
+                                    <input type="color" id="picker_ucibg_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($uCardIconBg, '#') ? $uCardIconBg : '#FFFFFF' }}" oninput="document.getElementById('hex_ucibg_{{ $k }}').value = this.value">
+                                    <input type="text" name="page_home_card_icon_bg_{{ $k }}" id="hex_ucibg_{{ $k }}" class="hp-input" value="{{ $uCardIconBg }}" placeholder="Contoh: #FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_ucibg_{{ $k }}').value = this.value" style="flex:1;">
+                                    <button type="button" class="hp-btn-eyedrop" title="Pipet" onclick="pickColorEyedropper('picker_ucibg_{{ $k }}', 'hex_ucibg_{{ $k }}')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        Pipet
+                                    </button>
+                                </div>
+                            </div>
+                            {{-- Icon / Accent Color --}}
+                            <div class="hp-field-group">
+                                <label class="hp-label">Warna Icon / Simbol Card</label>
+                                <div class="hp-color-wrap">
+                                    <input type="color" id="picker_uciclr_{{ $k }}" class="hp-color-picker" value="{{ str_starts_with($uCardIconClr, '#') ? $uCardIconClr : '#0F172A' }}" oninput="document.getElementById('hex_uciclr_{{ $k }}').value = this.value">
+                                    <input type="text" name="page_home_card_icon_color_{{ $k }}" id="hex_uciclr_{{ $k }}" class="hp-input" value="{{ $uCardIconClr }}" placeholder="Contoh: #0F172A" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_uciclr_{{ $k }}').value = this.value" style="flex:1;">
+                                    <button type="button" class="hp-btn-eyedrop" title="Pipet" onclick="pickColorEyedropper('picker_uciclr_{{ $k }}', 'hex_uciclr_{{ $k }}')">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        Pipet
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- Header Text Alignment --}}
                     <div class="hp-field-group">
                         <label class="hp-label">Alignment Posisi Header Text</label>

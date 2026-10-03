@@ -247,8 +247,8 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
         font-weight: 700;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: {{ $footerTextColor }};
-        opacity: 0.7;
+        color: {{ $footerTitleColor }};
+        opacity: 0.85;
         display: block;
         margin-bottom: 3px;
     }
@@ -256,7 +256,7 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
     .cv-footer-v2-contact-text {
         font-size: 0.8125rem;
         font-weight: 400;
-        color: {{ $footerTextColor }};
+        color: {{ $footerTitleColor }};
         line-height: 1.6;
     }
 
@@ -414,7 +414,7 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
                         @endfor
                     </div>
                     <div style="font-size: 0.9rem; font-weight: 700; color: {{ $footerTitleColor }};">
-                        {{ $ratingScore }} <span style="color: {{ $footerTextColor }}; font-weight: 500; font-size: 0.85rem;">&bull; {{ $ratingText }}</span>
+                        {{ $ratingScore }} <span style="color: {{ $footerTitleColor }}; opacity: 0.85; font-weight: 500; font-size: 0.85rem;">&bull; {{ $ratingText }}</span>
                     </div>
                 </div>
             @endif
@@ -556,7 +556,7 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
                         </div>
                         <div class="cv-footer-v2-contact-text">
                             <span class="cv-footer-v2-contact-label">{{ $hoursLabel }}</span>
-                            {{ $hoursVal }}
+                            <span class="cv-footer-v2-contact-value" style="font-size:0.85rem;line-height:1.4;color:{{ $footerTitleColor }};display:block;font-weight:500;">{{ $hoursVal }}</span>
                         </div>
                     </div>
                 @endif

@@ -3243,14 +3243,21 @@
                     </div>
 
                     {{-- RIGHT BOTTOM BLOCK: 2 Cards Side-by-Side --}}
+                    @php
+                        $uLayCardBg = \App\Models\Setting::get('page_home_card_bg_layanan');
+                        $uLayCardBgEnd = \App\Models\Setting::get('page_home_card_bg_end_layanan');
+                        $uLayCardTxt = \App\Models\Setting::get('page_home_card_text_color_layanan');
+                        $uLayCardIconBg = \App\Models\Setting::get('page_home_card_icon_bg_layanan');
+                        $uLayCardIconClr = \App\Models\Setting::get('page_home_card_icon_color_layanan');
+                    @endphp
                     <div class="cv-bento-right-bottom-box">
                         @foreach(array_slice($layCards, 0, 2) as $cIdx => $c)
                             @php
-                                $cBgStart = $c['bg_color'] ?? ($cIdx === 0 ? '#0B092B' : '#090B38');
-                                $cBgEnd   = $c['bg_end_color'] ?? ($c['bg_end'] ?? ($cIdx === 0 ? '#0B092B' : '#1532A6'));
-                                $cTxtColor = $c['text_color'] ?? '#FFFFFF';
-                                $cIconBg   = $c['icon_bg'] ?? '#FFFFFF';
-                                $cIconClr  = $c['icon_color'] ?? '#0F172A';
+                                $cBgStart  = !empty($uLayCardBg) ? $uLayCardBg : ($c['bg_color'] ?? ($cIdx === 0 ? '#0B092B' : '#090B38'));
+                                $cBgEnd    = !empty($uLayCardBgEnd) ? $uLayCardBgEnd : ($c['bg_end_color'] ?? ($c['bg_end'] ?? ($cIdx === 0 ? '#0B092B' : '#1532A6')));
+                                $cTxtColor = !empty($uLayCardTxt) ? $uLayCardTxt : ($c['text_color'] ?? '#FFFFFF');
+                                $cIconBg   = !empty($uLayCardIconBg) ? $uLayCardIconBg : ($c['icon_bg'] ?? '#FFFFFF');
+                                $cIconClr  = !empty($uLayCardIconClr) ? $uLayCardIconClr : ($c['icon_color'] ?? '#0F172A');
                                 $cBtnUrl   = $c['btn_url'] ?? 'https://wa.me/628113526618';
 
                                 if (str_contains($cBgStart, 'gradient')) {

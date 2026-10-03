@@ -337,7 +337,11 @@ class AdminPageController extends Controller
             Setting::set("page_home_bg_{$section}", $request->input("page_home_bg_{$section}", ''));
         }
 
-        $fields = ['text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit', 'align', 'bg_end_color', 'outer_bg_color'];
+        $fields = [
+            'text_color', 'accent_color', 'headline', 'subline', 'badge', 'btn_text', 'btn_url', 'limit', 'align', 
+            'bg_end_color', 'outer_bg_color', 'bg_end', 'outer_bg',
+            'card_bg', 'card_bg_end', 'card_text_color', 'card_icon_bg', 'card_icon_color', 'card_hover_color'
+        ];
         foreach ($fields as $field) {
             $param = "page_home_{$field}_{$section}";
             if ($request->has($param)) {
