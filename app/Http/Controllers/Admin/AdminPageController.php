@@ -196,6 +196,19 @@ class AdminPageController extends Controller
             'btn_url'      => '/artikel',
             'limit'        => 3,
             'cards'        => []
+        ],
+        'footer' => [
+            'label'        => 'Footer Section',
+            'icon'         => 'layout',
+            'headline'     => 'Air Segar Prigen',
+            'subline'      => 'SUPPLIER AIR TANGKI MINERAL & DEMINERAL PRIGEN',
+            'badge'        => 'FOOTER',
+            'bg_color'     => '#090C1F',
+            'text_color'   => '#94A3B8',
+            'accent_color' => '#1B6FE8',
+            'btn_text'     => '',
+            'btn_url'      => '',
+            'cards'        => []
         ]
     ];
 
@@ -257,6 +270,58 @@ class AdminPageController extends Controller
         // Save show toggle
         $show = $request->boolean("page_home_show_{$section}") ? '1' : '0';
         Setting::set("page_home_show_{$section}", $show);
+
+        if ($section === 'footer') {
+            $footerBooleans = [
+                'footer_show_rating',
+                'footer_show_col_categories',
+                'footer_show_col_nav',
+                'footer_show_nav_beranda',
+                'footer_show_nav_tentang',
+                'footer_show_nav_galeri',
+                'footer_show_nav_artikel',
+                'footer_show_nav_kontak',
+                'footer_show_col_contact',
+                'footer_show_contact_address',
+                'footer_show_contact_phone',
+                'footer_show_contact_wa',
+                'footer_show_contact_email',
+                'footer_show_contact_hours',
+            ];
+            foreach ($footerBooleans as $bKey) {
+                Setting::set($bKey, $request->boolean($bKey) ? '1' : '0');
+            }
+
+            $footerStrings = [
+                'footer_bg_color',
+                'footer_text_color',
+                'footer_title_color',
+                'footer_accent_color',
+                'footer_star_color',
+                'footer_desc',
+                'footer_rating_score',
+                'footer_rating_text',
+                'footer_col_categories_title',
+                'footer_col_nav_title',
+                'footer_col_contact_title',
+                'footer_address_label',
+                'footer_address',
+                'footer_phone_label',
+                'footer_phone',
+                'footer_wa_label',
+                'footer_wa',
+                'footer_email_label',
+                'footer_email',
+                'footer_hours_label',
+                'footer_hours',
+                'footer_copyright',
+            ];
+            foreach ($footerStrings as $sKey) {
+                if ($request->has($sKey)) {
+                    Setting::set($sKey, $request->input($sKey, ''));
+                }
+            }
+        }
 
         // Save text & color fields — handle bg_color separately (key format differs)
         if ($request->has("page_home_bg_{$section}")) {

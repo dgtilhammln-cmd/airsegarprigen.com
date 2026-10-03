@@ -404,6 +404,353 @@
             <input type="hidden" name="_section" value="{{ $k }}">
 
             <div id="sec-panel-{{ $k }}" class="hp-sec-panel {{ $loop->first ? 'active' : '' }}">
+                @if($k === 'footer')
+                    {{-- TOGGLE SECTION ON / OFF --}}
+                    <div class="hp-toggle-box">
+                        <div>
+                            <div class="hp-toggle-label">Tampilkan Footer Section</div>
+                            <div class="hp-toggle-desc">Nonaktifkan untuk menyembunyikan seluruh bagian footer di website</div>
+                        </div>
+                        <label class="switch-toggle">
+                            <input type="checkbox" name="page_home_show_footer" value="1" {{ ($settings['page_home_show_footer'] ?? '1') == '1' ? 'checked' : '' }}>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🎨 Pengaturan Warna & Tampilan Footer</h3>
+                    </div>
+
+                    {{-- COLOR FIELDS GRID --}}
+                    <div class="hp-form-grid">
+                        {{-- Footer Background Color --}}
+                        <div class="hp-field-group">
+                            <label class="hp-label">Warna Background Footer</label>
+                            <div class="hp-color-wrap">
+                                @php $ftBg = $settings['footer_bg_color'] ?? ($settings['page_home_bg_footer'] ?? '#090C1F'); @endphp
+                                <input type="color" id="picker_footer_bg" class="hp-color-picker" value="{{ str_starts_with($ftBg, '#') ? $ftBg : '#090C1F' }}" oninput="document.getElementById('hex_footer_bg').value = this.value">
+                                <input type="text" name="footer_bg_color" id="hex_footer_bg" class="hp-input" value="{{ $ftBg }}" placeholder="#090C1F" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_footer_bg').value = this.value" style="flex:1;">
+                                <button type="button" class="hp-btn-eyedrop" onclick="pickColorEyedropper('picker_footer_bg', 'hex_footer_bg')">Pipet</button>
+                            </div>
+                        </div>
+
+                        {{-- Footer Text Color --}}
+                        <div class="hp-field-group">
+                            <label class="hp-label">Warna Font / Teks Isi</label>
+                            <div class="hp-color-wrap">
+                                @php $ftTxt = $settings['footer_text_color'] ?? ($settings['page_home_text_color_footer'] ?? '#94A3B8'); @endphp
+                                <input type="color" id="picker_footer_txt" class="hp-color-picker" value="{{ str_starts_with($ftTxt, '#') ? $ftTxt : '#94A3B8' }}" oninput="document.getElementById('hex_footer_txt').value = this.value">
+                                <input type="text" name="footer_text_color" id="hex_footer_txt" class="hp-input" value="{{ $ftTxt }}" placeholder="#94A3B8" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_footer_txt').value = this.value" style="flex:1;">
+                                <button type="button" class="hp-btn-eyedrop" onclick="pickColorEyedropper('picker_footer_txt', 'hex_footer_txt')">Pipet</button>
+                            </div>
+                        </div>
+
+                        {{-- Footer Title Color --}}
+                        <div class="hp-field-group">
+                            <label class="hp-label">Warna Judul / Heading</label>
+                            <div class="hp-color-wrap">
+                                @php $ftTitle = $settings['footer_title_color'] ?? '#FFFFFF'; @endphp
+                                <input type="color" id="picker_footer_title" class="hp-color-picker" value="{{ str_starts_with($ftTitle, '#') ? $ftTitle : '#FFFFFF' }}" oninput="document.getElementById('hex_footer_title').value = this.value">
+                                <input type="text" name="footer_title_color" id="hex_footer_title" class="hp-input" value="{{ $ftTitle }}" placeholder="#FFFFFF" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_footer_title').value = this.value" style="flex:1;">
+                                <button type="button" class="hp-btn-eyedrop" onclick="pickColorEyedropper('picker_footer_title', 'hex_footer_title')">Pipet</button>
+                            </div>
+                        </div>
+
+                        {{-- Footer Star Rating Color --}}
+                        <div class="hp-field-group">
+                            <label class="hp-label">Warna Bintang Ulasan Rating</label>
+                            <div class="hp-color-wrap">
+                                @php $ftStar = $settings['footer_star_color'] ?? '#EF4444'; @endphp
+                                <input type="color" id="picker_footer_star" class="hp-color-picker" value="{{ str_starts_with($ftStar, '#') ? $ftStar : '#EF4444' }}" oninput="document.getElementById('hex_footer_star').value = this.value">
+                                <input type="text" name="footer_star_color" id="hex_footer_star" class="hp-input" value="{{ $ftStar }}" placeholder="#EF4444" oninput="if(/^#[0-9A-F]{6}$/i.test(this.value)) document.getElementById('picker_footer_star').value = this.value" style="flex:1;">
+                                <button type="button" class="hp-btn-eyedrop" onclick="pickColorEyedropper('picker_footer_star', 'hex_footer_star')">Pipet</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- BRAND & DESKRIPSI SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🏢 Informasi Perusahaan & Tagline</h3>
+                    </div>
+
+                    <div class="hp-form-grid">
+                        <div class="hp-field-group">
+                            <label class="hp-label">Nama Perusahaan / Judul Brand</label>
+                            <input type="text" name="page_home_headline_footer" class="hp-input" value="{{ $settings['page_home_headline_footer'] ?? ($settings['company_name'] ?? 'Air Segar Prigen') }}">
+                        </div>
+
+                        <div class="hp-field-group">
+                            <label class="hp-label">Sub-Judul / Tagline Brand</label>
+                            <input type="text" name="page_home_subline_footer" class="hp-input" value="{{ $settings['page_home_subline_footer'] ?? ($settings['company_tagline'] ?? 'SUPPLIER AIR TANGKI MINERAL & DEMINERAL PRIGEN') }}">
+                        </div>
+
+                        <div class="hp-field-group full">
+                            <label class="hp-label">Deskripsi Singkat Perusahaan</label>
+                            <textarea name="footer_desc" class="hp-textarea" rows="3">{{ $settings['footer_desc'] ?? 'Supplier air tangki mineral dan demineral untuk rumah tangga, industri, hotel, kolam renang, dan konstruksi di kawasan Prigen, Pandaan, dan Pasuruan.' }}</textarea>
+                        </div>
+                    </div>
+
+                    {{-- ULASAN & RATING SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">⭐ Widget Ulasan & Rating</h3>
+                    </div>
+
+                    <div class="hp-toggle-box" style="margin-bottom: 1rem;">
+                        <div>
+                            <div class="hp-toggle-label">Tampilkan Widget Ulasan Rating</div>
+                            <div class="hp-toggle-desc">Sembunyikan jika tidak ingin menampilkan ulasan bintang & rating skor di footer</div>
+                        </div>
+                        <label class="switch-toggle">
+                            <input type="checkbox" name="footer_show_rating" value="1" {{ ($settings['footer_show_rating'] ?? '1') == '1' ? 'checked' : '' }}>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="hp-form-grid">
+                        <div class="hp-field-group">
+                            <label class="hp-label">Angka Rating Score (Contoh: 4.9 / 5)</label>
+                            <input type="text" name="footer_rating_score" class="hp-input" value="{{ $settings['footer_rating_score'] ?? '4.9 / 5' }}">
+                        </div>
+
+                        <div class="hp-field-group">
+                            <label class="hp-label">Teks Ulasan Detail (Contoh: 134+ Ulasan Terverifikasi)</label>
+                            <input type="text" name="footer_rating_text" class="hp-input" value="{{ $settings['footer_rating_text'] ?? '134+ Ulasan Terverifikasi' }}">
+                        </div>
+                    </div>
+
+                    {{-- NAVIGASI SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🧭 Kolom Navigasi & Link Menu</h3>
+                    </div>
+
+                    <div class="hp-toggle-box" style="margin-bottom: 1rem;">
+                        <div>
+                            <div class="hp-toggle-label">Tampilkan Kolom Navigasi</div>
+                            <div class="hp-toggle-desc">Aktif/Nonaktifkan seluruh kolom navigasi menu di footer</div>
+                        </div>
+                        <label class="switch-toggle">
+                            <input type="checkbox" name="footer_show_col_nav" value="1" {{ ($settings['footer_show_col_nav'] ?? '1') == '1' ? 'checked' : '' }}>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="hp-form-grid" style="margin-bottom: 1rem;">
+                        <div class="hp-field-group full">
+                            <label class="hp-label">Judul Kolom Navigasi</label>
+                            <input type="text" name="footer_col_nav_title" class="hp-input" value="{{ $settings['footer_col_nav_title'] ?? 'Navigasi' }}">
+                        </div>
+                    </div>
+
+                    <div style="background: #F8FAFC; padding: 1.25rem; border-radius: 12px; border: 1px solid #E2E8F0; margin-bottom: 1.5rem;">
+                        <label class="hp-label" style="margin-bottom: 0.75rem; display: block;">Item Navigasi (Tampilkan / Sembunyikan per item):</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="footer_show_nav_beranda" value="1" {{ ($settings['footer_show_nav_beranda'] ?? '1') == '1' ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Beranda
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="footer_show_nav_tentang" value="1" {{ ($settings['footer_show_nav_tentang'] ?? '1') == '1' ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Tentang Kami
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="footer_show_nav_galeri" value="1" {{ ($settings['footer_show_nav_galeri'] ?? '1') == '1' ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Galeri Pengerjaan
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="footer_show_nav_artikel" value="1" {{ ($settings['footer_show_nav_artikel'] ?? '1') == '1' ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Artikel & Tips
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="footer_show_nav_kontak" value="1" {{ ($settings['footer_show_nav_kontak'] ?? '1') == '1' ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Hubungi Kami
+                            </label>
+                        </div>
+                    </div>
+
+                    {{-- KATEGORI PRODUK SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">📦 Kolom Kategori Produk</h3>
+                    </div>
+
+                    <div class="hp-toggle-box" style="margin-bottom: 1rem;">
+                        <div>
+                            <div class="hp-toggle-label">Tampilkan Kolom Kategori Produk</div>
+                            <div class="hp-toggle-desc">Aktif/Nonaktifkan kolom list kategori produk otomatis di footer</div>
+                        </div>
+                        <label class="switch-toggle">
+                            <input type="checkbox" name="footer_show_col_categories" value="1" {{ ($settings['footer_show_col_categories'] ?? '1') == '1' ? 'checked' : '' }}>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="hp-form-grid">
+                        <div class="hp-field-group full">
+                            <label class="hp-label">Judul Kolom Kategori Produk</label>
+                            <input type="text" name="footer_col_categories_title" class="hp-input" value="{{ $settings['footer_col_categories_title'] ?? 'Kategori Produk' }}">
+                        </div>
+                    </div>
+
+                    {{-- KONTAK SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">📞 Kolom Informasi Kontak (Per Item Control)</h3>
+                    </div>
+
+                    <div class="hp-toggle-box" style="margin-bottom: 1rem;">
+                        <div>
+                            <div class="hp-toggle-label">Tampilkan Kolom Kontak</div>
+                            <div class="hp-toggle-desc">Aktif/Nonaktifkan seluruh kolom informasi kontak di footer</div>
+                        </div>
+                        <label class="switch-toggle">
+                            <input type="checkbox" name="footer_show_col_contact" value="1" {{ ($settings['footer_show_col_contact'] ?? '1') == '1' ? 'checked' : '' }}>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="hp-form-grid" style="margin-bottom: 1rem;">
+                        <div class="hp-field-group full">
+                            <label class="hp-label">Judul Kolom Kontak</label>
+                            <input type="text" name="footer_col_contact_title" class="hp-input" value="{{ $settings['footer_col_contact_title'] ?? 'Kontak' }}">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                        {{-- Alamat --}}
+                        <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">📍 Alamat</label>
+                                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
+                                    <input type="checkbox" name="footer_show_contact_address" value="1" {{ ($settings['footer_show_contact_address'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
+                                    Tampilkan Alamat
+                                </label>
+                            </div>
+                            <div class="hp-form-grid" style="margin: 0;">
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Label (Contoh: ALAMAT)</label>
+                                    <input type="text" name="footer_address_label" class="hp-input" value="{{ $settings['footer_address_label'] ?? 'Alamat' }}">
+                                </div>
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Teks Alamat Lengkap</label>
+                                    <input type="text" name="footer_address" class="hp-input" value="{{ $settings['footer_address'] ?? ($settings['address_full'] ?? 'Jl. Raya Prigen No. 10, Prigen, Pasuruan, Jawa Timur 67157') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Telepon --}}
+                        <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">☎️ Telepon</label>
+                                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
+                                    <input type="checkbox" name="footer_show_contact_phone" value="1" {{ ($settings['footer_show_contact_phone'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
+                                    Tampilkan Telepon
+                                </label>
+                            </div>
+                            <div class="hp-form-grid" style="margin: 0;">
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Label (Contoh: TELEPON)</label>
+                                    <input type="text" name="footer_phone_label" class="hp-input" value="{{ $settings['footer_phone_label'] ?? 'Telepon' }}">
+                                </div>
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Nomor Telepon</label>
+                                    <input type="text" name="footer_phone" class="hp-input" value="{{ $settings['footer_phone'] ?? ($settings['phone'] ?? '0343-123456') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- WhatsApp --}}
+                        <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                <label class="hp-label" style="margin: 0; color: #16a34a;">💬 WhatsApp</label>
+                                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
+                                    <input type="checkbox" name="footer_show_contact_wa" value="1" {{ ($settings['footer_show_contact_wa'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #16a34a;">
+                                    Tampilkan WhatsApp
+                                </label>
+                            </div>
+                            <div class="hp-form-grid" style="margin: 0;">
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Label (Contoh: WHATSAPP)</label>
+                                    <input type="text" name="footer_wa_label" class="hp-input" value="{{ $settings['footer_wa_label'] ?? 'WhatsApp' }}">
+                                </div>
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Nomor WhatsApp</label>
+                                    <input type="text" name="footer_wa" class="hp-input" value="{{ $settings['footer_wa'] ?? ($settings['whatsapp'] ?? '6281234567890') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Email --}}
+                        <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">✉️ Email</label>
+                                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
+                                    <input type="checkbox" name="footer_show_contact_email" value="1" {{ ($settings['footer_show_contact_email'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
+                                    Tampilkan Email
+                                </label>
+                            </div>
+                            <div class="hp-form-grid" style="margin: 0;">
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Label (Contoh: EMAIL)</label>
+                                    <input type="text" name="footer_email_label" class="hp-input" value="{{ $settings['footer_email_label'] ?? 'Email' }}">
+                                </div>
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Alamat Email</label>
+                                    <input type="text" name="footer_email" class="hp-input" value="{{ $settings['footer_email'] ?? ($settings['email'] ?? 'info@airsegarprigen.com') }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Jam Operasional --}}
+                        <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">🕒 Jam Operasional</label>
+                                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
+                                    <input type="checkbox" name="footer_show_contact_hours" value="1" {{ ($settings['footer_show_contact_hours'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
+                                    Tampilkan Jam Operasional
+                                </label>
+                            </div>
+                            <div class="hp-form-grid" style="margin: 0;">
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Label (Contoh: JAM OPERASIONAL)</label>
+                                    <input type="text" name="footer_hours_label" class="hp-input" value="{{ $settings['footer_hours_label'] ?? 'Jam Operasional' }}">
+                                </div>
+                                <div class="hp-field-group">
+                                    <label class="hp-label">Jam & Hari Kerja</label>
+                                    <input type="text" name="footer_hours" class="hp-input" value="{{ $settings['footer_hours'] ?? ($settings['business_hours'] ?? 'Senin – Sabtu, 08.00 – 17.00 WIB') }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- COPYRIGHT & WATERMARK HVM SECTION --}}
+                    <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">© Copyright & Watermark Developer</h3>
+                    </div>
+
+                    <div class="hp-form-grid">
+                        <div class="hp-field-group full">
+                            <label class="hp-label">Teks Copyright Bottom Bar</label>
+                            <input type="text" name="footer_copyright" class="hp-input" value="{{ $settings['footer_copyright'] ?? '© 2015–2026 Air Segar Prigen. All rights reserved.' }}">
+                        </div>
+                    </div>
+
+                    {{-- Watermark HVM Permanen Notice --}}
+                    <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 40px; height: 40px; border-radius: 10px; background: #1B6FE8; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #1E40AF;">Watermark Developer: Built by hvmdigital.id (🔒 Permanen System)</div>
+                            <div style="font-size: 0.78rem; color: #3B82F6; margin-top: 2px;">Watermark HVM Digital terkunci di sistem sesuai ketentuan lisensi developer dan tidak dapat diubah dari admin panel.</div>
+                        </div>
+                    </div>
+
+                    {{-- SAVE SUBMIT BUTTON --}}
+                    <div style="margin-top:2rem;display:flex;justify-content:flex-end;">
+                        <button type="submit" class="hp-btn-save">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            Simpan Pengaturan Footer
+                        </button>
+                    </div>
+                @else
                 
                 {{-- TOGGLE SECTION ON / OFF --}}
                 <div class="hp-toggle-box">
@@ -866,6 +1213,7 @@
                     </button>
                 </div>
 
+                @endif
             </div>
         </form>
     @endforeach
