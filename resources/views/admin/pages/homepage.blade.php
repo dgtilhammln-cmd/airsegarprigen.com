@@ -417,8 +417,54 @@
                         </label>
                     </div>
 
+                    {{-- PILIH MODE TAMPILAN FOOTER --}}
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                        <label class="hp-label" style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; color: #1B6FE8;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                            Pilih Mode Tampilan Footer
+                        </label>
+                        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; font-weight: 700; cursor: pointer; color: #1E293B;">
+                                <input type="radio" name="footer_type" value="standard" {{ ($settings['footer_type'] ?? 'standard') === 'standard' ? 'checked' : '' }} onchange="toggleFooterModeUI(this.value)" style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Mode Layout Standard (Form & Links Dinamis)
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; font-weight: 700; cursor: pointer; color: #1E293B;">
+                                <input type="radio" name="footer_type" value="image" {{ ($settings['footer_type'] ?? '') === 'image' ? 'checked' : '' }} onchange="toggleFooterModeUI(this.value)" style="width: 18px; height: 18px; accent-color: #1B6FE8;">
+                                Mode Gambar Banner (Full Width HD Tanpa Terpotong)
+                            </label>
+                        </div>
+                    </div>
+
+                    {{-- BOX MODE GAMBAR BANNER FOOTER (FULL WIDTH HD ORIGINAL UNCOMPRESSED) --}}
+                    <div id="footer-mode-image-box" style="display: {{ ($settings['footer_type'] ?? '') === 'image' ? 'block' : 'none' }}; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.9rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            Upload Gambar Banner Footer (Full Width HD Original Tanpa Terkompresi)
+                        </div>
+                        <div style="font-size: 0.78rem; color: #3B82F6; margin-bottom: 1rem;">Gambar banner akan ditampilkan 100% full width utuh tanpa terpotong & tanpa kompresi kualitas HD.</div>
+                        
+                        <div class="hp-form-grid" style="margin: 0;">
+                            <div class="hp-field-group">
+                                <label class="hp-label">File Gambar Banner Footer</label>
+                                <input type="file" name="footer_image" class="hp-input" accept="image/*">
+                                @if(!empty($settings['footer_image']))
+                                    <div style="margin-top: 0.5rem; font-size: 0.78rem; color: #16a34a; font-weight: 600;">
+                                        ✓ File Banner aktif: <a href="{{ asset('storage/' . $settings['footer_image']) }}" target="_blank" style="color: #1B6FE8; text-decoration: underline;">Lihat Gambar Active</a>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="hp-field-group">
+                                <label class="hp-label">Link Klik Gambar Banner (Opsional / WA / URL)</label>
+                                <input type="text" name="footer_image_url" class="hp-input" value="{{ $settings['footer_image_url'] ?? '' }}" placeholder="https://wa.me/628113526618">
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🎨 Pengaturan Warna & Tampilan Footer</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                            Pengaturan Warna & Tampilan Footer
+                        </h3>
                     </div>
 
                     {{-- COLOR FIELDS GRID --}}
@@ -470,7 +516,10 @@
 
                     {{-- BRAND & DESKRIPSI SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🏢 Informasi Perusahaan & Tagline</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="18"/><line x1="15" y1="22" x2="15" y2="18"/></svg>
+                            Informasi Perusahaan & Tagline
+                        </h3>
                     </div>
 
                     <div class="hp-form-grid">
@@ -492,7 +541,10 @@
 
                     {{-- ULASAN & RATING SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">⭐ Widget Ulasan & Rating</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Widget Ulasan & Rating
+                        </h3>
                     </div>
 
                     <div class="hp-toggle-box" style="margin-bottom: 1rem;">
@@ -520,7 +572,10 @@
 
                     {{-- NAVIGASI SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">🧭 Kolom Navigasi & Link Menu</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                            Kolom Navigasi & Link Menu
+                        </h3>
                     </div>
 
                     <div class="hp-toggle-box" style="margin-bottom: 1rem;">
@@ -569,7 +624,10 @@
 
                     {{-- KATEGORI PRODUK SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">📦 Kolom Kategori Produk</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                            Kolom Kategori Produk
+                        </h3>
                     </div>
 
                     <div class="hp-toggle-box" style="margin-bottom: 1rem;">
@@ -592,7 +650,10 @@
 
                     {{-- KONTAK SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">📞 Kolom Informasi Kontak (Per Item Control)</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            Kolom Informasi Kontak (Per Item Control)
+                        </h3>
                     </div>
 
                     <div class="hp-toggle-box" style="margin-bottom: 1rem;">
@@ -617,7 +678,10 @@
                         {{-- Alamat --}}
                         <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">📍 Alamat</label>
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8; display: flex; align-items: center; gap: 0.4rem;">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    Alamat
+                                </label>
                                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
                                     <input type="checkbox" name="footer_show_contact_address" value="1" {{ ($settings['footer_show_contact_address'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
                                     Tampilkan Alamat
@@ -638,7 +702,10 @@
                         {{-- Telepon --}}
                         <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">☎️ Telepon</label>
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8; display: flex; align-items: center; gap: 0.4rem;">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    Telepon
+                                </label>
                                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
                                     <input type="checkbox" name="footer_show_contact_phone" value="1" {{ ($settings['footer_show_contact_phone'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
                                     Tampilkan Telepon
@@ -659,7 +726,10 @@
                         {{-- WhatsApp --}}
                         <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <label class="hp-label" style="margin: 0; color: #16a34a;">💬 WhatsApp</label>
+                                <label class="hp-label" style="margin: 0; color: #16a34a; display: flex; align-items: center; gap: 0.4rem;">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                    WhatsApp
+                                </label>
                                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
                                     <input type="checkbox" name="footer_show_contact_wa" value="1" {{ ($settings['footer_show_contact_wa'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #16a34a;">
                                     Tampilkan WhatsApp
@@ -680,7 +750,10 @@
                         {{-- Email --}}
                         <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">✉️ Email</label>
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8; display: flex; align-items: center; gap: 0.4rem;">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                    Email
+                                </label>
                                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
                                     <input type="checkbox" name="footer_show_contact_email" value="1" {{ ($settings['footer_show_contact_email'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
                                     Tampilkan Email
@@ -701,7 +774,10 @@
                         {{-- Jam Operasional --}}
                         <div style="background: #F8FAFC; padding: 1rem; border-radius: 12px; border: 1px solid #E2E8F0;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                <label class="hp-label" style="margin: 0; color: #1B6FE8;">🕒 Jam Operasional</label>
+                                <label class="hp-label" style="margin: 0; color: #1B6FE8; display: flex; align-items: center; gap: 0.4rem;">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    Jam Operasional
+                                </label>
                                 <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: #475569;">
                                     <input type="checkbox" name="footer_show_contact_hours" value="1" {{ ($settings['footer_show_contact_hours'] ?? '1') == '1' ? 'checked' : '' }} style="accent-color: #1B6FE8;">
                                     Tampilkan Jam Operasional
@@ -722,7 +798,10 @@
 
                     {{-- COPYRIGHT & WATERMARK HVM SECTION --}}
                     <div style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #E2E8F0;">
-                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0;">© Copyright & Watermark Developer</h3>
+                        <h3 style="font-size: 1rem; font-weight: 800; color: #1B6FE8; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9.354a4 4 0 1 0 0 5.292"/></svg>
+                            Copyright & Watermark Developer
+                        </h3>
                     </div>
 
                     <div class="hp-form-grid">
@@ -738,7 +817,7 @@
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         </div>
                         <div>
-                            <div style="font-size: 0.88rem; font-weight: 800; color: #1E40AF;">Watermark Developer: Built by hvmdigital.id (🔒 Permanen System)</div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #1E40AF;">Watermark Developer: Built by hvmdigital.id (Permanen System)</div>
                             <div style="font-size: 0.78rem; color: #3B82F6; margin-top: 2px;">Watermark HVM Digital terkunci di sistem sesuai ketentuan lisensi developer dan tidak dapat diubah dari admin panel.</div>
                         </div>
                     </div>
@@ -1577,6 +1656,13 @@ async function pickColorEyedropper(pickerId, inputId) {
         }
     } catch (e) {
         // User cancelled eyedropper
+    }
+}
+
+function toggleFooterModeUI(val) {
+    const imgBox = document.getElementById('footer-mode-image-box');
+    if (imgBox) {
+        imgBox.style.display = (val === 'image') ? 'block' : 'none';
     }
 }
 

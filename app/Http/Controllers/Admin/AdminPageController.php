@@ -293,6 +293,8 @@ class AdminPageController extends Controller
             }
 
             $footerStrings = [
+                'footer_type',
+                'footer_image_url',
                 'footer_bg_color',
                 'footer_text_color',
                 'footer_title_color',
@@ -320,6 +322,13 @@ class AdminPageController extends Controller
                 if ($request->has($sKey)) {
                     Setting::set($sKey, $request->input($sKey, ''));
                 }
+            }
+
+            // Handle footer_image upload (stored original HD file without compression/scaling)
+            if ($request->hasFile('footer_image')) {
+                $file = $request->file('footer_image');
+                $path = $file->store('homepage', 'public');
+                Setting::set('footer_image', $path);
             }
         }
 

@@ -4,6 +4,11 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
 @php
     $s = \App\Models\Setting::getAllAsArray();
 
+    // Footer Mode (standard vs image)
+    $footerType = $s['footer_type'] ?? 'standard';
+    $footerImage = $s['footer_image'] ?? '';
+    $footerImageUrl = $s['footer_image_url'] ?? '';
+
     // Show/Hide Toggle
     $showFooter = ($s['page_home_show_footer'] ?? '1') === '1';
 
@@ -341,7 +346,34 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
 </style>
 
 {{-- ════ MAIN FOOTER ════ --}}
-<footer class="cv-footer-v2" role="contentinfo">
+@if($footerType === 'image' && !empty($footerImage))
+    {{-- ════ MODE GAMBAR BANNER FOOTER (FULL WIDTH HD UNCOMPRESSED) ════ --}}
+    <footer class="cv-footer-v2-img-mode" style="background: {{ $footerBg }}; width: 100%; position: relative; font-family: 'Montserrat', sans-serif;">
+        <div style="width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+            @if(!empty($footerImageUrl))
+                <a href="{{ $footerImageUrl }}" target="_blank" style="display: block; width: 100%; text-decoration: none;">
+            @endif
+            <img src="{{ asset('storage/' . $footerImage) }}" alt="Footer Banner" style="width: 100%; height: auto; max-width: 100%; display: block; object-fit: contain;">
+            @if(!empty($footerImageUrl))
+                </a>
+            @endif
+        </div>
+
+        {{-- Permanen Developer Watermark HVM Digital --}}
+        <div style="background: rgba(0, 0, 0, 0.3); border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 1.25rem clamp(1.25rem, 5vw, 2.5rem); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                <div style="font-size: 0.8rem; color: {{ $footerTextColor }}; font-weight: 400;">
+                    <strong style="color: {{ $footerTitleColor }}; font-weight: 600;">{!! $copyrightText !!}</strong>
+                </div>
+                <div style="font-size: 0.75rem; color: {{ $footerTextColor }};">
+                    Built by <a href="https://hvmdigital.id/jasa-pembuatan-website-jakarta-murah" target="_blank" rel="noopener" style="color: {{ $footerTitleColor }}; font-weight: 600; text-decoration: none;">hvmdigital.id</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+@else
+    {{-- ════ MODE STANDARD LAYOUT ════ --}}
+    <footer class="cv-footer-v2" role="contentinfo">
 
     <div class="cv-footer-v2-main">
 
@@ -548,4 +580,5 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
     </div>
 
 </footer>
+@endif
 @endif
