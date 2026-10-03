@@ -2909,10 +2909,19 @@
         @media (max-width: 768px) {
 
             .cv-cta-premium {
-                padding: 4rem 0;
+                padding: 3rem 0;
             }
             .cv-articles-premium {
-                padding: 2.25rem 0;
+                padding: 2rem 0;
+            }
+
+            .cv-articles-inner {
+                padding: 0 1rem;
+            }
+
+            .cv-articles-header {
+                gap: 1rem;
+                margin-bottom: 1.25rem;
             }
 
             .cv-cta-info {
@@ -2924,13 +2933,14 @@
             .cv-articles-grid-v2 {
                 grid-template-columns: none !important;
                 grid-auto-flow: column;
-                grid-auto-columns: 78vw;
+                grid-auto-columns: clamp(150px, 42.5vw, 220px);
                 overflow-x: auto;
                 scroll-snap-type: x mandatory;
-                padding-bottom: 1.5rem;
+                padding: 0.25rem 1rem 1rem 1rem;
+                margin: 0 -1rem;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-                gap: 1rem;
+                gap: 0.75rem;
             }
 
             .cv-articles-grid-v2::-webkit-scrollbar {
@@ -2939,6 +2949,49 @@
 
             .cv-articles-grid-v2>* {
                 scroll-snap-align: start;
+            }
+
+            .cv-article-card-v2 {
+                border-radius: 16px;
+            }
+
+            .cv-article-img-wrap {
+                aspect-ratio: 16/11;
+            }
+
+            .cv-article-cat-badge {
+                top: 0.5rem;
+                left: 0.5rem;
+                font-size: 0.625rem;
+                padding: 0.25rem 0.55rem;
+            }
+
+            .cv-article-content-v2 {
+                padding: 0.75rem;
+            }
+
+            .cv-article-title-v2 {
+                font-size: 0.825rem;
+                line-height: 1.3;
+                margin-bottom: 0.35rem;
+                -webkit-line-clamp: 2;
+            }
+
+            .cv-article-excerpt-v2 {
+                font-size: 0.725rem;
+                line-height: 1.35;
+                margin-bottom: 0.6rem;
+                -webkit-line-clamp: 2;
+            }
+
+            .cv-article-meta-v2 {
+                padding-top: 0.5rem;
+                font-size: 0.675rem;
+            }
+
+            .cv-article-read-v2 {
+                font-size: 0.675rem;
+                gap: 0.2rem;
             }
         }
     </style>
