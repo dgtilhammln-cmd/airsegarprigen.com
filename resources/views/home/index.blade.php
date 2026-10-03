@@ -3014,9 +3014,9 @@
             if (!is_array($layCards) || empty($layCards)) {
                 $layCards = [
                     [
-                        'title' => 'Air Tangki Mineral & Demineral',
-                        'desc' => 'Pasokan air tangki berkualitas tinggi untuk industri, depo air isi ulang, dan kolam renang.',
-                        'btn_text' => 'View Detail',
+                        'title' => 'Supplier Air Tangki Pegunungan',
+                        'desc' => 'Pasokan air tangki pegunungan berkualitas tinggi untuk kebutuhan industri, hotel, kolam renang, dan depo air isi ulang.',
+                        'btn_text' => 'PESAN SEKARANG',
                         'btn_url' => 'https://wa.me/628113526618',
                         'bg_color' => '#0B092B',
                         'bg_end_color' => '#0B092B',
@@ -3025,9 +3025,9 @@
                         'icon_color' => '#0F172A'
                     ],
                     [
-                        'title' => 'AMDK & Maklon',
+                        'title' => 'Pabrik Maklon AMDK',
                         'desc' => 'Layanan maklon Air Minum Dalam Kemasan (AMDK) custom merk sesuai standar kesehatan tertinggi.',
-                        'btn_text' => 'View Detail',
+                        'btn_text' => 'KONSULTASI GRATIS',
                         'btn_url' => 'https://wa.me/628113526618',
                         'bg_color' => '#090B38',
                         'bg_end_color' => '#1532A6',
