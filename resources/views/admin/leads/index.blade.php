@@ -40,9 +40,9 @@
     display: flex; align-items: center; justify-content: space-between;
 }
 .th-cell {
-    padding: 1rem 1.25rem;
+    padding: 0.6rem 0.9rem;
     text-align: left;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
     color: #94A3B8;
     text-transform: uppercase;
@@ -52,9 +52,10 @@
     white-space: nowrap;
 }
 .td-cell {
-    padding: 1rem 1.25rem;
+    padding: 0.6rem 0.9rem;
     border-bottom: 1px solid #F1F5F9;
     vertical-align: middle;
+    font-size: 0.8rem;
 }
 .tr-row { transition: background 0.15s; }
 .tr-row:hover { background: #FAFBFF; }
@@ -157,7 +158,7 @@
     <table style="width:100%;border-collapse:collapse;">
       <thead>
         <tr>
-          @foreach(['#','Nama & Perusahaan','Telepon / Email','Produk','Sumber','Perangkat','Waktu','Status','Aksi'] as $h)
+          @foreach(['#','Nama & Perusahaan','Kota','Telepon / Email','Produk','Sumber','Perangkat','Waktu','Status','Aksi'] as $h)
           <th class="th-cell">{{ $h }}</th>
           @endforeach
         </tr>
@@ -167,12 +168,15 @@
         <tr class="tr-row">
           <td class="td-cell" style="font-size:.75rem;color:#94A3B8;font-weight:600;">{{ $lead->id }}</td>
           <td class="td-cell">
-            <div style="font-size:.875rem;font-weight:700;color:#1E293B;">{{ $lead->name }}</div>
-            @if($lead->company)<div style="font-size:.75rem;color:#64748B;margin-top:2px;">{{ $lead->company }}</div>@endif
+            <div style="font-weight:700;color:#1E293B;">{{ $lead->name }}</div>
+            @if($lead->company)<div style="font-size:.72rem;color:#64748B;margin-top:1px;">{{ $lead->company }}</div>@endif
+          </td>
+          <td class="td-cell" style="white-space:nowrap;">
+            {{ $lead->city ?: '—' }}
           </td>
           <td class="td-cell">
-            <div style="font-size:.85rem;color:#334155;font-weight:600;white-space:nowrap;">{{ $lead->phone }}</div>
-            @if($lead->email)<div style="font-size:.75rem;color:#3B82F6;margin-top:2px;">{{ $lead->email }}</div>@endif
+            <div style="color:#334155;font-weight:600;white-space:nowrap;">{{ $lead->phone }}</div>
+            @if($lead->email)<div style="font-size:.72rem;color:#3B82F6;margin-top:1px;">{{ $lead->email }}</div>@endif
           </td>
           <td class="td-cell" style="font-size:.85rem;color:#475569;max-width:160px;">
             <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">{{ $lead->product ?: '—' }}</span>
@@ -244,7 +248,7 @@
         </tr>
         @empty
         <tr>
-          <td colspan="9" style="padding:4rem;text-align:center;color:#94A3B8;">
+          <td colspan="10" style="padding:4rem;text-align:center;color:#94A3B8;">
             <div style="width:64px;height:64px;background:#F8FAFC;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
                 <svg width="32" height="32" fill="none" stroke="#CBD5E1" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </div>

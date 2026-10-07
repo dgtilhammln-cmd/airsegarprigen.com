@@ -23,7 +23,7 @@ class AdminPageController extends Controller
             'text_color'   => '#FFFFFF',
             'accent_color' => '#DC2626',
             'btn_text'     => 'Konsultasi Gratis',
-            'btn_url'      => 'https://wa.me/628113526618',
+            'btn_url'      => 'https://wa.me/628113922229',
             'cards'        => [
                 ['title' => 'Perkapalan & Maritim', 'desc' => 'Perlindungan maksimal lambung kapal.', 'icon' => 'ship', 'color' => '#1E293B'],
                 ['title' => 'Cat Anti Karat Baja', 'desc' => 'Tahan cuaca ekstrem dan korosi.', 'icon' => 'shield', 'color' => '#1E293B'],
@@ -39,7 +39,7 @@ class AdminPageController extends Controller
             'text_color'   => '#0F172A',
             'accent_color' => '#1B6FE8',
             'btn_text'     => 'Konsultasi Sekarang',
-            'btn_url'      => 'https://wa.me/628113526618',
+            'btn_url'      => 'https://wa.me/628113922229',
             'cards'        => []
         ],
         'clients' => [
@@ -166,7 +166,7 @@ class AdminPageController extends Controller
                     'image'       => '',
                     'hover_image' => '',
                     'btn_text'    => 'PESAN SEKARANG',
-                    'btn_url'     => 'https://wa.me/628113526618',
+                    'btn_url'     => 'https://wa.me/628113922229',
                     'bg_color'    => '#0B092B',
                     'bg_end_color'=> '#0B092B',
                     'text_color'  => '#FFFFFF',
@@ -181,7 +181,7 @@ class AdminPageController extends Controller
                     'image'       => '',
                     'hover_image' => '',
                     'btn_text'    => 'KONSULTASI GRATIS',
-                    'btn_url'     => 'https://wa.me/628113526618',
+                    'btn_url'     => 'https://wa.me/628113922229',
                     'bg_color'    => '#090B38',
                     'bg_end_color'=> '#1532A6',
                     'text_color'  => '#FFFFFF',

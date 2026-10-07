@@ -17,10 +17,10 @@
     .premium-card {
         background: #fff;
         border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        margin-bottom: 1.5rem;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 1rem;
     }
     .premium-title {
         font-size: 0.85rem;
@@ -36,8 +36,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
-        padding: 0.875rem 0;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
         border-bottom: 1px solid #F1F5F9;
     }
     .info-row:last-child {
@@ -45,15 +45,16 @@
         padding-bottom: 0;
     }
     .info-label {
-        font-size: 0.8125rem;
+        font-size: 0.775rem;
         font-weight: 600;
         color: #64748B;
     }
     .info-value {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         color: #1E293B;
         font-weight: 700;
         text-align: right;
+        word-break: break-all;
     }
     .badge {
         padding: 0.375rem 1rem;
@@ -156,6 +157,7 @@
                 <div style="display:flex;flex-direction:column;">
                     @foreach([
                         ['Nomor Telepon / WA', $lead->phone],
+                        ['Kota', $lead->city ?: '-'],
                         ['Email', $lead->email ?: '-'],
                         ['Produk Diminati', $lead->product ?: '-'],
                         ['Sumber Referensi', $lead->source],

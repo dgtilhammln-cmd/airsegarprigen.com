@@ -455,7 +455,7 @@
                             </div>
                             <div class="hp-field-group">
                                 <label class="hp-label">Link Klik Gambar Banner (Opsional / WA / URL)</label>
-                                <input type="text" name="footer_image_url" class="hp-input" value="{{ $settings['footer_image_url'] ?? '' }}" placeholder="https://wa.me/628113526618">
+                                <input type="text" name="footer_image_url" class="hp-input" value="{{ $settings['footer_image_url'] ?? '' }}" placeholder="https://wa.me/628113922229">
                             </div>
                         </div>
                     </div>
@@ -1270,7 +1270,7 @@
 
                                         <div class="hp-field-group">
                                             <label class="hp-label">Link CTA (URL / WA)</label>
-                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_url]" class="hp-input" value="{{ $card['btn_url'] ?? 'https://wa.me/628113526618' }}" placeholder="https://wa.me/...">
+                                            <input type="text" name="cards_{{ $k }}[{{ $idx }}][btn_url]" class="hp-input" value="{{ $card['btn_url'] ?? 'https://wa.me/628113922229' }}" placeholder="https://wa.me/...">
                                         </div>
 
                                         <div class="hp-field-group">
@@ -1624,7 +1624,7 @@ function addCardItem(secKey) {
 
             <div class="hp-field-group">
                 <label class="hp-label">Link CTA (URL / WA)</label>
-                <input type="text" name="cards_${secKey}[${idx}][btn_url]" class="hp-input" value="https://wa.me/628113526618" placeholder="https://wa.me/...">
+                <input type="text" name="cards_${secKey}[${idx}][btn_url]" class="hp-input" value="https://wa.me/628113922229" placeholder="https://wa.me/...">
             </div>
 
             <div class="hp-field-group">
