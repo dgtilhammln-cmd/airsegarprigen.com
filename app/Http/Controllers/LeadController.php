@@ -14,6 +14,7 @@ class LeadController extends Controller
         $validated = $request->validate([
             'name'    => 'required|min:2|max:100',
             'company' => 'nullable|max:150',
+            'city'    => 'nullable|max:100',
             'email'   => 'nullable|email|max:100',
             'phone'   => 'required|min:7|max:20',
             'product' => 'nullable|max:200',
@@ -27,9 +28,10 @@ class LeadController extends Controller
         $companyName = \App\Models\Setting::get('company_name', 'Kami');
         $msg = "Halo {$companyName},\n\n";
         $msg .= "Nama: {$validated['name']}\n";
+        $msg .= "Telepon: {$validated['phone']}\n";
+        if (!empty($validated['city']))    $msg .= "Kota Pengiriman: {$validated['city']}\n";
         if (!empty($validated['company'])) $msg .= "Perusahaan: {$validated['company']}\n";
         if (!empty($validated['email']))   $msg .= "Email: {$validated['email']}\n";
-        $msg .= "Telepon: {$validated['phone']}\n";
         if (!empty($validated['product'])) $msg .= "Produk: {$validated['product']}\n";
         if (!empty($validated['message'])) $msg .= "\nPesan: {$validated['message']}\n";
         $msg .= "\nTerima kasih.";
