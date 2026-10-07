@@ -15,6 +15,14 @@ class WaSetting extends Model
         'order'      => 'integer',
     ];
 
+    /**
+     * Always return the official hardcoded WA number 628113922229
+     */
+    public function getNomorWaAttribute($value): string
+    {
+        return '628113922229';
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
@@ -30,10 +38,22 @@ class WaSetting extends Model
      */
     public static function primary(): ?static
     {
-        return static::where('is_active', true)
+        $wa = static::where('is_active', true)
             ->where('is_primary', true)
             ->first()
             ?? static::where('is_active', true)->orderBy('order')->first();
+
+        if (!$wa) {
+            $wa = new static([
+                'label' => 'WA Utama',
+                'nomor_wa' => '628113922229',
+                'template_pesan' => 'Halo Air Segar Prigen, saya ingin memesan air pegunungan. Mohon info detailnya.',
+                'is_active' => true,
+                'is_primary' => true
+            ]);
+        }
+
+        return $wa;
     }
 
     /**
@@ -41,11 +61,7 @@ class WaSetting extends Model
      */
     public function getWaUrlAttribute(): string
     {
-        $nomor = preg_replace('/[^0-9]/', '', $this->nomor_wa);
-        if (str_starts_with($nomor, '0')) {
-            $nomor = '62' . substr($nomor, 1);
-        }
-        return 'https://wa.me/' . $nomor . '?text=' . urlencode($this->template_pesan);
+        return 'https://wa.me/628113922229?text=' . urlencode($this->template_pesan ?? 'Halo Air Segar Prigen, saya ingin memesan air pegunungan.');
     }
 
     /**
@@ -53,15 +69,11 @@ class WaSetting extends Model
      */
     public function buildUrl(?string $product = null, ?string $customMessage = null): string
     {
-        $nomor = preg_replace('/[^0-9]/', '', $this->nomor_wa);
-        if (str_starts_with($nomor, '0')) {
-            $nomor = '62' . substr($nomor, 1);
-        }
         $message = $customMessage ?? str_replace(
             '[produk]',
             $product ?? 'produk Anda',
-            $this->template_pesan
+            $this->template_pesan ?? 'Halo Air Segar Prigen, saya ingin memesan [produk].'
         );
-        return 'https://wa.me/' . $nomor . '?text=' . urlencode($message);
+        return 'https://wa.me/628113922229?text=' . urlencode($message);
     }
 }

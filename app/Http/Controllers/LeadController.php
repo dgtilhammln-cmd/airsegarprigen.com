@@ -21,11 +21,8 @@ class LeadController extends Controller
             'message' => 'nullable|max:2000',
         ]);
 
-        // Get primary WA
-        $wa = WaSetting::primary();
-
         // Build WA message
-        $companyName = \App\Models\Setting::get('company_name', 'Kami');
+        $companyName = \App\Models\Setting::get('company_name', 'Air Segar Prigen');
         $msg = "Halo {$companyName},\n\n";
         $msg .= "Nama: {$validated['name']}\n";
         $msg .= "Telepon: {$validated['phone']}\n";
@@ -36,9 +33,8 @@ class LeadController extends Controller
         if (!empty($validated['message'])) $msg .= "\nPesan: {$validated['message']}\n";
         $msg .= "\nTerima kasih.";
 
-        // Build WA URL
-        $nomor = $wa ? preg_replace('/[^0-9]/', '', $wa->nomor_wa) : '628113922229';
-        if (str_starts_with($nomor, '0')) $nomor = '62' . substr($nomor, 1);
+        // Hardcoded WA Number directly to 628113922229
+        $nomor = '628113922229';
         $waUrl = 'https://wa.me/' . $nomor . '?text=' . urlencode($msg);
 
         // Save lead

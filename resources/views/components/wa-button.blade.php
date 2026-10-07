@@ -1,16 +1,6 @@
 {{-- Floating WhatsApp Button --}}
 @php
-    $wa = \App\Models\WaSetting::primary();
-    if ($wa && !empty($wa->nomor_wa)) {
-        $waNumber = preg_replace('/[^0-9]/', '', $wa->nomor_wa);
-    } else {
-        $waNumber = preg_replace('/[^0-9]/', '',
-            \App\Models\Setting::get('whatsapp') ??
-            \App\Models\Setting::get('phone') ??
-            '628113922229'
-        );
-    }
-    if (str_starts_with($waNumber, '0')) $waNumber = '62' . substr($waNumber, 1);
+    $waNumber = '628113922229';
 @endphp
 <style>
     .wa-float {
