@@ -742,7 +742,7 @@
                                 </div>
                                 <div class="hp-field-group">
                                     <label class="hp-label">Nomor WhatsApp</label>
-                                    <input type="text" name="footer_wa" class="hp-input" value="{{ $settings['footer_wa'] ?? ($settings['whatsapp'] ?? '6281234567890') }}">
+                                    <input type="text" name="footer_wa" class="hp-input" value="{{ $settings['footer_wa'] ?? ($settings['whatsapp'] ?? '628113922229') }}">
                                 </div>
                             </div>
                         </div>

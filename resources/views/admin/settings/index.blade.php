@@ -830,7 +830,7 @@ button[style*="background:rgba(37,211,102,.15)"]:hover {
             </label>
             <input type="text" name="whatsapp" id="s-whatsapp" class="form-input"
               value="{{ $settings['whatsapp'] ?? '' }}"
-              placeholder="6281234567890"
+              placeholder="628113922229"
               oninput="this.value=this.value.replace(/[^0-9]/g,'')">
           </div>
           <div>

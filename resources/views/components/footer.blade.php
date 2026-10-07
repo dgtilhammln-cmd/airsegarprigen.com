@@ -56,7 +56,7 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
 
     $showContactWa = ($s['footer_show_contact_wa'] ?? '1') === '1';
     $waLabel = $s['footer_wa_label'] ?? 'WhatsApp';
-    $waVal = $s['footer_wa'] ?? ($s['whatsapp'] ?? '6281234567890');
+    $waVal = $s['footer_wa'] ?? ($s['whatsapp'] ?? '628113922229');
 
     $showContactEmail = ($s['footer_show_contact_email'] ?? '1') === '1';
     $emailLabel = $s['footer_email_label'] ?? 'Email';
