@@ -20,14 +20,20 @@ trait HandlesImageUpload
         $path = $file->getRealPath();
         $mime = $file->getMimeType() ?: mime_content_type($path);
 
-        return match (true) {
-            str_contains($mime, 'jpeg'), str_contains($mime, 'jpg') => imagecreatefromjpeg($path),
-            str_contains($mime, 'png')  => imagecreatefrompng($path),
-            str_contains($mime, 'webp') => imagecreatefromwebp($path),
-            str_contains($mime, 'gif')  => imagecreatefromgif($path),
-            str_contains($mime, 'bmp')  => imagecreatefrombmp($path),
+        $res = match (true) {
+            str_contains($mime, 'jpeg'), str_contains($mime, 'jpg') => @imagecreatefromjpeg($path),
+            str_contains($mime, 'png')  => @imagecreatefrompng($path),
+            str_contains($mime, 'webp') => @imagecreatefromwebp($path),
+            str_contains($mime, 'gif')  => @imagecreatefromgif($path),
+            str_contains($mime, 'bmp')  => @imagecreatefrombmp($path),
             default                     => @imagecreatefromjpeg($path) ?: @imagecreatefrompng($path),
         };
+
+        if ($res && imageistruecolor($res) === false) {
+            imagepalettetotruecolor($res);
+        }
+
+        return $res;
     }
 
     /**
@@ -84,6 +90,11 @@ trait HandlesImageUpload
             throw new \Exception("Gagal memproses gambar. Pastikan file valid.");
         }
         
+        // Convert palette image to true color if needed
+        if (imageistruecolor($img) === false) {
+            imagepalettetotruecolor($img);
+        }
+
         $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'webp_' . uniqid() . '.webp';
         
         try {
@@ -116,15 +127,14 @@ trait HandlesImageUpload
         $mime = (string) $file->getMimeType();
         $ext = strtolower($file->getClientOriginalExtension());
         
-        if (str_contains($mime, 'svg') || $ext === 'svg') {
-            $filename = $folder . '/' . Str::random(16) . '.svg';
-            Storage::disk('public')->put($filename, file_get_contents($file->getRealPath()));
-            return $filename;
+        // Preserve original GIF / SVG without compression or GD conversion
+        if (str_contains($mime, 'svg') || $ext === 'svg' || str_contains($mime, 'gif') || $ext === 'gif') {
+            return $this->storeOriginal($file, $folder);
         }
 
         $img      = $this->gdLoad($file);
         if (!$img) {
-            throw new \Exception("Format gambar tidak didukung atau file rusak.");
+            return $this->storeOriginal($file, $folder);
         }
         $img      = $this->gdScaleDown($img, $maxW, $maxH);
         $webp     = $this->gdEncodeWebP($img, $quality);
@@ -141,15 +151,13 @@ trait HandlesImageUpload
         $mime = (string) $file->getMimeType();
         $ext = strtolower($file->getClientOriginalExtension());
         
-        if (str_contains($mime, 'svg') || $ext === 'svg') {
-            $filename = $folder . '/' . Str::random(12) . '.svg';
-            Storage::disk('public')->put($filename, file_get_contents($file->getRealPath()));
-            return $filename;
+        if (str_contains($mime, 'svg') || $ext === 'svg' || str_contains($mime, 'gif') || $ext === 'gif') {
+            return $this->storeOriginal($file, $folder);
         }
 
         $img      = $this->gdLoad($file);
         if (!$img) {
-            throw new \Exception("Format gambar tidak didukung atau file rusak.");
+            return $this->storeOriginal($file, $folder);
         }
         $img      = $this->gdSquareCrop($img, $size);
         $webp     = $this->gdEncodeWebP($img, $quality);
@@ -163,15 +171,16 @@ trait HandlesImageUpload
      */
     protected function storeOgWebP(UploadedFile $file, string $folder, int $quality = 85): string
     {
-        if (str_contains((string) $file->getMimeType(), 'svg')) {
-            $filename = $folder . '/og_' . Str::random(12) . '.svg';
-            Storage::disk('public')->put($filename, file_get_contents($file->getRealPath()));
-            return $filename;
+        $mime = (string) $file->getMimeType();
+        $ext = strtolower($file->getClientOriginalExtension());
+
+        if (str_contains($mime, 'svg') || $ext === 'svg' || str_contains($mime, 'gif') || $ext === 'gif') {
+            return $this->storeOriginal($file, $folder);
         }
 
         $img      = $this->gdLoad($file);
         if (!$img) {
-            throw new \Exception("Format gambar tidak didukung atau file rusak.");
+            return $this->storeOriginal($file, $folder);
         }
         $img      = $this->gdScaleDown($img, 1200, 630);
         $webp     = $this->gdEncodeWebP($img, $quality);

@@ -20,6 +20,8 @@
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        content-visibility: auto;
+        contain-intrinsic-size: 1000px 500px;
     }
     .lp-full-image-item img {
         width: 100%;
@@ -40,6 +42,7 @@
         display: block;
         margin: 1.5rem auto;
         border-radius: 12px;
+        loading: lazy;
     }
     .lp-body-content h1, .lp-body-content h2, .lp-body-content h3 {
         color: #0F172A;
@@ -61,26 +64,37 @@
 
         {{-- ── 1. Uploaded Full-Size Landing Page Images (Desktop + Mobile) ── --}}
         @if(!empty($page->images) && is_array($page->images) && count($page->images) > 0)
-            @foreach($page->images as $img)
+            @foreach($page->images as $index => $img)
                 @php
                     $imgPath  = is_array($img) ? ($img['image'] ?? '') : $img;
                     $imgMob   = is_array($img) ? ($img['image_mobile'] ?? '') : '';
                     $imgTitle = is_array($img) ? ($img['title'] ?? '') : '';
+                    $isFirst  = ($index === 0);
                 @endphp
                 @if($imgPath || $imgMob)
-                    <div class="lp-full-image-item">
+                    <div class="lp-full-image-item" style="{{ $isFirst ? 'content-visibility:visible;' : '' }}">
                         <picture style="width:100%;display:block;">
                             @if($imgMob)
                                 <source media="(max-width: 767px)" srcset="{{ asset('storage/' . $imgMob) }}">
                             @endif
-                            <img src="{{ asset('storage/' . ($imgPath ?: $imgMob)) }}" alt="{{ $imgTitle ?: $page->title }}" loading="lazy" style="width:100%;height:auto;display:block;">
+                            <img src="{{ asset('storage/' . ($imgPath ?: $imgMob)) }}" 
+                                 alt="{{ $imgTitle ?: $page->title }}" 
+                                 loading="{{ $isFirst ? 'eager' : 'lazy' }}" 
+                                 decoding="async"
+                                 @if($isFirst) fetchpriority="high" @endif
+                                 style="width:100%;height:auto;display:block;">
                         </picture>
                     </div>
                 @endif
             @endforeach
         @elseif($page->hero_image)
-            <div class="lp-full-image-item">
-                <img src="{{ asset('storage/' . $page->hero_image) }}" alt="{{ $page->title }}" loading="lazy" style="width:100%;height:auto;display:block;">
+            <div class="lp-full-image-item" style="content-visibility:visible;">
+                <img src="{{ asset('storage/' . $page->hero_image) }}" 
+                     alt="{{ $page->title }}" 
+                     loading="eager" 
+                     decoding="async"
+                     fetchpriority="high"
+                     style="width:100%;height:auto;display:block;">
             </div>
         @endif
 

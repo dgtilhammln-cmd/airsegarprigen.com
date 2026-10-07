@@ -361,15 +361,20 @@ class AdminPageController extends Controller
         $btnShow = $request->boolean("page_home_btn_show_{$section}") ? '1' : '0';
         Setting::set("page_home_btn_show_{$section}", $btnShow);
 
-        // Handle Image Upload with optional Auto Compress
+"        // Handle Image Upload with optional Auto Compress
         $imageParam = "page_home_image_{$section}";
         if ($request->hasFile($imageParam)) {
             $file = $request->file($imageParam);
             $autoCompress = $request->boolean("page_home_compress_{$section}", true);
+            $ext = strtolower($file->getClientOriginalExtension());
+            $isGif = ($ext === 'gif' || str_contains((string)$file->getMimeType(), 'gif'));
 
-            if ($autoCompress) {
+            if ($autoCompress && !$isGif) {
                 $gdImg = $this->gdLoad($file);
                 if ($gdImg) {
+                    if (imageistruecolor($gdImg) === false) {
+                        imagepalettetotruecolor($gdImg);
+                    }
                     $scaled = $this->gdScaleDown($gdImg, 1920, 1080);
                     $filename = "homepage/{$section}_" . time() . '.webp';
 
@@ -406,10 +411,15 @@ class AdminPageController extends Controller
                 if ($request->hasFile($fileKey)) {
                     $file = $request->file($fileKey);
                     $doCompress = isset($item['compress']) && $item['compress'] == '1';
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $isGif = ($ext === 'gif' || str_contains((string)$file->getMimeType(), 'gif'));
 
-                    if ($doCompress) {
+                    if ($doCompress && !$isGif) {
                         $gdImg = $this->gdLoad($file);
                         if ($gdImg) {
+                            if (imageistruecolor($gdImg) === false) {
+                                imagepalettetotruecolor($gdImg);
+                            }
                             $filename = "landing/{$section}_desk_" . time() . "_{$idx}.webp";
                             ob_start();
                             imagewebp($gdImg, null, 85);
@@ -431,10 +441,15 @@ class AdminPageController extends Controller
                 if ($request->hasFile($fileMobileKey)) {
                     $fileMob = $request->file($fileMobileKey);
                     $doCompressMob = isset($item['compress']) && $item['compress'] == '1';
+                    $extMob = strtolower($fileMob->getClientOriginalExtension());
+                    $isGifMob = ($extMob === 'gif' || str_contains((string)$fileMob->getMimeType(), 'gif'));
 
-                    if ($doCompressMob) {
+                    if ($doCompressMob && !$isGifMob) {
                         $gdImgMob = $this->gdLoad($fileMob);
                         if ($gdImgMob) {
+                            if (imageistruecolor($gdImgMob) === false) {
+                                imagepalettetotruecolor($gdImgMob);
+                            }
                             $filenameMob = "landing/{$section}_mob_" . time() . "_{$idx}.webp";
                             ob_start();
                             imagewebp($gdImgMob, null, 85);
@@ -448,7 +463,7 @@ class AdminPageController extends Controller
                     } else {
                         $imgMobileOriginal = $fileMob->store("landing", 'public');
                     }
-                }
+                }"
 
                 if ($imgOriginal || $imgMobileOriginal) {
                     $processedLandingImgs[] = [

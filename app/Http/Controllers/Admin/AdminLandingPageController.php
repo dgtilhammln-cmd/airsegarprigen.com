@@ -109,10 +109,10 @@ class AdminLandingPageController extends Controller
             'wa_number'        => 'nullable|string|max:30',
             'wa_message'       => 'nullable|string|max:500',
             'show_floating_wa' => 'nullable|boolean',
-            'og_image'         => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:10240',
-            'hero_image'       => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:10240',
-            'landing_images_file.*'        => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:10240',
-            'landing_images_mobile_file.*' => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:10240',
+            'og_image'         => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:15360',
+            'hero_image'       => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:15360',
+            'landing_images_file.*'        => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:15360',
+            'landing_images_mobile_file.*' => 'nullable|mimes:jpeg,jpg,png,webp,gif|max:15360',
         ]);
     }
 
