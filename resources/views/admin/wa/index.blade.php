@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 @section('title','Pengaturan WhatsApp')
 @section('page-title','Pengaturan WhatsApp')
 @section('content')
@@ -19,7 +19,7 @@
                     </div>
                     <div>
                         <label class="form-label">Nomor WA (tanpa +)</label>
-                        <input type="text" name="nomor_wa[{{ $wa->id }}]" value="{{ $wa->nomor_wa }}" class="form-input" placeholder="6281331148731">
+                        <input type="text" name="nomor_wa[{{ $wa->id }}]" value="{{ $wa->nomor_wa }}" class="form-input" placeholder="628113922229">
                     </div>
                     <div>
                         <label class="form-label">Urutan</label>
