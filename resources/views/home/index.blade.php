@@ -1070,7 +1070,11 @@
             @if(is_array($lpImgs) && count($lpImgs) > 0)
                 <div class="cv-landing-images-track" style="width:100%; display:flex; flex-direction:column; gap:0;">
                     @foreach($lpImgs as $idx => $lpItem)
-                        @if(!empty($lpItem['image']))
+                        @php
+                            $deskImg = $lpItem['image'] ?? '';
+                            $mobImg  = $lpItem['image_mobile'] ?? '';
+                        @endphp
+                        @if($deskImg || $mobImg)
                             <div class="cv-landing-img-wrap" id="lpWrap-{{ $idx }}" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
                                 {{-- Elegant Shimmer Skeleton Overlay --}}
                                 <div class="lp-img-skeleton" id="lpSkel-{{ $idx }}"></div>
@@ -1078,17 +1082,22 @@
                                 {{-- Transparent Shield Overlay to prevent ANY mouse click, drag, double click, selection, or touch gesture --}}
                                 <div class="lp-transparent-shield" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;"></div>
 
-                                {{-- Main Full-Width Image (Non-draggable & Non-selectable) --}}
-                                <img src="{{ asset('storage/' . $lpItem['image']) }}" 
-                                     alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
-                                     class="lp-img-element"
-                                     draggable="false"
-                                     ondragstart="return false;"
-                                     oncontextmenu="return false;"
-                                     onselectstart="return false;"
-                                     loading="{{ $loop->first ? 'eager' : 'lazy' }}"
-                                     onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
-                                     onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
+                                {{-- Main Full-Width Responsive Image (Non-draggable & Non-selectable) --}}
+                                <picture style="width:100%;display:block;">
+                                    @if(!empty($mobImg))
+                                        <source media="(max-width: 767px)" srcset="{{ asset('storage/' . $mobImg) }}">
+                                    @endif
+                                    <img src="{{ asset('storage/' . ($deskImg ?: $mobImg)) }}" 
+                                         alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
+                                         class="lp-img-element"
+                                         draggable="false"
+                                         ondragstart="return false;"
+                                         oncontextmenu="return false;"
+                                         onselectstart="return false;"
+                                         loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                                         onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
+                                         onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
+                                </picture>
                             </div>
                         @endif
                     @endforeach

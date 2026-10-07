@@ -59,22 +59,28 @@
 <div class="lp-full-wrapper">
     <div class="lp-full-container">
 
-        {{-- ── 1. Uploaded Full-Size Landing Page Images ── --}}
+        {{-- ── 1. Uploaded Full-Size Landing Page Images (Desktop + Mobile) ── --}}
         @if(!empty($page->images) && is_array($page->images) && count($page->images) > 0)
             @foreach($page->images as $img)
                 @php
                     $imgPath  = is_array($img) ? ($img['image'] ?? '') : $img;
+                    $imgMob   = is_array($img) ? ($img['image_mobile'] ?? '') : '';
                     $imgTitle = is_array($img) ? ($img['title'] ?? '') : '';
                 @endphp
-                @if($imgPath)
+                @if($imgPath || $imgMob)
                     <div class="lp-full-image-item">
-                        <img src="{{ asset('storage/' . $imgPath) }}" alt="{{ $imgTitle ?: $page->title }}" loading="lazy">
+                        <picture style="width:100%;display:block;">
+                            @if($imgMob)
+                                <source media="(max-width: 767px)" srcset="{{ asset('storage/' . $imgMob) }}">
+                            @endif
+                            <img src="{{ asset('storage/' . ($imgPath ?: $imgMob)) }}" alt="{{ $imgTitle ?: $page->title }}" loading="lazy" style="width:100%;height:auto;display:block;">
+                        </picture>
                     </div>
                 @endif
             @endforeach
         @elseif($page->hero_image)
             <div class="lp-full-image-item">
-                <img src="{{ asset('storage/' . $page->hero_image) }}" alt="{{ $page->title }}" loading="lazy">
+                <img src="{{ asset('storage/' . $page->hero_image) }}" alt="{{ $page->title }}" loading="lazy" style="width:100%;height:auto;display:block;">
             </div>
         @endif
 

@@ -1131,19 +1131,40 @@
                                         </div>
                                     </div>
 
-                                    <div class="hp-form-grid" style="margin-bottom:0;">
-                                        <div class="hp-field-group">
-                                            <label class="hp-label">File Foto / Banner Landing Page</label>
+                                    <div class="hp-form-grid" style="margin-bottom:0;grid-template-columns:1fr 1fr;">
+                                        {{-- Desktop Upload Box --}}
+                                        <div class="hp-field-group" style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                                            <label class="hp-label" style="display:flex;align-items:center;gap:0.4rem;color:#1E293B;">
+                                                <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                                File Foto Desktop (Landscape)
+                                            </label>
                                             @if(!empty($lImg['image']))
-                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:1rem;">
-                                                    <img src="{{ asset('storage/' . $lImg['image']) }}" style="max-height:100px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
-                                                    <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image]" value="{{ $lImg['image'] }}">
+                                                <div style="margin-bottom:0.5rem;">
+                                                    <img src="{{ asset('storage/' . $lImg['image']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
                                                 </div>
                                             @endif
+                                            <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image]" value="{{ $lImg['image'] ?? '' }}">
                                             <input type="file" name="landing_items_{{ $k }}[{{ $lIdx }}][file]" class="hp-input" accept="image/*">
+                                            <p style="font-size:0.7rem;color:#94A3B8;margin:0.3rem 0 0;">Format mendatar (lebar) untuk monitor/laptop.</p>
                                         </div>
 
-                                        <div class="hp-field-group">
+                                        {{-- Mobile Upload Box --}}
+                                        <div class="hp-field-group" style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                                            <label class="hp-label" style="display:flex;align-items:center;gap:0.4rem;color:#1E293B;">
+                                                <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                                File Foto Mobile (Portrait / Square - Opsional)
+                                            </label>
+                                            @if(!empty($lImg['image_mobile']))
+                                                <div style="margin-bottom:0.5rem;">
+                                                    <img src="{{ asset('storage/' . $lImg['image_mobile']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                </div>
+                                            @endif
+                                            <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image_mobile]" value="{{ $lImg['image_mobile'] ?? '' }}">
+                                            <input type="file" name="landing_items_{{ $k }}[{{ $lIdx }}][file_mobile]" class="hp-input" accept="image/*">
+                                            <p style="font-size:0.7rem;color:#94A3B8;margin:0.3rem 0 0;">Format tegak/kotak untuk layar HP. Kosongkan jika pakai Desktop.</p>
+                                        </div>
+
+                                        <div class="hp-field-group" style="grid-column: 1 / -1;">
                                             <label class="hp-label">Judul / Label Gambar (Opsional)</label>
                                             <input type="text" name="landing_items_{{ $k }}[{{ $lIdx }}][title]" class="hp-input" value="{{ $lImg['title'] ?? '' }}" placeholder="Contoh: Showcase Produk Banner 1">
 
@@ -1504,13 +1525,30 @@ function addLandingImgItem(secKey) {
                     </button>
                 </div>
             </div>
-            <div class="hp-form-grid" style="margin-bottom:0;">
-                <div class="hp-field-group">
-                    <label class="hp-label">File Foto / Banner Landing Page</label>
+            <div class="hp-form-grid" style="margin-bottom:0;grid-template-columns:1fr 1fr;">
+                {{-- Desktop Upload Box --}}
+                <div class="hp-field-group" style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                    <label class="hp-label" style="display:flex;align-items:center;gap:0.4rem;color:#1E293B;">
+                        <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        File Foto Desktop (Landscape)
+                    </label>
+                    <input type="hidden" name="landing_items_${secKey}[${idx}][existing_image]" value="">
                     <input type="file" name="landing_items_${secKey}[${idx}][file]" class="hp-input" accept="image/*" required>
+                    <p style="font-size:0.7rem;color:#94A3B8;margin:0.3rem 0 0;">Format mendatar (lebar) untuk monitor/laptop.</p>
                 </div>
 
-                <div class="hp-field-group">
+                {{-- Mobile Upload Box --}}
+                <div class="hp-field-group" style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                    <label class="hp-label" style="display:flex;align-items:center;gap:0.4rem;color:#1E293B;">
+                        <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        File Foto Mobile (Portrait / Square - Opsional)
+                    </label>
+                    <input type="hidden" name="landing_items_${secKey}[${idx}][existing_image_mobile]" value="">
+                    <input type="file" name="landing_items_${secKey}[${idx}][file_mobile]" class="hp-input" accept="image/*">
+                    <p style="font-size:0.7rem;color:#94A3B8;margin:0.3rem 0 0;">Format tegak/kotak untuk layar HP. Kosongkan jika pakai Desktop.</p>
+                </div>
+
+                <div class="hp-field-group" style="grid-column: 1 / -1;">
                     <label class="hp-label">Judul / Label Gambar (Opsional)</label>
                     <input type="text" name="landing_items_${secKey}[${idx}][title]" class="hp-input" value="Landing Page Image" placeholder="Contoh: Banner Showcase 1">
 

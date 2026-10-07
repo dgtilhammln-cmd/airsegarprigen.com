@@ -79,6 +79,7 @@
         @forelse($landingImages as $idx => $img)
           @php
             $imgPath  = is_array($img) ? ($img['image'] ?? '') : $img;
+            $imgMob   = is_array($img) ? ($img['image_mobile'] ?? '') : '';
             $imgTitle = is_array($img) ? ($img['title'] ?? '') : '';
           @endphp
           <div class="lp-img-card" style="border:1.5px solid #E2E8F0;border-radius:14px;padding:1.25rem;background:#FAFBFF;position:relative;">
@@ -90,31 +91,49 @@
                 <button type="button" onclick="removeRow(this)" style="padding:.3rem .6rem;background:#FEE2E2;color:#DC2626;border:1px solid #FECDD3;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">Hapus Gambar</button>
               </div>
             </div>
-            <div style="display:grid;grid-template-columns:220px 1fr;gap:1.25rem;align-items:center;">
-              <div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1rem;">
+              {{-- Desktop Upload Box --}}
+              <div style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                <label style="font-size:.78rem;font-weight:700;color:#1E293B;display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;">
+                  <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Versi Desktop (Landscape)
+                </label>
                 @if($imgPath)
-                  <img src="{{ asset('storage/' . $imgPath) }}" style="width:100%;max-height:130px;object-fit:cover;border-radius:10px;border:1px solid #CBD5E1;">
-                  <input type="hidden" name="landing_images_existing[]" value="{{ $imgPath }}">
-                @else
-                  <div style="width:100%;height:100px;background:#E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-size:.75rem;">Belum ada gambar</div>
-                  <input type="hidden" name="landing_images_existing[]" value="">
+                  <div style="margin-bottom:.5rem;">
+                    <img src="{{ asset('storage/' . $imgPath) }}" style="width:100%;height:100px;object-fit:cover;border-radius:8px;border:1px solid #CBD5E1;">
+                  </div>
                 @endif
+                <input type="hidden" name="landing_images_existing[]" value="{{ $imgPath }}">
+                <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
+                <p style="font-size:.7rem;color:#94A3B8;margin:.3rem 0 0;">Format mendatar (lebar) untuk monitor/laptop.</p>
               </div>
-              <div style="display:grid;gap:.75rem;">
-                <div>
-                  <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Pilih File Foto / Banner Landing Page</label>
-                  <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
-                </div>
-                <div>
-                  <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
-                  <input type="text" name="landing_images_title[]" class="lp-input" value="{{ $imgTitle }}" placeholder="Judul gambar...">
-                </div>
+
+              {{-- Mobile Upload Box --}}
+              <div style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+                <label style="font-size:.78rem;font-weight:700;color:#1E293B;display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;">
+                  <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                  Versi Mobile (Portrait / Square - Opsional)
+                </label>
+                @if($imgMob)
+                  <div style="margin-bottom:.5rem;">
+                    <img src="{{ asset('storage/' . $imgMob) }}" style="width:100%;height:100px;object-fit:cover;border-radius:8px;border:1px solid #CBD5E1;">
+                  </div>
+                @endif
+                <input type="hidden" name="landing_images_mobile_existing[]" value="{{ $imgMob }}">
+                <input type="file" name="landing_images_mobile_file[]" class="lp-input" accept="image/*">
+                <p style="font-size:.7rem;color:#94A3B8;margin:.3rem 0 0;">Format tegak/kotak untuk layar HP. Kosongkan jika pakai Desktop.</p>
               </div>
+            </div>
+
+            <div>
+              <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
+              <input type="text" name="landing_images_title[]" class="lp-input" value="{{ $imgTitle }}" placeholder="Judul gambar...">
             </div>
           </div>
         @empty
           <div id="no-images-msg" style="text-align:center;padding:2rem;background:#FAFBFF;border:2px dashed #CBD5E1;border-radius:14px;color:#64748B;font-size:.85rem;">
-            Belum ada gambar landing page. Klik tombol <strong>"+ Upload Gambar Landing Page"</strong> di atas untuk menambahkan gambar full width tanpa terpotong.
+            Belum ada gambar landing page. Klik tombol <strong>"+ Upload Gambar Landing Page"</strong> di atas untuk menambahkan gambar.
           </div>
         @endforelse
       </div>
@@ -401,21 +420,34 @@ function addLandingImageRow() {
           <button type="button" onclick="removeRow(this)" style="padding:.3rem .6rem;background:#FEE2E2;color:#DC2626;border:1px solid #FECDD3;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;">Hapus Gambar</button>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:220px 1fr;gap:1.25rem;align-items:center;">
-        <div>
-          <div style="width:100%;height:100px;background:#E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-size:.75rem;">Pilih foto baru</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1rem;">
+        {{-- Desktop Upload Box --}}
+        <div style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+          <label style="font-size:.78rem;font-weight:700;color:#1E293B;display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;">
+            <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Versi Desktop (Landscape)
+          </label>
           <input type="hidden" name="landing_images_existing[]" value="">
+          <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
+          <p style="font-size:.7rem;color:#94A3B8;margin:.3rem 0 0;">Format mendatar (lebar) untuk monitor/laptop.</p>
         </div>
-        <div style="display:grid;gap:.75rem;">
-          <div>
-            <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Pilih File Foto / Banner Landing Page</label>
-            <input type="file" name="landing_images_file[]" class="lp-input" accept="image/*">
-          </div>
-          <div>
-            <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
-            <input type="text" name="landing_images_title[]" class="lp-input" placeholder="Judul gambar...">
-          </div>
+
+        {{-- Mobile Upload Box --}}
+        <div style="background:#fff;padding:1rem;border-radius:10px;border:1px solid #E2E8F0;">
+          <label style="font-size:.78rem;font-weight:700;color:#1E293B;display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;">
+            <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            Versi Mobile (Portrait / Square - Opsional)
+          </label>
+          <input type="hidden" name="landing_images_mobile_existing[]" value="">
+          <input type="file" name="landing_images_mobile_file[]" class="lp-input" accept="image/*">
+          <p style="font-size:.7rem;color:#94A3B8;margin:.3rem 0 0;">Format tegak/kotak untuk layar HP. Kosongkan jika pakai Desktop.</p>
         </div>
+      </div>
+
+      <div>
+        <label style="font-size:.75rem;font-weight:700;color:#475569;display:block;margin-bottom:.3rem;">Judul / Label Gambar (Opsional)</label>
+        <input type="text" name="landing_images_title[]" class="lp-input" placeholder="Judul gambar...">
       </div>
     </div>
   `;

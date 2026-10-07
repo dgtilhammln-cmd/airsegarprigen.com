@@ -391,16 +391,17 @@ class AdminPageController extends Controller
             }
         }
 
-        // Handle Multiple Landing Page Image Uploads & Reordering
+        // Handle Multiple Landing Page Image Uploads & Reordering (Desktop + Mobile)
         $existingLandingImgs = json_decode(Setting::get("page_home_landing_images_{$section}", '[]'), true) ?: [];
         $landingInput = $request->input("landing_items_{$section}", []);
         $processedLandingImgs = [];
 
         if (is_array($landingInput)) {
             foreach ($landingInput as $idx => $item) {
-                $imgOriginal = $item['existing_image'] ?? '';
+                $imgOriginal       = $item['existing_image'] ?? '';
+                $imgMobileOriginal = $item['existing_image_mobile'] ?? '';
 
-                // New image upload if present
+                // New Desktop image upload if present
                 $fileKey = "landing_items_{$section}.{$idx}.file";
                 if ($request->hasFile($fileKey)) {
                     $file = $request->file($fileKey);
@@ -409,7 +410,7 @@ class AdminPageController extends Controller
                     if ($doCompress) {
                         $gdImg = $this->gdLoad($file);
                         if ($gdImg) {
-                            $filename = "landing/{$section}_" . time() . "_{$idx}.webp";
+                            $filename = "landing/{$section}_desk_" . time() . "_{$idx}.webp";
                             ob_start();
                             imagewebp($gdImg, null, 85);
                             $contents = ob_get_clean();
@@ -425,12 +426,37 @@ class AdminPageController extends Controller
                     }
                 }
 
-                if ($imgOriginal) {
+                // New Mobile image upload if present
+                $fileMobileKey = "landing_items_{$section}.{$idx}.file_mobile";
+                if ($request->hasFile($fileMobileKey)) {
+                    $fileMob = $request->file($fileMobileKey);
+                    $doCompressMob = isset($item['compress']) && $item['compress'] == '1';
+
+                    if ($doCompressMob) {
+                        $gdImgMob = $this->gdLoad($fileMob);
+                        if ($gdImgMob) {
+                            $filenameMob = "landing/{$section}_mob_" . time() . "_{$idx}.webp";
+                            ob_start();
+                            imagewebp($gdImgMob, null, 85);
+                            $contentsMob = ob_get_clean();
+                            imagedestroy($gdImgMob);
+                            Storage::disk('public')->put($filenameMob, $contentsMob);
+                            $imgMobileOriginal = $filenameMob;
+                        } else {
+                            $imgMobileOriginal = $fileMob->store("landing", 'public');
+                        }
+                    } else {
+                        $imgMobileOriginal = $fileMob->store("landing", 'public');
+                    }
+                }
+
+                if ($imgOriginal || $imgMobileOriginal) {
                     $processedLandingImgs[] = [
-                        'image'    => $imgOriginal,
-                        'title'    => $item['title'] ?? '',
-                        'order'    => (int)($item['order'] ?? $idx),
-                        'compress' => isset($item['compress']) ? ($item['compress'] == '1') : true,
+                        'image'        => $imgOriginal,
+                        'image_mobile' => $imgMobileOriginal,
+                        'title'        => $item['title'] ?? '',
+                        'order'        => (int)($item['order'] ?? $idx),
+                        'compress'     => isset($item['compress']) ? ($item['compress'] == '1') : true,
                     ];
                 }
             }

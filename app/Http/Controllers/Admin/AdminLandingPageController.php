@@ -125,34 +125,45 @@ class AdminLandingPageController extends Controller
             }
         }
 
-        // Handle full size landing page images array
-        $existingImages = $request->input('landing_images_existing', []);
-        $titles         = $request->input('landing_images_title', []);
-        $newFiles       = $request->file('landing_images_file', []);
+        // Handle full size landing page images array (Desktop + Mobile)
+        $existingDesktop = $request->input('landing_images_existing', []);
+        $existingMobile  = $request->input('landing_images_mobile_existing', []);
+        $titles          = $request->input('landing_images_title', []);
+
+        $newDesktopFiles = $request->file('landing_images_file', []);
+        $newMobileFiles  = $request->file('landing_images_mobile_file', []);
 
         $finalImages = [];
-        if (is_array($existingImages)) {
-            foreach ($existingImages as $index => $oldPath) {
-                $title = $titles[$index] ?? '';
-                // If replaced by new file at index
-                if (isset($newFiles[$index]) && $newFiles[$index]->isValid()) {
-                    if ($oldPath) Storage::disk('public')->delete($oldPath);
-                    $path = $newFiles[$index]->store('landing-pages', 'public');
-                    $finalImages[] = ['image' => $path, 'title' => $title];
-                } elseif (!empty($oldPath)) {
-                    $finalImages[] = ['image' => $oldPath, 'title' => $title];
-                }
-            }
-        }
+        $maxCount = max(
+            count((array)$existingDesktop),
+            count((array)$existingMobile),
+            count((array)$newDesktopFiles),
+            count((array)$newMobileFiles)
+        );
 
-        // Additional new uploaded files appended
-        if (is_array($newFiles)) {
-            foreach ($newFiles as $index => $file) {
-                if (!isset($existingImages[$index]) && $file && $file->isValid()) {
-                    $path = $file->store('landing-pages', 'public');
-                    $title = $titles[$index] ?? '';
-                    $finalImages[] = ['image' => $path, 'title' => $title];
-                }
+        for ($i = 0; $i < $maxCount; $i++) {
+            $title = $titles[$i] ?? '';
+            $deskPath = $existingDesktop[$i] ?? '';
+            $mobPath  = $existingMobile[$i] ?? '';
+
+            // Handle Desktop file replacement/upload
+            if (isset($newDesktopFiles[$i]) && $newDesktopFiles[$i]->isValid()) {
+                if ($deskPath) Storage::disk('public')->delete($deskPath);
+                $deskPath = $newDesktopFiles[$i]->store('landing-pages', 'public');
+            }
+
+            // Handle Mobile file replacement/upload
+            if (isset($newMobileFiles[$i]) && $newMobileFiles[$i]->isValid()) {
+                if ($mobPath) Storage::disk('public')->delete($mobPath);
+                $mobPath = $newMobileFiles[$i]->store('landing-pages', 'public');
+            }
+
+            if ($deskPath || $mobPath) {
+                $finalImages[] = [
+                    'image'        => $deskPath,
+                    'image_mobile' => $mobPath,
+                    'title'        => $title,
+                ];
             }
         }
 
