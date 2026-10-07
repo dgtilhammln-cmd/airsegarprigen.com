@@ -361,7 +361,7 @@ class AdminPageController extends Controller
         $btnShow = $request->boolean("page_home_btn_show_{$section}") ? '1' : '0';
         Setting::set("page_home_btn_show_{$section}", $btnShow);
 
-"        // Handle Image Upload with optional Auto Compress
+        // Handle Image Upload with optional Auto Compress
         $imageParam = "page_home_image_{$section}";
         if ($request->hasFile($imageParam)) {
             $file = $request->file($imageParam);
@@ -463,7 +463,7 @@ class AdminPageController extends Controller
                     } else {
                         $imgMobileOriginal = $fileMob->store("landing", 'public');
                     }
-                }"
+                }
 
                 if ($imgOriginal || $imgMobileOriginal) {
                     $processedLandingImgs[] = [
