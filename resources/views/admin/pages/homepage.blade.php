@@ -1497,8 +1497,8 @@ function deleteLandingImageAjax(itemId, secKey, imgIndex, btn) {
     btn.disabled = true;
     btn.textContent = 'Menghapus...';
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]') ?.
-        getAttribute('content') || '';
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '{{ csrf_token() }}';
 
     fetch('{{ route("admin.pages.homepage.landing_image.delete") }}', {
         method: 'DELETE',
@@ -1535,6 +1535,63 @@ function deleteLandingImageAjax(itemId, secKey, imgIndex, btn) {
 }
 
 // Simple toast notification for admin
+function compressLandingImageAjax(section, index, target, btnEl, imgPreviewId, badgeSizeId) {
+    if (!confirm('Kompres gambar ini ke format WebP super ringan untuk mempercepat loading web?')) return;
+
+    const originalText = btnEl.innerHTML;
+    btnEl.disabled = true;
+    btnEl.innerHTML = '⏳ Mengompres...';
+    btnEl.style.opacity = '0.7';
+
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '{{ csrf_token() }}';
+
+    fetch('{{ route("admin.pages.homepage.landing_image.compress") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ section: section, index: index, target: target })
+    })
+    .then(r => r.json())
+    .then(data => {
+        btnEl.disabled = false;
+        btnEl.innerHTML = originalText;
+        btnEl.style.opacity = '1';
+
+        if (data.success) {
+            if (imgPreviewId) {
+                const img = document.getElementById(imgPreviewId);
+                if (img) img.src = data.new_url;
+            }
+            if (badgeSizeId) {
+                const badge = document.getElementById(badgeSizeId);
+                if (badge) {
+                    badge.innerText = 'Ukuran: ' + data.new_size + ' (Hemat ' + data.saved_percent + '%)';
+                    badge.style.background = '#DCFCE7';
+                    badge.style.color = '#15803D';
+                }
+            }
+            if (typeof showAdminToast === 'function') {
+                showAdminToast(data.message);
+            } else {
+                alert(data.message);
+            }
+        } else {
+            alert('Gagal: ' + (data.message || 'Terjadi kesalahan'));
+        }
+    })
+    .catch(err => {
+        btnEl.disabled = false;
+        btnEl.innerHTML = originalText;
+        btnEl.style.opacity = '1';
+        alert('Terjadi kesalahan koneksi.');
+    });
+}
+window.compressLandingImageAjax = compressLandingImageAjax;
+
 function showAdminToast(msg) {
     let toast = document.getElementById('admin-ajax-toast');
     if (!toast) {
@@ -1840,5 +1897,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (btn) btn.click();
     }
 });
+
+
 </script>
 @endsection
