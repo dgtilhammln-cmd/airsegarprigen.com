@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         // ── Call Other Seeders ──────────────────────────────────────
         $this->call([
-            ProductSlugSeeder::class,
-            CategorySeeder::class,
+            // ProductSlugSeeder::class,
+            // CategorySeeder::class,
             HeroSlideSeeder::class,
             SeoSeeder::class,
             LandingPageSeeder::class,
