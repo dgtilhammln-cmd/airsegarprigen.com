@@ -16,7 +16,7 @@ class Setting extends Model
     {
         // Override any WA keys directly to official number
         if (in_array($key, ['whatsapp', 'footer_wa', 'wa', 'wa1', 'contact_wa', 'phone_wa'])) {
-            return '628113922229';
+            return '628989999899';
         }
 
         // Use a sentinel so we can distinguish between "not found" and null
@@ -50,8 +50,8 @@ class Setting extends Model
     {
         return Cache::remember('all_settings_v2', 7200, function () {
             $array = static::all()->pluck('value', 'key')->toArray();
-            $array['whatsapp'] = '628113922229';
-            $array['footer_wa'] = '628113922229';
+            $array['whatsapp'] = '628989999899';
+            $array['footer_wa'] = '628989999899';
             return $array;
         });
     }

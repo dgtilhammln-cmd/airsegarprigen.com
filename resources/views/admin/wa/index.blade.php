@@ -19,7 +19,7 @@
                     </div>
                     <div>
                         <label class="form-label">Nomor WA (tanpa +)</label>
-                        <input type="text" name="nomor_wa[{{ $wa->id }}]" value="{{ $wa->nomor_wa }}" class="form-input" placeholder="628113922229">
+                        <input type="text" name="nomor_wa[{{ $wa->id }}]" value="{{ $wa->nomor_wa }}" class="form-input" placeholder="628989999899">
                     </div>
                     <div>
                         <label class="form-label">Urutan</label>

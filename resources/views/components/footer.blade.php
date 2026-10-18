@@ -52,11 +52,11 @@ FOOTER COMPONENT — {{ \App\Models\Setting::get('company_name', config('app.nam
 
     $showContactPhone = ($s['footer_show_contact_phone'] ?? '1') === '1';
     $phoneLabel = $s['footer_phone_label'] ?? 'Telepon';
-    $phoneVal = $s['footer_phone'] ?? ($s['phone'] ?? '0343-123456');
+    $phoneVal = $s['footer_phone'] ?? ($s['phone'] ?? '08989999899');
 
     $showContactWa = ($s['footer_show_contact_wa'] ?? '1') === '1';
     $waLabel = $s['footer_wa_label'] ?? 'WhatsApp';
-    $waVal = $s['footer_wa'] ?? ($s['whatsapp'] ?? '628113922229');
+    $waVal = $s['footer_wa'] ?? ($s['whatsapp'] ?? '628989999899');
 
     $showContactEmail = ($s['footer_show_contact_email'] ?? '1') === '1';
     $emailLabel = $s['footer_email_label'] ?? 'Email';

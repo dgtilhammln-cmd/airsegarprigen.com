@@ -16,11 +16,11 @@ class WaSetting extends Model
     ];
 
     /**
-     * Always return the official hardcoded WA number 628113922229
+     * Always return the official hardcoded WA number 628989999899
      */
     public function getNomorWaAttribute($value): string
     {
-        return '628113922229';
+        return '628989999899';
     }
 
     public function scopeActive(Builder $query): Builder
@@ -46,7 +46,7 @@ class WaSetting extends Model
         if (!$wa) {
             $wa = new static([
                 'label' => 'WA Utama',
-                'nomor_wa' => '628113922229',
+                'nomor_wa' => '628989999899',
                 'template_pesan' => 'Halo Air Segar Prigen, saya ingin memesan air pegunungan. Mohon info detailnya.',
                 'is_active' => true,
                 'is_primary' => true
@@ -61,7 +61,7 @@ class WaSetting extends Model
      */
     public function getWaUrlAttribute(): string
     {
-        return 'https://wa.me/628113922229?text=' . urlencode($this->template_pesan ?? 'Halo Air Segar Prigen, saya ingin memesan air pegunungan.');
+        return 'https://wa.me/628989999899?text=' . urlencode($this->template_pesan ?? 'Halo Air Segar Prigen, saya ingin memesan air pegunungan.');
     }
 
     /**
@@ -74,6 +74,6 @@ class WaSetting extends Model
             $product ?? 'produk Anda',
             $this->template_pesan ?? 'Halo Air Segar Prigen, saya ingin memesan [produk].'
         );
-        return 'https://wa.me/628113922229?text=' . urlencode($message);
+        return 'https://wa.me/628989999899?text=' . urlencode($message);
     }
 }

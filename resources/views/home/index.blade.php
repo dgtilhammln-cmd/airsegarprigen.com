@@ -3116,7 +3116,7 @@
                         'title' => 'Supplier Air Tangki Pegunungan',
                         'desc' => 'Pasokan air tangki pegunungan berkualitas tinggi untuk kebutuhan industri, hotel, kolam renang, dan depo air isi ulang.',
                         'btn_text' => 'PESAN SEKARANG',
-                        'btn_url' => 'https://wa.me/628113922229',
+                        'btn_url' => 'https://wa.me/628989999899',
                         'bg_color' => '#0B092B',
                         'bg_end_color' => '#0B092B',
                         'text_color' => '#FFFFFF',
@@ -3127,7 +3127,7 @@
                         'title' => 'Pabrik Maklon AMDK',
                         'desc' => 'Layanan maklon Air Minum Dalam Kemasan (AMDK) custom merk sesuai standar kesehatan tertinggi.',
                         'btn_text' => 'KONSULTASI GRATIS',
-                        'btn_url' => 'https://wa.me/628113922229',
+                        'btn_url' => 'https://wa.me/628989999899',
                         'bg_color' => '#090B38',
                         'bg_end_color' => '#1532A6',
                         'text_color' => '#FFFFFF',
@@ -3357,7 +3357,7 @@
                                 $cTxtColor = !empty($uLayCardTxt) ? $uLayCardTxt : ($c['text_color'] ?? '#FFFFFF');
                                 $cIconBg   = !empty($uLayCardIconBg) ? $uLayCardIconBg : ($c['icon_bg'] ?? '#FFFFFF');
                                 $cIconClr  = !empty($uLayCardIconClr) ? $uLayCardIconClr : ($c['icon_color'] ?? '#0F172A');
-                                $cBtnUrl   = $c['btn_url'] ?? 'https://wa.me/628113922229';
+                                $cBtnUrl   = $c['btn_url'] ?? 'https://wa.me/628989999899';
 
                                 if (str_contains($cBgStart, 'gradient')) {
                                     $cardBgStyle = $cBgStart;

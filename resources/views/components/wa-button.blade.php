@@ -1,6 +1,6 @@
 {{-- Floating WhatsApp Button --}}
 @php
-    $waNumber = '628113922229';
+    $waNumber = '628989999899';
 @endphp
 <style>
     .wa-float {

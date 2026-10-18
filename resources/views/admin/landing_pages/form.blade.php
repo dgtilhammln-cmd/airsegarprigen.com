@@ -6,7 +6,7 @@
 @php
   $isEdit = !is_null($page);
   $action = $isEdit ? route('admin.landing-pages.update', $page) : route('admin.landing-pages.store');
-  $wa = \App\Models\Setting::get('whatsapp', '628113922229');
+  $wa = \App\Models\Setting::get('whatsapp', '628989999899');
   $landingImages = $page?->images ?? [];
   if (!is_array($landingImages)) {
       $landingImages = [];

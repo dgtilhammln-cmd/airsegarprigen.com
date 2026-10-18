@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         // ── WA Settings ─────────────────────────────────────────────
         if (\App\Models\WaSetting::count() === 0) {
             WaSetting::insert([
-                ['label'=>'WA Utama','nomor_wa'=>'628113922229','template_pesan'=>'Halo Air Segar Prigen, saya ingin memesan [nama produk]. Mohon informasi harga dan jadwal pengiriman. Terima kasih.','is_active'=>1,'is_primary'=>1,'order'=>1,'created_at'=>now(),'updated_at'=>now()],
+                ['label'=>'WA Utama','nomor_wa'=>'628989999899','template_pesan'=>'Halo Air Segar Prigen, saya ingin memesan [nama produk]. Mohon informasi harga dan jadwal pengiriman. Terima kasih.','is_active'=>1,'is_primary'=>1,'order'=>1,'created_at'=>now(),'updated_at'=>now()],
             ]);
         }
 
@@ -81,8 +81,8 @@ class DatabaseSeeder extends Seeder
             ['key'=>'stat_coverage', 'value'=>'Prigen & Sekitar', 'type'=>'text','group'=>'stats','label'=>'Area Pengiriman'],
 
             // Contact
-            ['key'=>'phone',    'value'=>'0343-123456',                                                     'type'=>'text','group'=>'contact','label'=>'Telepon'],
-            ['key'=>'wa1',      'value'=>'628113922229',                                                   'type'=>'text','group'=>'contact','label'=>'WhatsApp Utama'],
+            ['key'=>'phone',    'value'=>'08989999899',                                                     'type'=>'text','group'=>'contact','label'=>'Telepon'],
+            ['key'=>'wa1',      'value'=>'628989999899',                                                   'type'=>'text','group'=>'contact','label'=>'WhatsApp Utama'],
             ['key'=>'email',    'value'=>'info@airsegarprigen.com',                                         'type'=>'text','group'=>'contact','label'=>'Email'],
             ['key'=>'address',  'value'=>'Jl. Raya Prigen No. 10, Prigen, Pasuruan, Jawa Timur 67157',      'type'=>'text','group'=>'contact','label'=>'Alamat'],
             ['key'=>'maps_embed','value'=>'https://maps.google.com/maps?q=-7.7167,112.6833&output=embed',   'type'=>'text','group'=>'contact','label'=>'Maps Embed URL'],

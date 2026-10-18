@@ -33,8 +33,8 @@ class LeadController extends Controller
         if (!empty($validated['message'])) $msg .= "\nPesan: {$validated['message']}\n";
         $msg .= "\nTerima kasih.";
 
-        // Hardcoded WA Number directly to 628113922229
-        $nomor = '628113922229';
+        // Hardcoded WA Number directly to 628989999899
+        $nomor = '628989999899';
         $waUrl = 'https://wa.me/' . $nomor . '?text=' . urlencode($msg);
 
         // Save lead
