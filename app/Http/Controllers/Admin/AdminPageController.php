@@ -554,4 +554,129 @@ class AdminPageController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Gambar berhasil dihapus.', 'remaining' => count($existing)]);
     }
+
+    // ─── COMPRESS SINGLE LANDING IMAGE (AJAX) ──────────────────────────────────
+    public function compressLandingImage(Request $request)
+    {
+        $section = $request->input('section', 'landing_page');
+        $index   = (int) $request->input('index', -1);
+        $target  = $request->input('target', 'image'); // 'image' or 'image_mobile'
+
+        if (!array_key_exists($section, $this->homeSections)) {
+            return response()->json(['success' => false, 'message' => 'Section tidak valid.'], 422);
+        }
+
+        $key = "page_home_landing_images_{$section}";
+        $existing = json_decode(Setting::get($key, '[]'), true) ?: [];
+
+        if ($index < 0 || !isset($existing[$index])) {
+            return response()->json(['success' => false, 'message' => 'Gambar tidak ditemukan.'], 404);
+        }
+
+        $relPath = $existing[$index][$target] ?? null;
+        if (!$relPath || !\Illuminate\Support\Facades\Storage::disk('public')->exists($relPath)) {
+            return response()->json(['success' => false, 'message' => 'File gambar tidak ditemukan di server.'], 404);
+        }
+
+        $fullPath = \Illuminate\Support\Facades\Storage::disk('public')->path($relPath);
+        $oldSize  = filesize($fullPath);
+
+        $imgInfo = @getimagesize($fullPath);
+        if (!$imgInfo) {
+            return response()->json(['success' => false, 'message' => 'Format file tidak dapat diproses.'], 422);
+        }
+
+        $mime = $imgInfo['mime'] ?? '';
+        $srcW = $imgInfo[0];
+        $srcH = $imgInfo[1];
+
+        $srcImg = null;
+        switch ($mime) {
+            case 'image/jpeg':
+            case 'image/jpg':
+                $srcImg = @imagecreatefromjpeg($fullPath);
+                break;
+            case 'image/png':
+                $srcImg = @imagecreatefrompng($fullPath);
+                break;
+            case 'image/webp':
+                $srcImg = @imagecreatefromwebp($fullPath);
+                break;
+            case 'image/gif':
+                $srcImg = @imagecreatefromgif($fullPath);
+                break;
+        }
+
+        if (!$srcImg) {
+            return response()->json(['success' => false, 'message' => 'Gagal membaca gambar.'], 422);
+        }
+
+        if (imageistruecolor($srcImg) === false) {
+            imagepalettetotruecolor($srcImg);
+        }
+
+        // Limit dimensions for fast web loading (Desktop max 1920px, Mobile max 1080px)
+        $maxW = ($target === 'image_mobile') ? 1080 : 1920;
+        $dstW = $srcW;
+        $dstH = $srcH;
+        if ($srcW > $maxW) {
+            $dstW = $maxW;
+            $dstH = (int) round(($srcH * $maxW) / $srcW);
+        }
+
+        $dstImg = imagecreatetruecolor($dstW, $dstH);
+        imagealphablending($dstImg, false);
+        imagesavealpha($dstImg, true);
+        imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
+        imagedestroy($srcImg);
+
+        // Convert and compress as WebP with 75% quality
+        $newFilename = "landing/{$section}_opt_" . time() . "_{$index}.webp";
+        ob_start();
+        imagewebp($dstImg, null, 75);
+        $webpContent = ob_get_clean();
+        imagedestroy($dstImg);
+
+        if (!$webpContent) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengompres gambar.'], 500);
+        }
+
+        $newSize = strlen($webpContent);
+
+        // Save new compressed WebP
+        \Illuminate\Support\Facades\Storage::disk('public')->put($newFilename, $webpContent);
+
+        // Delete old file if different filename
+        if ($relPath !== $newFilename && \Illuminate\Support\Facades\Storage::disk('public')->exists($relPath)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($relPath);
+        }
+
+        // Update setting
+        $existing[$index][$target] = $newFilename;
+        Setting::set($key, json_encode(array_values($existing)));
+        Setting::clearCache();
+
+        $savedBytes = max(0, $oldSize - $newSize);
+        $savedPercent = ($oldSize > 0) ? round(($savedBytes / $oldSize) * 100, 1) : 0;
+
+        return response()->json([
+            'success'       => true,
+            'message'       => "Berhasil dikompres! Dari " . $this->formatBytes($oldSize) . " menjadi " . $this->formatBytes($newSize) . " (Hemat {$savedPercent}%)",
+            'new_path'      => $newFilename,
+            'new_url'       => asset('storage/' . $newFilename) . '?v=' . time(),
+            'old_size'      => $this->formatBytes($oldSize),
+            'new_size'      => $this->formatBytes($newSize),
+            'saved_percent' => $savedPercent
+        ]);
+    }
+
+    private function formatBytes($bytes, $precision = 1)
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow];
+    }
 }

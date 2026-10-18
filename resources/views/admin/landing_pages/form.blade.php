@@ -99,9 +99,34 @@
                   <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                   Versi Desktop (Landscape)
                 </label>
+                @php
+                  $deskSizeStr = '';
+                  if ($imgPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($imgPath)) {
+                      $dBytes = filesize(\Illuminate\Support\Facades\Storage::disk('public')->path($imgPath));
+                      $deskSizeStr = round($dBytes / 1024, 1) . ' KB';
+                      if ($dBytes > 1024 * 1024) {
+                          $deskSizeStr = round($dBytes / (1024 * 1024), 2) . ' MB';
+                      }
+                  }
+                @endphp
                 @if($imgPath)
-                  <div style="margin-bottom:.5rem;">
-                    <img src="{{ asset('storage/' . $imgPath) }}" style="width:100%;height:100px;object-fit:cover;border-radius:8px;border:1px solid #CBD5E1;">
+                  <div style="margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+                    <img id="lp-img-desk-{{ $idx }}" src="{{ asset('storage/' . $imgPath) }}" style="max-height:80px;border-radius:8px;border:1px solid #CBD5E1;max-width:140px;object-fit:contain;">
+                    <div style="display:flex;flex-direction:column;gap:.3rem;">
+                      @if($deskSizeStr)
+                        <span id="badge-desk-{{ $idx }}" style="font-size:.72rem;background:#E2E8F0;color:#334155;padding:2px 8px;border-radius:6px;font-weight:600;display:inline-block;width:fit-content;">
+                          Ukuran: {{ $deskSizeStr }}
+                        </span>
+                      @endif
+                      @if($isEdit && $page)
+                        <button type="button" 
+                                onclick="compressLpCampaignImage({{ $page->id }}, {{ $idx }}, 'image', this, 'lp-img-desk-{{ $idx }}', 'badge-desk-{{ $idx }}')"
+                                style="display:inline-flex;align-items:center;gap:.35rem;background:#0284C7;color:#fff;border:none;border-radius:6px;padding:.35rem .75rem;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;"
+                                title="Kompres ukuran file">
+                          ⚡ Kompres Gambar
+                        </button>
+                      @endif
+                    </div>
                   </div>
                 @endif
                 <input type="hidden" name="landing_images_existing[]" value="{{ $imgPath }}">
@@ -115,9 +140,34 @@
                   <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                   Versi Mobile (Portrait / Square - Opsional)
                 </label>
+                @php
+                  $mobSizeStr = '';
+                  if ($imgMob && \Illuminate\Support\Facades\Storage::disk('public')->exists($imgMob)) {
+                      $mBytes = filesize(\Illuminate\Support\Facades\Storage::disk('public')->path($imgMob));
+                      $mobSizeStr = round($mBytes / 1024, 1) . ' KB';
+                      if ($mBytes > 1024 * 1024) {
+                          $mobSizeStr = round($mBytes / (1024 * 1024), 2) . ' MB';
+                      }
+                  }
+                @endphp
                 @if($imgMob)
-                  <div style="margin-bottom:.5rem;">
-                    <img src="{{ asset('storage/' . $imgMob) }}" style="width:100%;height:100px;object-fit:cover;border-radius:8px;border:1px solid #CBD5E1;">
+                  <div style="margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+                    <img id="lp-img-mob-{{ $idx }}" src="{{ asset('storage/' . $imgMob) }}" style="max-height:80px;border-radius:8px;border:1px solid #CBD5E1;max-width:140px;object-fit:contain;">
+                    <div style="display:flex;flex-direction:column;gap:.3rem;">
+                      @if($mobSizeStr)
+                        <span id="badge-mob-{{ $idx }}" style="font-size:.72rem;background:#E2E8F0;color:#334155;padding:2px 8px;border-radius:6px;font-weight:600;display:inline-block;width:fit-content;">
+                          Ukuran: {{ $mobSizeStr }}
+                        </span>
+                      @endif
+                      @if($isEdit && $page)
+                        <button type="button" 
+                                onclick="compressLpCampaignImage({{ $page->id }}, {{ $idx }}, 'image_mobile', this, 'lp-img-mob-{{ $idx }}', 'badge-mob-{{ $idx }}')"
+                                style="display:inline-flex;align-items:center;gap:.35rem;background:#0284C7;color:#fff;border:none;border-radius:6px;padding:.35rem .75rem;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;"
+                                title="Kompres ukuran file">
+                          ⚡ Kompres Gambar
+                        </button>
+                      @endif
+                    </div>
                   </div>
                 @endif
                 <input type="hidden" name="landing_images_mobile_existing[]" value="{{ $imgMob }}">

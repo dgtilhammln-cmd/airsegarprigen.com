@@ -960,7 +960,7 @@
     </section>
     @endif
 
-    {{-- ════ LANDING PAGE FULL IMAGE SHOWCASE WITH ELEGANT SKELETON ════ --}}
+        {{-- ════ LANDING PAGE FULL IMAGE SHOWCASE (TikTok-Style Infinite Scroll + Light Blue Loader) ════ --}}
     @if(\App\Models\Setting::get('page_home_show_landing_page','1') == '1')
         @php
             $lpBg = \App\Models\Setting::get('page_home_bg_landing_page', '#FFFFFF');
@@ -976,14 +976,8 @@
             .cv-landing-page-section * {
                 -webkit-touch-callout: none !important;
                 -webkit-user-select: none !important;
-                -khtml-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
                 user-select: none !important;
                 -webkit-user-drag: none !important;
-                -khtml-user-drag: none !important;
-                -moz-user-drag: none !important;
-                -o-user-drag: none !important;
                 user-drag: none !important;
             }
 
@@ -992,8 +986,11 @@
                 position: relative;
                 margin: 0;
                 padding: 0;
-                background: #F1F5F9;
+                background: #F0F7FF;
                 overflow: hidden;
+                min-height: 120px;
+                transform: translateZ(0);
+                will-change: transform;
             }
 
             .lp-transparent-shield {
@@ -1002,30 +999,48 @@
                 z-index: 5;
                 background: transparent;
                 cursor: default;
-                user-select: none !important;
-                -webkit-user-select: none !important;
-                -webkit-user-drag: none !important;
             }
 
+            /* Lightweight Blue Loading Shimmer + Modern Blue Pulse */
             .lp-img-skeleton {
                 position: absolute;
                 inset: 0;
-                background: linear-gradient(90deg, #E2E8F0 0%, #F8FAFC 50%, #E2E8F0 100%);
+                background: linear-gradient(90deg, #E0EEFF 0%, #F0F7FF 50%, #E0EEFF 100%);
                 background-size: 200% 100%;
-                animation: lpShimmer 1.5s infinite linear;
+                animation: lpBlueShimmer 1.2s ease-in-out infinite;
                 z-index: 2;
-                transition: opacity 0.5s ease;
-                min-height: 250px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.35s ease, visibility 0.35s ease;
+                min-height: 120px;
+                pointer-events: none;
+            }
+
+            .lp-img-skeleton .lp-blue-spinner {
+                width: 38px;
+                height: 38px;
+                border: 3px solid rgba(27, 111, 232, 0.18);
+                border-top-color: #1B6FE8;
+                border-radius: 50%;
+                animation: lpSpin 0.8s linear infinite;
+                box-shadow: 0 4px 12px rgba(27, 111, 232, 0.12);
             }
 
             .lp-skeleton-hidden {
                 opacity: 0 !important;
+                visibility: hidden !important;
                 pointer-events: none !important;
+                animation: none !important;
             }
 
-            @keyframes lpShimmer {
+            @keyframes lpBlueShimmer {
                 0% { background-position: -200% 0; }
                 100% { background-position: 200% 0; }
+            }
+
+            @keyframes lpSpin {
+                to { transform: rotate(360deg); }
             }
 
             .lp-img-element {
@@ -1035,34 +1050,31 @@
                 object-fit: contain;
                 max-width: 100%;
                 opacity: 0;
-                transition: opacity 0.5s ease-in-out;
-                -webkit-user-drag: none !important;
-                -khtml-user-drag: none !important;
-                -moz-user-drag: none !important;
-                -o-user-drag: none !important;
-                user-drag: none !important;
-                user-select: none !important;
-                -webkit-user-select: none !important;
-                -moz-user-select: none !important;
-                -ms-user-select: none !important;
+                transform: translateZ(0);
+                transition: opacity 0.4s ease-out;
                 pointer-events: none !important;
+                will-change: opacity;
+            }
+
+            .lp-img-element.lp-loaded {
+                opacity: 1;
             }
         </style>
 
         <section class="cv-landing-page-section" id="landing" style="background-color: {{ $lpBg }}; width:100%; position:relative; overflow:hidden;">
             @if($lpHd || $lpSub || $lpBd)
-                <div class="container" style="padding: 4rem 1.5rem 2rem; text-align: center; max-width: 900px; margin: 0 auto;">
+                <div class="container" style="padding: 3.5rem 1.5rem 1.75rem; text-align: center; max-width: 900px; margin: 0 auto;">
                     @if($lpBd)
-                        <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#1B6FE8; margin-bottom:1rem; display:inline-flex; align-items:center; gap:0.5rem;">
-                            <span style="width:6px; height:6px; background:#1B6FE8; border-radius:50%;"></span>
+                        <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#1B6FE8; margin-bottom:0.75rem; display:inline-flex; align-items:center; gap:0.5rem;">
+                            <span style="width:7px; height:7px; background:#1B6FE8; border-radius:50%; box-shadow:0 0 8px rgba(27,111,232,0.5);"></span>
                             {{ $lpBd }}
                         </div>
                     @endif
                     @if($lpHd)
-                        <h2 style="font-size:clamp(2rem, 4vw, 3.25rem); font-weight:700; color:#0F172A; line-height:1.15; margin-bottom:1rem;">{!! $lpHd !!}</h2>
+                        <h2 style="font-size:clamp(1.85rem, 3.8vw, 3rem); font-weight:800; color:#0F172A; line-height:1.18; margin-bottom:0.75rem;">{!! $lpHd !!}</h2>
                     @endif
                     @if($lpSub)
-                        <p style="font-size:1.05rem; color:#64748B; line-height:1.6; margin:0 auto;">{{ $lpSub }}</p>
+                        <p style="font-size:1.02rem; color:#64748B; line-height:1.6; margin:0 auto;">{{ $lpSub }}</p>
                     @endif
                 </div>
             @endif
@@ -1073,31 +1085,49 @@
                         @php
                             $deskImg = $lpItem['image'] ?? '';
                             $mobImg  = $lpItem['image_mobile'] ?? '';
+                            $deskUrl = $deskImg ? asset('storage/' . $deskImg) : '';
+                            $mobUrl  = $mobImg ? asset('storage/' . $mobImg) : '';
+                            $defaultUrl = $deskUrl ?: $mobUrl;
                         @endphp
                         @if($deskImg || $mobImg)
                             <div class="cv-landing-img-wrap" id="lpWrap-{{ $idx }}" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
-                                {{-- Elegant Shimmer Skeleton Overlay --}}
-                                <div class="lp-img-skeleton" id="lpSkel-{{ $idx }}"></div>
+                                {{-- Ultra-Light Blue Skeleton Loader --}}
+                                <div class="lp-img-skeleton" id="lpSkel-{{ $idx }}">
+                                    <div class="lp-blue-spinner"></div>
+                                </div>
 
-                                {{-- Transparent Shield Overlay to prevent ANY mouse click, drag, double click, selection, or touch gesture --}}
+                                {{-- Shield Overlay --}}
                                 <div class="lp-transparent-shield" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;"></div>
 
-                                {{-- Main Full-Width Responsive Image (Non-draggable & Non-selectable) --}}
-                                <picture style="width:100%;display:block;">
-                                    @if(!empty($mobImg))
-                                        <source media="(max-width: 767px)" srcset="{{ asset('storage/' . $mobImg) }}">
-                                    @endif
-                                    <img src="{{ asset('storage/' . ($deskImg ?: $mobImg)) }}" 
-                                         alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
-                                         class="lp-img-element"
-                                         draggable="false"
-                                         ondragstart="return false;"
-                                         oncontextmenu="return false;"
-                                         onselectstart="return false;"
-                                         loading="{{ $loop->first ? 'eager' : 'lazy' }}"
-                                         onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
-                                         onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
-                                </picture>
+                                {{-- Responsive Picture (Item #0 Eager, Next Items TikTok-Style Lazy Observed) --}}
+                                @if($idx === 0)
+                                    <picture style="width:100%;display:block;">
+                                        @if(!empty($mobUrl))
+                                            <source media="(max-width: 767px)" srcset="{{ $mobUrl }}">
+                                        @endif
+                                        <img src="{{ $defaultUrl }}" 
+                                             alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
+                                             class="lp-img-element"
+                                             draggable="false"
+                                             fetchpriority="high"
+                                             decoding="async"
+                                             onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
+                                             onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
+                                    </picture>
+                                @else
+                                    <picture style="width:100%;display:block;" class="lp-lazy-picture" id="lpPic-{{ $idx }}">
+                                        @if(!empty($mobUrl))
+                                            <source media="(max-width: 767px)" data-srcset="{{ $mobUrl }}">
+                                        @endif
+                                        <img data-src="{{ $defaultUrl }}" 
+                                             alt="{{ $lpItem['title'] ?? 'Landing Page Showcase' }}" 
+                                             class="lp-img-element lp-lazy-img"
+                                             draggable="false"
+                                             decoding="async"
+                                             onload="dismissLpSkeleton('lpSkel-{{ $idx }}', this)"
+                                             onerror="dismissLpSkeleton('lpSkel-{{ $idx }}', this)">
+                                    </picture>
+                                @endif
                             </div>
                         @endif
                     @endforeach
@@ -1112,21 +1142,81 @@
                     skel.classList.add('lp-skeleton-hidden');
                 }
                 if (imgEl) {
-                    imgEl.style.opacity = '1';
+                    imgEl.classList.add('lp-loaded');
                 }
             }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                // Safety fallback to ensure all skeletons dismiss even if cached / delayed onload
+            // TikTok-Style Infinite Scroll Lazy Loader
+            (function() {
+                function initInfiniteScroll() {
+                    const lazyImages = document.querySelectorAll('.lp-lazy-img');
+                    if (!lazyImages.length) return;
+
+                    if ('IntersectionObserver' in window) {
+                        const observerOptions = {
+                            root: null,
+                            rootMargin: '350px 0px', // Preload smoothly 350px before entering viewport
+                            threshold: 0.01
+                        };
+
+                        const imgObserver = new IntersectionObserver(function(entries, observer) {
+                            entries.forEach(function(entry) {
+                                if (entry.isIntersecting) {
+                                    const img = entry.target;
+                                    const pic = img.closest('picture');
+                                    if (pic) {
+                                        const sources = pic.querySelectorAll('source[data-srcset]');
+                                        sources.forEach(function(src) {
+                                            src.srcset = src.getAttribute('data-srcset');
+                                            src.removeAttribute('data-srcset');
+                                        });
+                                    }
+                                    if (img.dataset.src) {
+                                        img.src = img.dataset.src;
+                                        img.removeAttribute('data-src');
+                                    }
+                                    observer.unobserve(img);
+                                }
+                            });
+                        }, observerOptions);
+
+                        lazyImages.forEach(function(img) {
+                            imgObserver.observe(img);
+                        });
+                    } else {
+                        // Fallback for older browsers
+                        lazyImages.forEach(function(img) {
+                            const pic = img.closest('picture');
+                            if (pic) {
+                                const sources = pic.querySelectorAll('source[data-srcset]');
+                                sources.forEach(function(src) {
+                                    src.srcset = src.getAttribute('data-srcset');
+                                });
+                            }
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                            }
+                        });
+                    }
+                }
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initInfiniteScroll);
+                } else {
+                    initInfiniteScroll();
+                }
+
+                // Global fallback in case image load takes longer or offline
                 setTimeout(function() {
-                    document.querySelectorAll('.lp-img-skeleton').forEach(function(skel) {
-                        skel.classList.add('lp-skeleton-hidden');
+                    document.querySelectorAll('.lp-img-skeleton:not(.lp-skeleton-hidden)').forEach(function(skel) {
+                        const img = skel.parentElement ? skel.parentElement.querySelector('.lp-img-element') : null;
+                        if (img && img.complete && img.naturalHeight !== 0) {
+                            skel.classList.add('lp-skeleton-hidden');
+                            img.classList.add('lp-loaded');
+                        }
                     });
-                    document.querySelectorAll('.lp-img-element').forEach(function(img) {
-                        img.style.opacity = '1';
-                    });
-                }, 800);
-            });
+                }, 2000);
+            })();
         </script>
     @endif
 

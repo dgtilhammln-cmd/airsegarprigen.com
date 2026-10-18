@@ -1138,9 +1138,35 @@
                                                 <svg width="16" height="16" fill="none" stroke="#1B6FE8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                                                 File Foto Desktop (Landscape)
                                             </label>
+                                            @php
+                                                $deskPath = $lImg['image'] ?? '';
+                                                $deskSizeStr = '';
+                                                if ($deskPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($deskPath)) {
+                                                    $dBytes = filesize(\Illuminate\Support\Facades\Storage::disk('public')->path($deskPath));
+                                                    $deskSizeStr = round($dBytes / 1024, 1) . ' KB';
+                                                    if ($dBytes > 1024 * 1024) {
+                                                        $deskSizeStr = round($dBytes / (1024 * 1024), 2) . ' MB';
+                                                    }
+                                                }
+                                            @endphp
                                             @if(!empty($lImg['image']))
-                                                <div style="margin-bottom:0.5rem;">
-                                                    <img src="{{ asset('storage/' . $lImg['image']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                                                    <img id="preview-img-desk-{{ $k }}-{{ $lIdx }}" src="{{ asset('storage/' . $lImg['image']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                    <div style="display:flex;flex-direction:column;gap:0.35rem;">
+                                                        @if($deskSizeStr)
+                                                            <span id="badge-size-desk-{{ $k }}-{{ $lIdx }}" style="font-size:0.72rem;background:#E2E8F0;color:#334155;padding:2px 8px;border-radius:6px;font-weight:600;display:inline-block;width:fit-content;">
+                                                                Ukuran: {{ $deskSizeStr }}
+                                                            </span>
+                                                        @endif
+                                                        <button type="button" 
+                                                                id="btn-compress-desk-{{ $k }}-{{ $lIdx }}"
+                                                                onclick="compressLandingImageAjax('{{ $k }}', {{ $lIdx }}, 'image', this, 'preview-img-desk-{{ $k }}-{{ $lIdx }}', 'badge-size-desk-{{ $k }}-{{ $lIdx }}')"
+                                                                style="display:inline-flex;align-items:center;gap:0.35rem;background:#0284C7;color:#fff;border:none;border-radius:6px;padding:0.35rem 0.75rem;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;"
+                                                                title="Kompres ukuran file jadi lebih kecil tanpa merusak kualitas">
+                                                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                                            ⚡ Kompres Gambar
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             @endif
                                             <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image]" value="{{ $lImg['image'] ?? '' }}">
@@ -1154,9 +1180,35 @@
                                                 <svg width="16" height="16" fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                                                 File Foto Mobile (Portrait / Square - Opsional)
                                             </label>
+                                            @php
+                                                $mobPath = $lImg['image_mobile'] ?? '';
+                                                $mobSizeStr = '';
+                                                if ($mobPath && \Illuminate\Support\Facades\Storage::disk('public')->exists($mobPath)) {
+                                                    $mBytes = filesize(\Illuminate\Support\Facades\Storage::disk('public')->path($mobPath));
+                                                    $mobSizeStr = round($mBytes / 1024, 1) . ' KB';
+                                                    if ($mBytes > 1024 * 1024) {
+                                                        $mobSizeStr = round($mBytes / (1024 * 1024), 2) . ' MB';
+                                                    }
+                                                }
+                                            @endphp
                                             @if(!empty($lImg['image_mobile']))
-                                                <div style="margin-bottom:0.5rem;">
-                                                    <img src="{{ asset('storage/' . $lImg['image_mobile']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                                                    <img id="preview-img-mob-{{ $k }}-{{ $lIdx }}" src="{{ asset('storage/' . $lImg['image_mobile']) }}" style="max-height:90px;border-radius:8px;border:1px solid #CBD5E1;max-width:100%;object-fit:contain;">
+                                                    <div style="display:flex;flex-direction:column;gap:0.35rem;">
+                                                        @if($mobSizeStr)
+                                                            <span id="badge-size-mob-{{ $k }}-{{ $lIdx }}" style="font-size:0.72rem;background:#E2E8F0;color:#334155;padding:2px 8px;border-radius:6px;font-weight:600;display:inline-block;width:fit-content;">
+                                                                Ukuran: {{ $mobSizeStr }}
+                                                            </span>
+                                                        @endif
+                                                        <button type="button" 
+                                                                id="btn-compress-mob-{{ $k }}-{{ $lIdx }}"
+                                                                onclick="compressLandingImageAjax('{{ $k }}', {{ $lIdx }}, 'image_mobile', this, 'preview-img-mob-{{ $k }}-{{ $lIdx }}', 'badge-size-mob-{{ $k }}-{{ $lIdx }}')"
+                                                                style="display:inline-flex;align-items:center;gap:0.35rem;background:#0284C7;color:#fff;border:none;border-radius:6px;padding:0.35rem 0.75rem;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;"
+                                                                title="Kompres ukuran file jadi lebih kecil tanpa merusak kualitas">
+                                                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                                            ⚡ Kompres Gambar
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             @endif
                                             <input type="hidden" name="landing_items_{{ $k }}[{{ $lIdx }}][existing_image_mobile]" value="{{ $lImg['image_mobile'] ?? '' }}">

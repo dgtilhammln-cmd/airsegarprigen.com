@@ -339,6 +339,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/pages/homepage', [AdminPageController::class, 'index'])->name('admin.pages.homepage');
         Route::post('/pages/homepage', [AdminPageController::class, 'update'])->name('admin.pages.homepage.update');
         Route::delete('/pages/homepage/landing-image', [AdminPageController::class, 'deleteLandingImage'])->name('admin.pages.homepage.landing_image.delete');
+        Route::post('/pages/homepage/compress-image', [AdminPageController::class, 'compressLandingImage'])->name('admin.pages.homepage.landing_image.compress');
 
         // Landing Pages (SEO / Ads Campaign)
         Route::get('/landing-pages', [AdminLandingPageController::class, 'index'])->name('admin.landing-pages.index');
@@ -348,5 +349,6 @@ Route::prefix('admin')->group(function () {
         Route::post('/landing-pages/{landingPage}', [AdminLandingPageController::class, 'update'])->name('admin.landing-pages.update');
         Route::delete('/landing-pages/{landingPage}', [AdminLandingPageController::class, 'destroy'])->name('admin.landing-pages.destroy');
         Route::post('/landing-pages/{landingPage}/toggle-status', [AdminLandingPageController::class, 'toggleStatus'])->name('admin.landing-pages.toggle-status');
+        Route::post('/landing-pages/{landingPage}/compress-image', [AdminLandingPageController::class, 'compressImage'])->name('admin.landing-pages.compress-image');
     });
 });

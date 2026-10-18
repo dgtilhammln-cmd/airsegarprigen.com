@@ -171,4 +171,116 @@ class AdminLandingPageController extends Controller
 
         $lp->update(['images' => $finalImages]);
     }
+
+    // ─── COMPRESS SINGLE LANDING PAGE IMAGE (AJAX) ─────────────────────────────
+    public function compressImage(Request $request, LandingPage $landingPage)
+    {
+        $index  = (int) $request->input('index', -1);
+        $target = $request->input('target', 'image'); // 'image' or 'image_mobile'
+
+        $images = $landingPage->images ?? [];
+        if (!is_array($images) || $index < 0 || !isset($images[$index])) {
+            return response()->json(['success' => false, 'message' => 'Gambar tidak ditemukan.'], 404);
+        }
+
+        $relPath = $images[$index][$target] ?? null;
+        if (!$relPath || !\Illuminate\Support\Facades\Storage::disk('public')->exists($relPath)) {
+            return response()->json(['success' => false, 'message' => 'File gambar tidak ditemukan di server.'], 404);
+        }
+
+        $fullPath = \Illuminate\Support\Facades\Storage::disk('public')->path($relPath);
+        $oldSize  = filesize($fullPath);
+
+        $imgInfo = @getimagesize($fullPath);
+        if (!$imgInfo) {
+            return response()->json(['success' => false, 'message' => 'Format file tidak dapat diproses.'], 422);
+        }
+
+        $mime = $imgInfo['mime'] ?? '';
+        $srcW = $imgInfo[0];
+        $srcH = $imgInfo[1];
+
+        $srcImg = null;
+        switch ($mime) {
+            case 'image/jpeg':
+            case 'image/jpg':
+                $srcImg = @imagecreatefromjpeg($fullPath);
+                break;
+            case 'image/png':
+                $srcImg = @imagecreatefrompng($fullPath);
+                break;
+            case 'image/webp':
+                $srcImg = @imagecreatefromwebp($fullPath);
+                break;
+            case 'image/gif':
+                $srcImg = @imagecreatefromgif($fullPath);
+                break;
+        }
+
+        if (!$srcImg) {
+            return response()->json(['success' => false, 'message' => 'Gagal membaca gambar.'], 422);
+        }
+
+        if (imageistruecolor($srcImg) === false) {
+            imagepalettetotruecolor($srcImg);
+        }
+
+        $maxW = ($target === 'image_mobile') ? 1080 : 1920;
+        $dstW = $srcW;
+        $dstH = $srcH;
+        if ($srcW > $maxW) {
+            $dstW = $maxW;
+            $dstH = (int) round(($srcH * $maxW) / $srcW);
+        }
+
+        $dstImg = imagecreatetruecolor($dstW, $dstH);
+        imagealphablending($dstImg, false);
+        imagesavealpha($dstImg, true);
+        imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
+        imagedestroy($srcImg);
+
+        $newFilename = "landing-pages/opt_" . time() . "_{$index}.webp";
+        ob_start();
+        imagewebp($dstImg, null, 75);
+        $webpContent = ob_get_clean();
+        imagedestroy($dstImg);
+
+        if (!$webpContent) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengompres gambar.'], 500);
+        }
+
+        $newSize = strlen($webpContent);
+
+        \Illuminate\Support\Facades\Storage::disk('public')->put($newFilename, $webpContent);
+
+        if ($relPath !== $newFilename && \Illuminate\Support\Facades\Storage::disk('public')->exists($relPath)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($relPath);
+        }
+
+        $images[$index][$target] = $newFilename;
+        $landingPage->update(['images' => $images]);
+
+        $savedBytes = max(0, $oldSize - $newSize);
+        $savedPercent = ($oldSize > 0) ? round(($savedBytes / $oldSize) * 100, 1) : 0;
+
+        return response()->json([
+            'success'       => true,
+            'message'       => "Berhasil dikompres! Dari " . $this->formatBytes($oldSize) . " menjadi " . $this->formatBytes($newSize) . " (Hemat {$savedPercent}%)",
+            'new_path'      => $newFilename,
+            'new_url'       => asset('storage/' . $newFilename) . '?v=' . time(),
+            'old_size'      => $this->formatBytes($oldSize),
+            'new_size'      => $this->formatBytes($newSize),
+            'saved_percent' => $savedPercent
+        ]);
+    }
+
+    private function formatBytes($bytes, $precision = 1)
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow];
+    }
 }
