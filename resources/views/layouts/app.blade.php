@@ -160,54 +160,56 @@
         #cv-preloader {
             position: fixed; inset: 0; background: #ffffff; z-index: 99999;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         
         .cv-preloader-logo {
-            max-width: 160px;
-            max-height: 80px;
-            filter: grayscale(100%) opacity(0.6);
-            animation: wind-sway 2s ease-in-out infinite;
+            max-width: 170px;
+            max-height: 85px;
+            filter: drop-shadow(0 4px 14px rgba(27, 111, 232, 0.15));
+            animation: water-float 2s ease-in-out infinite;
             position: relative;
+            z-index: 2;
         }
 
-        /* Wind lines effect container */
+        /* Wind/Water stream lines effect container */
         .cv-wind-container {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 250px;
-            height: 150px;
+            width: 280px;
+            height: 160px;
             overflow: hidden;
         }
 
-        /* The wind lines */
+        /* Fresh Blue water stream lines */
         .cv-wind-line {
             position: absolute;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #DC2626, transparent);
-            border-radius: 50%;
+            height: 2.5px;
+            background: linear-gradient(90deg, transparent, #1B6FE8, #38BDF8, transparent);
+            border-radius: 999px;
             opacity: 0;
-            animation: wind-blow 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: 0 0 10px rgba(27, 111, 232, 0.6);
+            animation: wind-blow 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        .cv-wind-line-1 { top: 20%; width: 120px; animation-delay: 0s; }
-        .cv-wind-line-2 { top: 50%; width: 180px; animation-delay: 0.3s; }
-        .cv-wind-line-3 { top: 80%; width: 140px; animation-delay: 0.6s; }
+        .cv-wind-line-1 { top: 22%; width: 140px; animation-delay: 0s; }
+        .cv-wind-line-2 { top: 50%; width: 200px; animation-delay: 0.25s; }
+        .cv-wind-line-3 { top: 78%; width: 150px; animation-delay: 0.5s; }
 
-        @keyframes wind-sway {
-            0%, 100% { transform: skewX(0deg) translateX(0); }
-            50% { transform: skewX(-6deg) translateX(8px); }
+        @keyframes water-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
         }
 
         @keyframes wind-blow {
-            0% { transform: translateX(-150px); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateX(150px); opacity: 0; }
+            0% { transform: translateX(-160px); opacity: 0; }
+            50% { opacity: 0.95; }
+            100% { transform: translateX(160px); opacity: 0; }
         }
 
-        body.loaded #cv-preloader { opacity: 0; visibility: hidden; }
+        body.loaded #cv-preloader { opacity: 0; visibility: hidden; pointer-events: none; }
     </style>
     <div id="cv-preloader">
         <div class="cv-wind-container">
@@ -218,18 +220,26 @@
             @if($preloaderLogo)
                 <img src="{{ asset('storage/'.$preloaderLogo) }}" alt="Loading..." class="cv-preloader-logo">
             @else
-                <div class="cv-preloader-logo" style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:800; color:#333;">{{ strtoupper($layoutSettings['company_name'] ?? 'AIR SEGAR PRIGEN') }}</div>
+                <div class="cv-preloader-logo" style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:800; color:#1B6FE8;">{{ strtoupper($layoutSettings['company_name'] ?? 'AIR SEGAR PRIGEN') }}</div>
             @endif
         </div>
     </div>
 
     <script>
+        function dismissPreloader() {
+            document.body.classList.add('loaded');
+            var p = document.getElementById('cv-preloader');
+            if (p) {
+                setTimeout(function() { p.style.display = 'none'; }, 450);
+            }
+        }
         window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.body.classList.add('loaded');
-            }, 300); // Small delay to ensure smooth transition
+            setTimeout(dismissPreloader, 250);
         });
-    </script>    {{-- Navbar --}}
+        // Failsafe: max 1s so page is never blocked
+        setTimeout(dismissPreloader, 1000);
+    </script>
+    {{-- Navbar --}}
     @include('components.navbar')
 
     {{-- Main Content --}}
